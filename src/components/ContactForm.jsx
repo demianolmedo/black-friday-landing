@@ -88,7 +88,7 @@ const ContactForm = () => {
   }
 
   return (
-    <section id="contact-form" className="relative w-full py-16 sm:py-20 md:py-24 overflow-hidden">
+    <section id="contact-form" className="relative w-full min-h-[calc(100vh-120px)] flex items-center justify-center overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-navy-dark via-navy-blue to-navy-dark"></div>
 
@@ -96,7 +96,7 @@ const ContactForm = () => {
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-neon-green/5 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 w-full">
 
         {/* Heading */}
         <div className="text-center space-y-4 mb-10 sm:mb-12 animate-fade-in">

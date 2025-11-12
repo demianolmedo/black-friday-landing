@@ -1,10 +1,12 @@
 import React from 'react';
-import Header from './components/Header';
-import Hero from './components/Hero';
-import CountdownTimer from './components/CountdownTimer';
-import ContentSection from './components/ContentSection';
-import ContactForm from './components/ContactForm';
-import Footer from './components/Footer';
+import Navbar from './components/Navbar';
+import HeroSection from './components/HeroSection';
+import CachetadaSection from './components/CachetadaSection';
+import DescuentosSection from './components/DescuentosSection';
+import ProblemaSection from './components/ProblemaSection';
+import SolucionSection from './components/SolucionSection';
+import FormularioSection from './components/FormularioSection';
+import FooterNew from './components/FooterNew';
 
 function App() {
   // Scroll to contact form
@@ -15,48 +17,46 @@ function App() {
     }
   };
 
-  // Set Black Friday end date (you can modify this)
-  const blackFridayEndDate = '2025-11-29T23:59:59';
-
   return (
-    <div className="min-h-screen bg-navy-dark">
-      <Header />
+    <div className="min-h-screen bg-azul-principal">
+      <Navbar />
 
       <main className="pt-24 sm:pt-28">
         {/* Hero Section */}
-        <section id="hero-section" className="relative">
-          <Hero />
-        </section>
+        <HeroSection />
 
         {/* Section Divider */}
         <div className="section-divider"></div>
 
-        {/* Countdown Section */}
-        <section id="countdown-section" className="relative">
-          <CountdownTimer />
-        </section>
+        {/* Cachetada Section - Scroll Animation */}
+        <CachetadaSection />
 
         {/* Section Divider */}
         <div className="section-divider"></div>
 
-        {/* Problema & Solución Section */}
-        <section id="problema-section" className="relative">
-          <ContentSection onCTAClick={scrollToForm} />
-        </section>
-
-        {/* Hidden anchor for solution */}
-        <div id="solucion-section" className="absolute -mt-32"></div>
+        {/* Descuentos Section - Countdown */}
+        <DescuentosSection />
 
         {/* Section Divider */}
         <div className="section-divider"></div>
 
-        {/* Contact Form Section */}
-        <section id="contact-form-section" className="relative">
-          <ContactForm />
-        </section>
+        {/* Problema Section */}
+        <ProblemaSection onCTAClick={scrollToForm} />
+
+        {/* Section Divider */}
+        <div className="section-divider"></div>
+
+        {/* Solución Section */}
+        <SolucionSection />
+
+        {/* Section Divider */}
+        <div className="section-divider"></div>
+
+        {/* Formulario Section - Empty container */}
+        <FormularioSection />
       </main>
 
-      <Footer />
+      <FooterNew />
     </div>
   );
 }

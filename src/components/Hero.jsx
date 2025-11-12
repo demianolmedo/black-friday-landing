@@ -2,7 +2,7 @@ import React from 'react';
 
 const Hero = () => {
   return (
-    <section className="relative w-full pt-4 sm:pt-6 pb-8 overflow-hidden">
+    <section className="relative w-full min-h-[calc(100vh-120px)] flex items-center justify-center overflow-hidden">
       {/* Background with gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-navy-dark via-navy-blue to-navy-dark"></div>
 
@@ -10,8 +10,8 @@ const Hero = () => {
       <div className="absolute inset-0 bg-gradient-radial from-blue-900/20 via-transparent to-transparent opacity-50"></div>
 
       {/* Content Container */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center justify-start text-center space-y-4 sm:space-y-6">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="flex flex-col items-center justify-center text-center space-y-4 sm:space-y-6">
 
           {/* Green dot indicator */}
           <div className="flex items-center space-x-2 animate-fade-in mt-4">

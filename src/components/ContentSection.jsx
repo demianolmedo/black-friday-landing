@@ -4,7 +4,7 @@ import CTAButton from './CTAButton';
 
 const ContentSection = ({ onCTAClick }) => {
   return (
-    <section className="relative w-full py-10 sm:py-12 md:py-16 overflow-hidden">
+    <section className="relative w-full min-h-[calc(100vh-120px)] flex items-center justify-center overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-navy-dark via-navy-blue to-navy-dark"></div>
 
@@ -12,7 +12,7 @@ const ContentSection = ({ onCTAClick }) => {
       <div className="absolute top-1/4 -left-32 w-64 h-64 bg-neon-green/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-1/4 -right-32 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
         <div className="space-y-10 sm:space-y-12 md:space-y-14">
 
           {/* CTA Button First */}
