@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  black-friday-landing:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: black-friday-landing
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
