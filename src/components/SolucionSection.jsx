@@ -38,7 +38,7 @@ const SolucionSection = () => {
   return (
     <section
       id="solucion-section"
-      className="relative w-full flex items-center justify-center overflow-hidden py-12 sm:py-16"
+      className="relative w-full flex items-center justify-center overflow-hidden py-16 sm:py-24"
     >
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-azul-principal via-azul-principal/90 to-azul-principal"></div>
