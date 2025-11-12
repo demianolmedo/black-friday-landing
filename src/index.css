@@ -1,6 +1,14 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-navy-dark: #0A1628;
+  --color-navy-blue: #0F1F3D;
+  --color-neon-green: #00FF94;
+  --color-neon-green-light: #00FFA3;
+
+  --font-family-outfit: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-family-inter: 'Inter', system-ui, -apple-system, sans-serif;
+}
 
 /* Outfit Font */
 @font-face {
