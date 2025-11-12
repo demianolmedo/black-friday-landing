@@ -2,7 +2,7 @@ import React from 'react';
 
 const Hero = () => {
   return (
-    <section className="relative w-full pt-20 sm:pt-24 pb-8 overflow-hidden">
+    <section className="relative w-full pt-4 sm:pt-6 pb-8 overflow-hidden">
       {/* Background with gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-navy-dark via-navy-blue to-navy-dark"></div>
 

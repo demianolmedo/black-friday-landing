@@ -9,44 +9,50 @@ const Header = () => {
   };
 
   return (
-    <header className="w-full glass-card fixed top-0 left-0 z-50 border-b border-white/10">
+    <header className="w-full fixed top-0 left-0 z-50 pt-4 pb-2">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 sm:h-20">
-          {/* Logo */}
-          <div className="flex-shrink-0 animate-fade-in cursor-pointer" onClick={() => scrollToSection('hero-section')}>
+        {/* Logo - Arriba a la izquierda en mobile, centrado en desktop */}
+        <div className="flex justify-center mb-3 md:mb-4">
+          <div
+            className="cursor-pointer animate-fade-in"
+            onClick={() => scrollToSection('hero-section')}
+          >
             <img
               src="/src/assets/Fondos e imagenes/Logo.png"
               alt="Logo"
-              className="h-8 sm:h-10 md:h-12 w-auto object-contain"
+              className="h-8 sm:h-10 w-auto object-contain"
             />
           </div>
+        </div>
 
-          {/* Navigation */}
-          <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
+        {/* Navigation - Cápsula centrada */}
+        <div className="flex justify-center">
+          <nav className="glass-card rounded-full px-3 py-2 flex items-center gap-2 sm:gap-3">
             <button
               onClick={() => scrollToSection('problema-section')}
-              className="text-white/80 hover:text-neon-green text-sm font-medium transition-colors duration-300"
+              className="text-white/80 hover:text-white hover:bg-white/10 text-xs sm:text-sm font-medium px-4 sm:px-6 py-2 rounded-full transition-all duration-300"
             >
               Problema
             </button>
+
+            <div className="h-6 w-px bg-white/20"></div>
+
             <button
               onClick={() => scrollToSection('solucion-section')}
-              className="text-white/80 hover:text-neon-green text-sm font-medium transition-colors duration-300"
+              className="text-white/80 hover:text-white hover:bg-white/10 text-xs sm:text-sm font-medium px-4 sm:px-6 py-2 rounded-full transition-all duration-300"
             >
               Solución
             </button>
+
+            <div className="h-6 w-px bg-white/20"></div>
+
             <button
               onClick={() => scrollToSection('contact-form')}
-              className="bg-gradient-to-r from-neon-green to-neon-cyan text-navy-dark px-5 py-2 rounded-lg font-bold text-sm hover:scale-105 transition-transform duration-300 neon-glow"
+              className="bg-gradient-to-r from-neon-green to-neon-cyan text-navy-dark px-4 sm:px-6 py-2 rounded-full font-bold text-xs sm:text-sm hover:scale-105 transition-transform duration-300 neon-glow"
             >
               Contacto
             </button>
           </nav>
-
-          {/* Green dot indicator */}
-          <div className="flex items-center md:hidden">
-            <div className="w-3 h-3 bg-neon-green rounded-full animate-pulse-slow"></div>
-          </div>
         </div>
       </div>
     </header>

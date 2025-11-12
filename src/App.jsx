@@ -22,24 +22,38 @@ function App() {
     <div className="min-h-screen bg-navy-dark">
       <Header />
 
-      <main>
-        <section id="hero-section">
+      <main className="pt-24 sm:pt-28">
+        {/* Hero Section */}
+        <section id="hero-section" className="relative">
           <Hero />
         </section>
 
-        <section id="countdown-section">
+        {/* Section Divider */}
+        <div className="section-divider"></div>
+
+        {/* Countdown Section */}
+        <section id="countdown-section" className="relative">
           <CountdownTimer />
         </section>
 
-        <section id="problema-section">
+        {/* Section Divider */}
+        <div className="section-divider"></div>
+
+        {/* Problema & Solución Section */}
+        <section id="problema-section" className="relative">
           <ContentSection onCTAClick={scrollToForm} />
         </section>
 
-        <section id="solucion-section">
-          {/* Sección de solución ya está dentro de ContentSection */}
-        </section>
+        {/* Hidden anchor for solution */}
+        <div id="solucion-section" className="absolute -mt-32"></div>
 
-        <ContactForm />
+        {/* Section Divider */}
+        <div className="section-divider"></div>
+
+        {/* Contact Form Section */}
+        <section id="contact-form-section" className="relative">
+          <ContactForm />
+        </section>
       </main>
 
       <Footer />
