@@ -4,7 +4,7 @@ const HeroSection = () => {
   return (
     <section
       id="hero-section"
-      className="relative w-full min-h-[calc(100vh-120px)] flex items-center justify-center overflow-hidden"
+      className="relative w-full min-h-[80vh] flex items-center justify-center overflow-hidden"
     >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-azul-principal via-azul-principal/90 to-azul-principal"></div>
@@ -13,17 +13,17 @@ const HeroSection = () => {
       <div className="absolute top-1/4 -left-32 w-64 h-64 bg-verde-neon/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-1/4 -right-32 w-64 h-64 bg-verde-neon/5 rounded-full blur-3xl"></div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <div className="flex flex-col items-center justify-center text-center space-y-4 sm:space-y-6">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="flex flex-col items-center justify-center text-center space-y-3 sm:space-y-4">
 
           {/* Green dot indicator */}
-          <div className="flex items-center space-x-2 animate-fade-in mt-4">
+          <div className="flex items-center space-x-2 animate-fade-in">
             <div className="w-2.5 h-2.5 bg-verde-neon rounded-full animate-pulse-slow"></div>
             <div className="h-px w-8 bg-gradient-to-r from-verde-neon to-transparent"></div>
           </div>
 
           {/* Main Heading - 50% OFF */}
-          <div className="space-y-1 sm:space-y-2 animate-slide-up">
+          <div className="space-y-1 animate-slide-up">
             <h1 className="text-7xl sm:text-8xl md:text-9xl font-black tracking-tight leading-none font-outfit">
               <span className="text-verde-neon drop-shadow-[0_0_30px_rgba(0,255,127,0.5)] neon-text">
                 50%
@@ -37,23 +37,8 @@ const HeroSection = () => {
             </h2>
           </div>
 
-          {/* Person Image Placeholder */}
-          <div className="w-full max-w-sm sm:max-w-md animate-fade-in mt-2">
-            <div className="relative">
-              {/* Glow effect behind image */}
-              <div className="absolute inset-0 bg-verde-neon/10 blur-3xl"></div>
-
-              {/* Person image placeholder */}
-              <div className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 mx-auto overflow-hidden">
-                <div className="w-full h-full flex items-center justify-center bg-gradient-to-b from-transparent via-azul-principal/30 to-azul-principal rounded-b-full">
-                  <span className="text-white/20 text-sm">Person Image</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
           {/* Offer Card */}
-          <div className="relative w-full max-w-sm mx-auto -mt-4 animate-scale-in">
+          <div className="relative w-full max-w-sm mx-auto mt-2 animate-scale-in">
             <div className="glass-card glass-card-hover rounded-2xl p-5 sm:p-6">
 
               {/* Badge */}

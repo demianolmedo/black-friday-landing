@@ -38,7 +38,7 @@ const SolucionSection = () => {
   return (
     <section
       id="solucion-section"
-      className="relative w-full min-h-[calc(100vh-120px)] flex items-center justify-center overflow-hidden"
+      className="relative w-full min-h-[85vh] flex items-center justify-center overflow-hidden"
     >
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-azul-principal via-azul-principal/90 to-azul-principal"></div>
@@ -47,8 +47,8 @@ const SolucionSection = () => {
       <div className="absolute top-1/3 -left-32 w-96 h-96 bg-verde-neon/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-1/3 -right-32 w-96 h-96 bg-verde-neon/5 rounded-full blur-3xl"></div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
-        <div className="space-y-12 sm:space-y-16">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="space-y-8 sm:space-y-10">
 
           {/* Heading */}
           <div className="text-center space-y-4 animate-fade-in">

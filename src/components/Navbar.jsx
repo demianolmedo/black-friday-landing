@@ -15,9 +15,14 @@ const Navbar = () => {
         <div className="flex justify-center mb-3 md:mb-4">
           <div className="cursor-pointer animate-fade-in" onClick={() => scrollToSection('hero-section')}>
             <img
-              src="/src/assets/Fondos e imagenes/Logo.png"
+              src="/assets/Fondos e imagenes/Logo.png"
               alt="Logo"
               className="h-8 sm:h-10 w-auto object-contain"
+              onError={(e) => {
+                // Fallback text if logo doesn't load
+                e.target.style.display = 'none';
+                e.target.parentElement.innerHTML = '<span class="text-verde-neon text-xl font-black font-outfit neon-text">BLACK FRIDAY</span>';
+              }}
             />
           </div>
         </div>

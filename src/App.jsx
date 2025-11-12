@@ -21,36 +21,21 @@ function App() {
     <div className="min-h-screen bg-azul-principal">
       <Navbar />
 
-      <main className="pt-24 sm:pt-28">
+      <main className="pt-20 sm:pt-24">
         {/* Hero Section */}
         <HeroSection />
-
-        {/* Section Divider */}
-        <div className="section-divider"></div>
 
         {/* Cachetada Section - Scroll Animation */}
         <CachetadaSection />
 
-        {/* Section Divider */}
-        <div className="section-divider"></div>
-
         {/* Descuentos Section - Countdown */}
         <DescuentosSection />
-
-        {/* Section Divider */}
-        <div className="section-divider"></div>
 
         {/* Problema Section */}
         <ProblemaSection onCTAClick={scrollToForm} />
 
-        {/* Section Divider */}
-        <div className="section-divider"></div>
-
         {/* Solución Section */}
         <SolucionSection />
-
-        {/* Section Divider */}
-        <div className="section-divider"></div>
 
         {/* Formulario Section - Empty container */}
         <FormularioSection />

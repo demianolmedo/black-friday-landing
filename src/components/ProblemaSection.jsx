@@ -4,7 +4,7 @@ const ProblemaSection = ({ onCTAClick }) => {
   return (
     <section
       id="problema-section"
-      className="relative w-full min-h-[calc(100vh-120px)] flex items-center justify-center overflow-hidden"
+      className="relative w-full min-h-[85vh] flex items-center justify-center overflow-hidden"
     >
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-azul-principal via-azul-principal to-azul-principal"></div>
@@ -13,8 +13,8 @@ const ProblemaSection = ({ onCTAClick }) => {
       <div className="absolute top-1/4 -left-32 w-64 h-64 bg-verde-neon/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-1/4 -right-32 w-64 h-64 bg-verde-neon/5 rounded-full blur-3xl"></div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
-        <div className="space-y-10 sm:space-y-12 md:space-y-14">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="space-y-6 sm:space-y-8">
 
           {/* CTA Button First */}
           <div className="flex justify-center animate-fade-in">

@@ -40,7 +40,7 @@ const CachetadaSection = () => {
     <section
       id="cachetada-section"
       ref={sectionRef}
-      className="relative w-full min-h-[200vh] flex items-center justify-center overflow-hidden"
+      className="relative w-full min-h-[150vh] flex items-center justify-center overflow-hidden"
     >
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-azul-principal via-azul-principal/90 to-azul-principal"></div>
@@ -55,11 +55,12 @@ const CachetadaSection = () => {
 
             {/* Image */}
             <img
-              src={`/src/assets/Fondos e imagenes/${currentFrame}.png`}
+              src={`/assets/Fondos e imagenes/${currentFrame}.png`}
               alt={`Cachetada frame ${currentFrame}`}
               className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
               onError={(e) => {
                 // Fallback if image doesn't exist
+                console.log(`Image not found: ${currentFrame}.png`);
                 e.target.style.display = 'none';
               }}
             />
