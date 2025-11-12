@@ -37,13 +37,13 @@ const ContentSection = ({ onCTAClick }) => {
 
           {/* Speech bubbles section */}
           <div className="flex flex-wrap justify-center gap-4 sm:gap-6 max-w-4xl mx-auto animate-fade-in">
-            <div className="bg-navy-blue/40 border border-white/10 rounded-2xl px-6 py-3 text-white/80 text-sm sm:text-base">
+            <div className="glass-card glass-card-hover rounded-2xl px-6 py-3 text-white/80 text-sm sm:text-base">
               ¿Y esta espera?
             </div>
-            <div className="bg-navy-blue/40 border border-white/10 rounded-2xl px-6 py-3 text-white/80 text-sm sm:text-base">
+            <div className="glass-card glass-card-hover rounded-2xl px-6 py-3 text-white/80 text-sm sm:text-base">
               ¡No se supone que era rápido!
             </div>
-            <div className="bg-navy-blue/40 border border-white/10 rounded-2xl px-6 py-3 text-white/80 text-sm sm:text-base text-center">
+            <div className="glass-card glass-card-hover rounded-2xl px-6 py-3 text-white/80 text-sm sm:text-base text-center">
               ¿Por qué mi#%$a me<br/>están cobrando esto?
             </div>
           </div>

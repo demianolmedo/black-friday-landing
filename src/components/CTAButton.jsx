@@ -9,8 +9,8 @@ const CTAButton = ({
   showIcon = true
 }) => {
   const variants = {
-    primary: 'bg-gradient-to-r from-neon-green to-emerald-400 hover:from-neon-green-light hover:to-emerald-300 text-navy-dark',
-    secondary: 'bg-navy-blue border-2 border-neon-green text-neon-green hover:bg-neon-green/10',
+    primary: 'bg-gradient-to-r from-neon-green to-neon-cyan hover:from-neon-green-light hover:to-neon-green text-navy-dark neon-glow',
+    secondary: 'glass-card border-2 border-neon-green text-neon-green hover:bg-neon-green/10',
     outline: 'border-2 border-white/30 text-white hover:border-neon-green hover:text-neon-green'
   };
 
@@ -22,9 +22,9 @@ const CTAButton = ({
         ${variants[variant]}
         font-bold text-sm sm:text-base md:text-lg
         px-10 sm:px-12 md:px-14 py-3.5 sm:py-4 md:py-4.5
-        rounded-full
-        transition-all duration-300 ease-out
-        transform hover:scale-105 hover:shadow-2xl
+        rounded-xl
+        transition-all duration-300 cubic-bezier(0.4, 0, 0.2, 1)
+        transform hover:scale-105 hover:neon-glow-lg
         active:scale-95
         overflow-hidden
         ${className}

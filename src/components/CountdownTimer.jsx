@@ -1,17 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { Clock } from 'lucide-react';
 
-const CountdownTimer = ({ targetDate = '2025-11-29T23:59:59' }) => {
+const CountdownTimer = () => {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0
   });
+  const [phase, setPhase] = useState('before'); // 'before', 'phase1', 'phase2', 'ended'
 
   useEffect(() => {
     const calculateTimeLeft = () => {
-      const difference = +new Date(targetDate) - +new Date();
+      const now = new Date();
+
+      // Black Friday dates (EST/EDT - Miami time)
+      const phase1Start = new Date('2025-11-27T00:00:00-05:00'); // 27 nov, Miami
+      const phase1End = new Date('2025-11-28T00:00:00-05:00');   // 28 nov (24h después)
+      const phase2End = new Date('2025-11-30T00:00:00-05:00');   // 30 nov (48h después de phase1End)
+
+      let targetDate;
+      let currentPhase;
+
+      if (now < phase1Start) {
+        targetDate = phase1Start;
+        currentPhase = 'before';
+      } else if (now >= phase1Start && now < phase1End) {
+        targetDate = phase1End;
+        currentPhase = 'phase1';
+      } else if (now >= phase1End && now < phase2End) {
+        targetDate = phase2End;
+        currentPhase = 'phase2';
+      } else {
+        currentPhase = 'ended';
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        setPhase(currentPhase);
+        return;
+      }
+
+      const difference = targetDate - now;
 
       if (difference > 0) {
         setTimeLeft({
@@ -20,8 +47,7 @@ const CountdownTimer = ({ targetDate = '2025-11-29T23:59:59' }) => {
           minutes: Math.floor((difference / 1000 / 60) % 60),
           seconds: Math.floor((difference / 1000) % 60)
         });
-      } else {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        setPhase(currentPhase);
       }
     };
 
@@ -29,13 +55,13 @@ const CountdownTimer = ({ targetDate = '2025-11-29T23:59:59' }) => {
     const timer = setInterval(calculateTimeLeft, 1000);
 
     return () => clearInterval(timer);
-  }, [targetDate]);
+  }, []);
 
   const TimeUnit = ({ value, label }) => (
     <div className="flex flex-col items-center space-y-1.5">
       {/* Time box */}
-      <div className="relative bg-navy-blue/60 backdrop-blur-sm border border-neon-green/20 rounded-lg p-2.5 sm:p-3 min-w-[50px] sm:min-w-[60px] shadow-lg">
-        <div className="text-4xl sm:text-5xl md:text-6xl font-black text-neon-green text-center font-mono leading-none drop-shadow-[0_0_20px_rgba(0,255,148,0.5)]">
+      <div className="glass-card rounded-lg p-2.5 sm:p-3 min-w-[50px] sm:min-w-[60px]">
+        <div className="text-4xl sm:text-5xl md:text-6xl font-black text-neon-green text-center font-mono leading-none neon-text">
           {String(value).padStart(2, '0')}
         </div>
       </div>
@@ -46,6 +72,22 @@ const CountdownTimer = ({ targetDate = '2025-11-29T23:59:59' }) => {
       </span>
     </div>
   );
+
+  // Mensajes según la fase
+  const getPhaseMessage = () => {
+    switch(phase) {
+      case 'before':
+        return 'La oferta comienza pronto';
+      case 'phase1':
+        return 'Black Friday - Primera Fase (24h)';
+      case 'phase2':
+        return '¡Prórroga Especial! - Últimas 48 horas';
+      case 'ended':
+        return 'Oferta finalizada';
+      default:
+        return '';
+    }
+  };
 
   return (
     <section className="relative w-full py-8 sm:py-12 overflow-hidden">
@@ -89,8 +131,11 @@ const CountdownTimer = ({ targetDate = '2025-11-29T23:59:59' }) => {
             </div>
           </div>
 
-          {/* Additional info */}
+          {/* Phase message */}
           <div className="text-center pt-2">
+            <p className="text-neon-green text-sm sm:text-base font-semibold mb-2">
+              {getPhaseMessage()}
+            </p>
             <p className="text-white/50 text-xs sm:text-sm">
               Porque el tiempo pasa, y como tú lo necesitas... ¡Este es tu momento!
             </p>

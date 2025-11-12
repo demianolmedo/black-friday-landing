@@ -51,7 +51,7 @@ const Hero = () => {
 
           {/* Offer Card */}
           <div className="relative w-full max-w-sm mx-auto -mt-4 animate-slide-right">
-            <div className="bg-navy-blue/60 backdrop-blur-md border border-white/10 rounded-xl p-5 sm:p-6 shadow-2xl">
+            <div className="glass-card glass-card-hover rounded-2xl p-5 sm:p-6">
 
               {/* Badge */}
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">

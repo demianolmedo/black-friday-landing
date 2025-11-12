@@ -23,9 +23,22 @@ function App() {
       <Header />
 
       <main>
-        <Hero />
-        <CountdownTimer targetDate={blackFridayEndDate} />
-        <ContentSection onCTAClick={scrollToForm} />
+        <section id="hero-section">
+          <Hero />
+        </section>
+
+        <section id="countdown-section">
+          <CountdownTimer />
+        </section>
+
+        <section id="problema-section">
+          <ContentSection onCTAClick={scrollToForm} />
+        </section>
+
+        <section id="solucion-section">
+          {/* Sección de solución ya está dentro de ContentSection */}
+        </section>
+
         <ContactForm />
       </main>
 
