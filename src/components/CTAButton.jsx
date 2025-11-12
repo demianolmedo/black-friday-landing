@@ -20,8 +20,8 @@ const CTAButton = ({
       className={`
         relative group
         ${variants[variant]}
-        font-bold text-base sm:text-lg md:text-xl
-        px-8 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6
+        font-bold text-sm sm:text-base md:text-lg
+        px-10 sm:px-12 md:px-14 py-3.5 sm:py-4 md:py-4.5
         rounded-full
         transition-all duration-300 ease-out
         transform hover:scale-105 hover:shadow-2xl

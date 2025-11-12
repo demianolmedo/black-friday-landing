@@ -2,7 +2,7 @@ import React from 'react';
 
 const Hero = () => {
   return (
-    <section className="relative w-full min-h-screen pt-20 sm:pt-24 pb-12 overflow-hidden">
+    <section className="relative w-full pt-20 sm:pt-24 pb-8 overflow-hidden">
       {/* Background with gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-navy-dark via-navy-blue to-navy-dark"></div>
 
@@ -11,81 +11,87 @@ const Hero = () => {
 
       {/* Content Container */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center justify-center text-center space-y-6 sm:space-y-8">
+        <div className="flex flex-col items-center justify-start text-center space-y-4 sm:space-y-6">
 
           {/* Green dot indicator */}
-          <div className="flex items-center space-x-2 animate-fade-in">
-            <div className="w-3 h-3 bg-neon-green rounded-full animate-pulse-slow"></div>
-            <div className="h-px w-12 bg-gradient-to-r from-neon-green to-transparent"></div>
+          <div className="flex items-center space-x-2 animate-fade-in mt-4">
+            <div className="w-2.5 h-2.5 bg-neon-green rounded-full animate-pulse-slow"></div>
+            <div className="h-px w-8 bg-gradient-to-r from-neon-green to-transparent"></div>
           </div>
 
           {/* Main Heading - 50% OFF */}
-          <div className="space-y-2 sm:space-y-4 animate-slide-left">
-            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight">
+          <div className="space-y-1 sm:space-y-2 animate-slide-left">
+            <h1 className="text-7xl sm:text-8xl md:text-9xl font-black tracking-tight leading-none">
               <span className="text-neon-green drop-shadow-[0_0_30px_rgba(0,255,148,0.5)]">
                 50%
               </span>
-              <span className="text-white text-5xl sm:text-6xl md:text-7xl lg:text-8xl ml-3">
+              <span className="text-white text-4xl sm:text-5xl md:text-6xl ml-2 align-top">
                 off
               </span>
             </h1>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-wide">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-[0.3em] uppercase">
               DESCUENTOS<span className="text-neon-green">%</span>
             </h2>
           </div>
 
           {/* Person Image */}
-          <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg animate-fade-in">
+          <div className="w-full max-w-sm sm:max-w-md animate-fade-in mt-2">
             <div className="relative">
               {/* Glow effect behind image */}
-              <div className="absolute inset-0 bg-neon-green/20 blur-3xl rounded-full"></div>
-              {/* You can add the person image here if you have it */}
-              <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 mx-auto rounded-full bg-gradient-to-br from-navy-blue to-navy-dark border-4 border-neon-green/30 overflow-hidden">
+              <div className="absolute inset-0 bg-neon-green/10 blur-3xl"></div>
+              {/* Person image placeholder */}
+              <div className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 mx-auto overflow-hidden">
                 {/* Placeholder for person image - replace with actual image */}
-                <div className="w-full h-full flex items-center justify-center text-white/20">
-                  <span className="text-sm">Person Image</span>
+                <div className="w-full h-full flex items-center justify-center bg-gradient-to-b from-transparent via-navy-blue/30 to-navy-dark rounded-b-full">
+                  <span className="text-white/20 text-sm">Person Image</span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Offer Card */}
-          <div className="relative w-full max-w-md mx-auto mt-8 animate-slide-right">
-            <div className="bg-navy-blue/50 backdrop-blur-md border border-white/10 rounded-2xl p-6 sm:p-8 shadow-2xl">
+          <div className="relative w-full max-w-sm mx-auto -mt-4 animate-slide-right">
+            <div className="bg-navy-blue/60 backdrop-blur-md border border-white/10 rounded-xl p-5 sm:p-6 shadow-2xl">
 
               {/* Badge */}
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <div className="bg-gradient-to-r from-neon-green to-emerald-400 text-navy-dark px-6 py-2 rounded-full text-xs sm:text-sm font-bold shadow-lg">
+              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                <div className="bg-gradient-to-r from-neon-green to-emerald-400 text-navy-dark px-5 py-1.5 rounded-full text-xs font-bold shadow-lg whitespace-nowrap">
                   ¡Sin cuota de inscripción!
                 </div>
               </div>
 
-              <div className="space-y-4 mt-4">
-                {/* 50% OFF EN RESERVAS */}
-                <div className="text-center space-y-2">
-                  <p className="text-white/80 text-sm sm:text-base font-medium uppercase tracking-wider">
-                    50% OFF
+              <div className="space-y-3 mt-2">
+                {/* Title */}
+                <div className="text-center space-y-0.5">
+                  <p className="text-white/70 text-xs sm:text-sm font-semibold uppercase tracking-widest">
+                    Hasta
                   </p>
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
-                    EN RESERVAS
+                  <h3 className="text-3xl sm:text-4xl font-black text-white leading-none">
+                    50% OFF
                   </h3>
-                  <p className="text-white/60 text-xs sm:text-sm">
-                    Aprovecha esta oferta exclusiva
+                  <p className="text-white text-base sm:text-lg font-semibold uppercase tracking-wide">
+                    EN RESERVAS
+                  </p>
+                  <p className="text-white/50 text-xs pt-1">
+                    ¡Sin pagar la cuota de primera vez<br/>y obten precios fijos!
                   </p>
                 </div>
 
                 {/* Divider */}
-                <div className="h-px bg-gradient-to-r from-transparent via-neon-green/30 to-transparent"></div>
+                <div className="h-px bg-gradient-to-r from-transparent via-neon-green/30 to-transparent my-3"></div>
 
-                {/* Additional Info */}
-                <div className="grid grid-cols-2 gap-4 text-center">
-                  <div className="space-y-1">
-                    <p className="text-neon-green text-xl sm:text-2xl font-bold">50</p>
-                    <p className="text-white/60 text-xs uppercase tracking-wide">Cupos</p>
+                {/* Stats Grid */}
+                <div className="flex justify-between items-center px-4 text-center">
+                  <div className="space-y-0.5">
+                    <p className="text-neon-green text-2xl font-black">50</p>
+                    <p className="text-white/50 text-[10px] uppercase tracking-wider">descuentos<br/>disponibles</p>
                   </div>
-                  <div className="space-y-1">
-                    <p className="text-neon-green text-xl sm:text-2xl font-bold">Termina en</p>
-                    <p className="text-white/60 text-xs uppercase tracking-wide">Tiempo limitado</p>
+
+                  <div className="h-12 w-px bg-white/10"></div>
+
+                  <div className="space-y-0.5">
+                    <p className="text-neon-green text-2xl font-black">50</p>
+                    <p className="text-white/50 text-[10px] uppercase tracking-wider">reservas<br/>*Sin cuota de exp</p>
                   </div>
                 </div>
               </div>
