@@ -87,12 +87,12 @@ const DescuentosSection = () => {
   return (
     <section
       id="descuentos-section"
-      className="relative w-full min-h-[70vh] flex items-center justify-center overflow-hidden"
+      className="relative w-full flex items-center justify-center overflow-hidden py-12 sm:py-16"
     >
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-azul-principal via-azul-principal/50 to-azul-principal"></div>
 
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-center space-y-3 sm:space-y-4">
 
           {/* "Solo 50 descuentos disponibles" */}

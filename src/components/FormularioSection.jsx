@@ -4,7 +4,7 @@ const FormularioSection = () => {
   return (
     <section
       id="contact-form"
-      className="relative w-full min-h-[80vh] flex items-center justify-center overflow-hidden"
+      className="relative w-full flex items-center justify-center overflow-hidden py-12 sm:py-16"
     >
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-azul-principal via-azul-principal to-azul-principal"></div>
@@ -13,7 +13,7 @@ const FormularioSection = () => {
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-verde-neon/5 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-verde-neon/5 rounded-full blur-3xl"></div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 w-full">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
 
         {/* Heading */}
         <div className="text-center space-y-3 mb-6 sm:mb-8 animate-fade-in">
