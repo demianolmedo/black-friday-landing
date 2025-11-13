@@ -263,16 +263,16 @@ const DescuentosSection = () => {
               </div>
             </div>
 
-            {/* Phase message */}
-            <div className="text-center">
-              <p className="text-verde-neon text-sm sm:text-base font-semibold mb-2 font-inter">
-                {getPhaseMessage()}
-              </p>
-              <p className="text-white/50 text-xs sm:text-sm font-inter">
-                Porque el tiempo pasa, y como tú lo necesitas... ¡Este es tu momento!
-              </p>
-            </div>
+          </div>
 
+          {/* Subtitle text */}
+          <div className="text-center mt-6 px-4">
+            <p className="text-white text-lg sm:text-xl font-inter leading-relaxed">
+              Porque el verdadero drama... no está en la novela
+            </p>
+            <p className="text-white text-lg sm:text-xl font-inter font-bold leading-relaxed mt-1">
+              Está en alquilar tu auto sin drama
+            </p>
           </div>
 
         </div>
