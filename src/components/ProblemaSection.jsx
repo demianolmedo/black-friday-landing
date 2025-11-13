@@ -16,12 +16,22 @@ const ProblemaSection = ({ onCTAClick }) => {
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="space-y-4 sm:space-y-6">
 
+          {/* Ribbon banner message */}
+          <div className="w-full -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-8 animate-fade-in" style={{
+            background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.05) 40%, transparent 70%)'
+          }}>
+            <div className="text-center space-y-2">
+              <p className="text-base sm:text-lg text-white/70 font-inter">
+                Si, todos hemos pasado por eso
+              </p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white/90 font-outfit">
+                Y duele más que una cachetada
+              </h2>
+            </div>
+          </div>
+
           {/* Main message */}
           <div className="text-center space-y-2 sm:space-y-3 animate-fade-in">
-            <p className="text-sm sm:text-base text-white/60 max-w-2xl mx-auto font-inter">
-              Si todavía sigues pensando por qué,<br />
-              duele más que una cachetada
-            </p>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-blanco leading-tight max-w-4xl mx-auto uppercase font-outfit">
               RECUERDAS ESE MOMENTO INCÓMODO{' '}
               <span className="text-verde-neon neon-text">CUANDO PENSASTE</span>
