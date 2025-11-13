@@ -17,13 +17,9 @@ const ProblemaSection = ({ onCTAClick }) => {
         <div className="space-y-4 sm:space-y-6">
 
           {/* Metallic ribbon banner message */}
-          <div className="w-full -mx-4 sm:-mx-6 lg:-mx-8 relative animate-fade-in" style={{
-            background: 'repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 2px)',
-            backgroundColor: '#01132a'
-          }}>
+          <div className="relative w-screen -ml-4 sm:-ml-6 lg:-ml-8 left-0 animate-fade-in">
             <div className="relative py-3 px-4 sm:px-6 lg:px-8 backdrop-blur-md" style={{
-              background: 'linear-gradient(90deg, #021938 0%, #0f2847 15%, #2a5580 35%, #6B95BF 50%, #2a5580 65%, #0f2847 85%, #021938 100%)',
-              border: '1px solid rgba(255, 255, 255, 0.1)'
+              background: 'linear-gradient(90deg, #021938 0%, #0f2847 15%, #2a5580 35%, #6B95BF 50%, #2a5580 65%, #0f2847 85%, #021938 100%)'
             }}>
               <div className="text-center space-y-2">
                 <p className="text-sm sm:text-base text-white font-inter">
