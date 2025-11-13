@@ -220,7 +220,7 @@ const DescuentosSection = () => {
             {/* Badge diagonal VIP (solo visible en fase 1 - antes del Black Friday) */}
             {phase === 'before' && (
               <div className="absolute top-6 right-0 z-20">
-                <div className="bg-gradient-to-br from-verde-neon to-emerald-400 px-16 py-8 transform rotate-45 translate-x-6 shadow-xl">
+                <div className="bg-gradient-to-br from-verde-neon to-emerald-400 px-16 py-4 transform rotate-45 translate-x-8 shadow-xl">
                   <p className="text-xs sm:text-sm font-black uppercase tracking-wide whitespace-nowrap flex items-center justify-center gap-1.5 text-azul-principal">
                     <Lock size={14} className="sm:w-5 sm:h-5" strokeWidth={3} />
                     <span>ACCESO VIP</span>
@@ -232,7 +232,7 @@ const DescuentosSection = () => {
             {/* Badge diagonal de extensión (solo visible en fase 3) */}
             {phase === 'phase2' && (
               <div className="absolute top-6 right-0 z-20">
-                <div className="bg-gradient-to-br from-verde-neon to-emerald-400 px-14 py-8 transform rotate-45 translate-x-6 shadow-xl">
+                <div className="bg-gradient-to-br from-verde-neon to-emerald-400 px-14 py-4 transform rotate-45 translate-x-8 shadow-xl">
                   <p className="text-xs sm:text-sm font-black uppercase tracking-wide whitespace-nowrap flex items-center justify-center gap-1.5 text-azul-principal">
                     <Zap size={14} className="sm:w-5 sm:h-5" strokeWidth={3} fill="#021938" />
                     <span>¡EXTENDIDO 48H!</span>
