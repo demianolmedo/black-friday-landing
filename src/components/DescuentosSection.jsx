@@ -8,32 +8,64 @@ const DescuentosSection = () => {
     seconds: 0
   });
   const [phase, setPhase] = useState('before');
+  const [reservasRestantes, setReservasRestantes] = useState(100);
 
   useEffect(() => {
     const calculateTimeLeft = () => {
       const now = new Date();
 
-      // Black Friday dates (EST/EDT - Miami time)
-      const phase1Start = new Date('2025-11-27T00:00:00-05:00');
-      const phase1End = new Date('2025-11-28T00:00:00-05:00');
-      const phase2End = new Date('2025-11-30T00:00:00-05:00');
+      // Fechas clave (EST/EDT - Miami time)
+      const startDate = new Date('2025-11-13T00:00:00-05:00'); // Inicio del conteo
+      const blackFridayStart = new Date('2025-11-28T00:00:00-05:00'); // Black Friday
+      const blackFridayEnd = new Date('2025-11-29T00:00:00-05:00'); // Fin Black Friday
+      const extensionEnd = new Date('2025-12-01T00:00:00-05:00'); // Fin extensión 48h
 
       let targetDate;
       let currentPhase;
+      let reservas = 100;
 
-      if (now < phase1Start) {
-        targetDate = phase1Start;
+      // Calcular reservas restantes según la fase
+      if (now < blackFridayStart) {
+        // FASE 1: Antes del Black Friday (13 nov - 27 nov)
+        targetDate = blackFridayStart;
         currentPhase = 'before';
-      } else if (now >= phase1Start && now < phase1End) {
-        targetDate = phase1End;
+
+        const diffMs = now - startDate;
+        const hours12Passed = Math.floor(diffMs / (1000 * 60 * 60 * 12));
+        reservas = Math.max(0, 100 - (hours12Passed * 2)); // 2 reservas cada 12h
+
+      } else if (now >= blackFridayStart && now < blackFridayEnd) {
+        // FASE 2: Black Friday (28 nov)
+        targetDate = blackFridayEnd;
         currentPhase = 'phase1';
-      } else if (now >= phase1End && now < phase2End) {
-        targetDate = phase2End;
+
+        // Calcular reservas desde el inicio hasta el Black Friday
+        const diffStart = blackFridayStart - startDate;
+        const hours12BeforeBF = Math.floor(diffStart / (1000 * 60 * 60 * 12));
+        const reservasAntesBF = 100 - (hours12BeforeBF * 2);
+
+        // Durante Black Friday: 1 reserva por hora
+        const diffBF = now - blackFridayStart;
+        const hoursPassed = Math.floor(diffBF / (1000 * 60 * 60));
+        reservas = Math.max(0, reservasAntesBF - hoursPassed);
+
+      } else if (now >= blackFridayEnd && now < extensionEnd) {
+        // FASE 3: Extensión 48h (29-30 nov)
+        targetDate = extensionEnd;
         currentPhase = 'phase2';
+
+        // Empezamos con 20 reservas
+        const diffExt = now - blackFridayEnd;
+        const hours3Passed = Math.floor(diffExt / (1000 * 60 * 60 * 3));
+        reservas = Math.max(0, 20 - hours3Passed); // 1 reserva cada 3h
+
       } else {
+        // Promoción finalizada
         currentPhase = 'ended';
+        reservas = 0;
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
         setPhase(currentPhase);
+        setReservasRestantes(0);
         return;
       }
 
@@ -47,6 +79,7 @@ const DescuentosSection = () => {
           seconds: Math.floor((difference / 1000) % 60)
         });
         setPhase(currentPhase);
+        setReservasRestantes(reservas);
       }
     };
 
@@ -173,20 +206,31 @@ const DescuentosSection = () => {
 
           </div>
 
-          {/* "Solo 50 descuentos disponibles" */}
+          {/* "Solo X reservas disponibles" */}
           <div className="text-center animate-fade-in">
             <p className="text-blanco text-base sm:text-lg md:text-xl font-medium font-inter">
-              Solo <span className="text-verde-neon font-bold neon-text">50</span> descuentos disponibles
+              Solo <span className="text-verde-neon font-bold neon-text">{reservasRestantes}</span> reservas disponibles
             </p>
           </div>
 
           {/* Countdown Card with Liquid Glass Effect */}
-          <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 transition-all duration-300 w-full max-w-2xl mx-auto px-12 py-6 animate-scale-in">
+          <div className="relative bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 transition-all duration-300 w-full max-w-2xl mx-auto px-12 py-6 animate-scale-in overflow-hidden">
+
+            {/* Badge diagonal de extensión (solo visible en fase 3) */}
+            {phase === 'phase2' && (
+              <div className="absolute top-0 right-0 z-20">
+                <div className="bg-gradient-to-br from-verde-neon to-emerald-400 text-azul-principal px-16 py-2 transform rotate-45 translate-x-12 translate-y-6 shadow-lg">
+                  <p className="text-xs sm:text-sm font-black uppercase tracking-wide whitespace-nowrap transform -rotate-45">
+                    ¡EXTENDIDO 48H!
+                  </p>
+                </div>
+              </div>
+            )}
 
             {/* Main countdown number */}
             <div className="text-center mb-6">
               <div className="text-7xl sm:text-8xl md:text-9xl font-black text-verde-neon leading-none drop-shadow-[0_0_40px_rgba(0,255,127,0.6)] font-outfit neon-text">
-                50
+                {reservasRestantes}
               </div>
             </div>
 
