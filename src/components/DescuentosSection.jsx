@@ -180,41 +180,46 @@ const DescuentosSection = () => {
             </p>
           </div>
 
-          {/* Main countdown number */}
-          <div className="text-center animate-slide-up">
-            <div className="text-7xl sm:text-8xl md:text-9xl font-black text-verde-neon leading-none drop-shadow-[0_0_40px_rgba(0,255,127,0.6)] font-outfit neon-text">
-              50
+          {/* Countdown Card with Liquid Glass Effect */}
+          <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 transition-all duration-300 w-full max-w-2xl mx-auto px-12 py-6 animate-scale-in">
+
+            {/* Main countdown number */}
+            <div className="text-center mb-6">
+              <div className="text-7xl sm:text-8xl md:text-9xl font-black text-verde-neon leading-none drop-shadow-[0_0_40px_rgba(0,255,127,0.6)] font-outfit neon-text">
+                50
+              </div>
             </div>
-          </div>
 
-          {/* "Termina en" */}
-          <div className="text-center">
-            <p className="text-white/80 text-sm sm:text-base font-medium uppercase tracking-widest font-inter">
-              Termina en
-            </p>
-          </div>
-
-          {/* Countdown Timer */}
-          <div className="w-full max-w-md animate-fade-in">
-            <div className="flex justify-center items-center gap-2 sm:gap-3">
-              <TimeUnit value={timeLeft.days} label="Días" />
-              <span className="text-verde-neon text-3xl sm:text-4xl font-bold pb-6">:</span>
-              <TimeUnit value={timeLeft.hours} label="Horas" />
-              <span className="text-verde-neon text-3xl sm:text-4xl font-bold pb-6">:</span>
-              <TimeUnit value={timeLeft.minutes} label="Minutos" />
-              <span className="text-verde-neon text-3xl sm:text-4xl font-bold pb-6">:</span>
-              <TimeUnit value={timeLeft.seconds} label="Segundos" />
+            {/* "Termina en" */}
+            <div className="text-center mb-6">
+              <p className="text-white/80 text-sm sm:text-base font-medium uppercase tracking-widest font-inter">
+                Termina en
+              </p>
             </div>
-          </div>
 
-          {/* Phase message */}
-          <div className="text-center pt-2">
-            <p className="text-verde-neon text-sm sm:text-base font-semibold mb-2 font-inter">
-              {getPhaseMessage()}
-            </p>
-            <p className="text-white/50 text-xs sm:text-sm font-inter">
-              Porque el tiempo pasa, y como tú lo necesitas... ¡Este es tu momento!
-            </p>
+            {/* Countdown Timer */}
+            <div className="w-full max-w-md mx-auto mb-6">
+              <div className="flex justify-center items-center gap-2 sm:gap-3">
+                <TimeUnit value={timeLeft.days} label="Días" />
+                <span className="text-verde-neon text-3xl sm:text-4xl font-bold pb-6">:</span>
+                <TimeUnit value={timeLeft.hours} label="Horas" />
+                <span className="text-verde-neon text-3xl sm:text-4xl font-bold pb-6">:</span>
+                <TimeUnit value={timeLeft.minutes} label="Minutos" />
+                <span className="text-verde-neon text-3xl sm:text-4xl font-bold pb-6">:</span>
+                <TimeUnit value={timeLeft.seconds} label="Segundos" />
+              </div>
+            </div>
+
+            {/* Phase message */}
+            <div className="text-center">
+              <p className="text-verde-neon text-sm sm:text-base font-semibold mb-2 font-inter">
+                {getPhaseMessage()}
+              </p>
+              <p className="text-white/50 text-xs sm:text-sm font-inter">
+                Porque el tiempo pasa, y como tú lo necesitas... ¡Este es tu momento!
+              </p>
+            </div>
+
           </div>
 
         </div>
