@@ -1,63 +1,94 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import './Navbar.css';
 
 const Navbar = () => {
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleNavClick = (e, targetId) => {
+    e.preventDefault();
+    setIsOpen(false);
+
+    const element = document.querySelector(targetId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const offset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
   };
 
+  const navItems = [
+    { name: 'Inicio', href: '#hero-section' },
+    { name: 'Descuentos', href: '#descuentos-section' },
+    { name: 'Problema', href: '#problema-section' },
+    { name: 'Solución', href: '#solucion-section' }
+  ];
+
   return (
-    <header className="w-full fixed top-0 left-0 z-50 pt-4 pb-2">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Logo centrado */}
-        <div className="flex justify-center mb-3 md:mb-4">
-          <div className="cursor-pointer animate-fade-in" onClick={() => scrollToSection('hero-section')}>
-            <img
-              src="/assets/Fondos e imagenes/Logo.png"
-              alt="Logo"
-              className="h-8 sm:h-10 w-auto object-contain"
-              onError={(e) => {
-                // Fallback text if logo doesn't load
-                e.target.style.display = 'none';
-                e.target.parentElement.innerHTML = '<span class="text-verde-neon text-xl font-black font-outfit neon-text">BLACK FRIDAY</span>';
-              }}
-            />
-          </div>
-        </div>
+    <motion.nav
+      className={`navbar ${scrolled ? 'scrolled' : ''}`}
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <div className="navbar-container">
+        <a href="#hero-section" onClick={(e) => handleNavClick(e, '#hero-section')} className="navbar-logo">
+          <img src="/assets/Fondos e imagenes/Logo.png" alt="RentSmart Logo" />
+        </a>
 
-        {/* Menu capsula */}
-        <div className="flex justify-center">
-          <nav className="glass-card rounded-full px-3 py-2 flex items-center gap-2 sm:gap-3">
-            <button
-              onClick={() => scrollToSection('problema-section')}
-              className="text-white/80 hover:text-white hover:bg-white/10 text-xs sm:text-sm font-medium px-4 sm:px-6 py-2 rounded-full transition-all duration-300"
-            >
-              Problema
-            </button>
+        <button
+          className={`navbar-toggle ${isOpen ? 'active' : ''}`}
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
 
-            <div className="h-6 w-px bg-white/20"></div>
-
-            <button
-              onClick={() => scrollToSection('solucion-section')}
-              className="text-white/80 hover:text-white hover:bg-white/10 text-xs sm:text-sm font-medium px-4 sm:px-6 py-2 rounded-full transition-all duration-300"
-            >
-              Solución
-            </button>
-
-            <div className="h-6 w-px bg-white/20"></div>
-
-            <button
-              onClick={() => scrollToSection('contact-form')}
-              className="bg-gradient-to-r from-verde-neon to-emerald-400 text-azul-principal px-4 sm:px-6 py-2 rounded-full font-bold text-xs sm:text-sm hover:scale-105 transition-transform duration-300 neon-glow"
-            >
-              Contacto
-            </button>
-          </nav>
+        <div className={`navbar-menu ${isOpen ? 'active' : ''}`}>
+          <ul className="navbar-nav">
+            {navItems.map((item, index) => (
+              <motion.li
+                key={item.name}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <a
+                  href={item.href}
+                  onClick={(e) => handleNavClick(e, item.href)}
+                  className="nav-link"
+                >
+                  {item.name}
+                </a>
+              </motion.li>
+            ))}
+          </ul>
+          <a
+            href="#contact-form"
+            onClick={(e) => handleNavClick(e, '#contact-form')}
+            className="navbar-cta"
+          >
+            Obtener 50% OFF
+          </a>
         </div>
       </div>
-    </header>
+    </motion.nav>
   );
 };
 
