@@ -21,7 +21,7 @@ function App() {
     <div className="min-h-screen bg-azul-principal">
       <Navbar />
 
-      <main className="pt-20 sm:pt-24">
+      <main className="pt-32 sm:pt-36">
         {/* Hero Section */}
         <HeroSection />
 
