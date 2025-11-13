@@ -87,7 +87,7 @@ const DescuentosSection = () => {
   return (
     <section
       id="descuentos-section"
-      className="relative w-full flex items-center justify-center overflow-hidden py-16 sm:py-24"
+      className="relative w-full flex items-center justify-center overflow-hidden py-8 sm:py-12"
     >
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-azul-principal via-azul-principal/50 to-azul-principal"></div>

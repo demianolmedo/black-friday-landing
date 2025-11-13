@@ -54,7 +54,7 @@ const HeroSection = () => {
     <section
       id="hero-section"
       ref={sectionRef}
-      className="relative w-full min-h-[300vh] overflow-hidden"
+      className="relative w-full h-[200vh] overflow-hidden"
     >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-azul-principal via-azul-principal/90 to-azul-principal"></div>
@@ -117,9 +117,6 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-
-      {/* Decorative bottom gradient */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-azul-principal to-transparent"></div>
     </section>
   );
 };
