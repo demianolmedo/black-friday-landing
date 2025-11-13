@@ -99,7 +99,7 @@ const ProblemaSection = ({ onCTAClick }) => {
           {/* Black Friday Announcement */}
           <div className="text-center space-y-6 sm:space-y-8 animate-fade-in">
             <div className="space-y-3">
-              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/60 font-inter uppercase" style={{ letterSpacing: '0.3em' }}>
+              <p className="text-sm sm:text-base md:text-xl lg:text-2xl text-white/60 font-inter uppercase" style={{ letterSpacing: '0.3em' }}>
                 Reserva ya con el
               </p>
 
