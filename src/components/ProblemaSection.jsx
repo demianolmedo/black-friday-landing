@@ -16,17 +16,26 @@ const ProblemaSection = ({ onCTAClick }) => {
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="space-y-4 sm:space-y-6">
 
-          {/* Ribbon banner message */}
-          <div className="w-full -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-8 animate-fade-in" style={{
-            background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.05) 40%, transparent 70%)'
+          {/* Metallic ribbon banner message */}
+          <div className="w-full -mx-4 sm:-mx-6 lg:-mx-8 relative animate-fade-in" style={{
+            background: 'repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 2px)',
+            backgroundColor: '#01132a'
           }}>
-            <div className="text-center space-y-2">
-              <p className="text-base sm:text-lg text-white/70 font-inter">
-                Si, todos hemos pasado por eso
-              </p>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white/90 font-outfit">
-                Y duele más que una cachetada
-              </h2>
+            <div className="relative py-8 px-4 sm:px-6 lg:px-8" style={{
+              background: 'linear-gradient(180deg, rgba(15, 40, 70, 0.3) 0%, rgba(100, 140, 180, 0.25) 20%, rgba(160, 190, 220, 0.3) 50%, rgba(100, 140, 180, 0.25) 80%, rgba(15, 40, 70, 0.3) 100%)',
+              boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.1), inset 0 -1px 1px rgba(0,0,0,0.3)'
+            }}>
+              <div className="text-center space-y-2">
+                <p className="text-sm sm:text-base text-gray-400 font-inter italic">
+                  Sí, todos hemos pasado por eso
+                </p>
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold font-outfit" style={{
+                  color: '#1a3a5c',
+                  textShadow: '1px 1px 2px rgba(0,0,0,0.4)'
+                }}>
+                  Y duele más que una cachetada
+                </h2>
+              </div>
             </div>
           </div>
 
