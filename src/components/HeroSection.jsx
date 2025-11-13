@@ -19,9 +19,9 @@ const HeroSection = () => {
       const sectionTop = rect.top;
       const sectionHeight = section.offsetHeight;
 
-      // Animation completes when we've scrolled through about 70% of the section
+      // Animation completes when we've scrolled through about 40% of the section
       // This ensures the last frame is visible before the section scrolls out
-      const animationRange = sectionHeight * 0.7;
+      const animationRange = sectionHeight * 0.4;
 
       // Calculate scroll progress (0 to 1)
       let scrollProgress;
@@ -109,7 +109,7 @@ const HeroSection = () => {
                 <img
                   src={`/assets/Fondos e imagenes/${currentFrame}.png`}
                   alt={`Animation frame ${currentFrame}`}
-                  className="relative z-10 w-full h-full object-contain drop-shadow-2xl transition-all duration-100 ease-linear"
+                  className="relative z-10 w-full h-full object-contain drop-shadow-2xl transition-all duration-50 ease-linear"
                 />
               </div>
             </div>
