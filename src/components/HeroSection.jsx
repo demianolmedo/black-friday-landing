@@ -4,7 +4,7 @@ const HeroSection = () => {
   return (
     <section
       id="hero-section"
-      className="relative w-full flex items-center justify-center overflow-hidden py-16 sm:py-24"
+      className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-32 pb-16"
     >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-azul-principal via-azul-principal/90 to-azul-principal"></div>
@@ -13,7 +13,7 @@ const HeroSection = () => {
       <div className="absolute top-1/4 -left-32 w-64 h-64 bg-verde-neon/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-1/4 -right-32 w-64 h-64 bg-verde-neon/5 rounded-full blur-3xl"></div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex flex-col items-center justify-center text-center space-y-3 sm:space-y-4">
 
           {/* Green dot indicator */}
