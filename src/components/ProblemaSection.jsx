@@ -16,16 +16,6 @@ const ProblemaSection = ({ onCTAClick }) => {
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="space-y-4 sm:space-y-6">
 
-          {/* CTA Button First */}
-          <div className="flex justify-center animate-fade-in">
-            <button
-              onClick={onCTAClick}
-              className="bg-gradient-to-r from-verde-neon to-emerald-400 text-azul-principal px-8 py-4 rounded-full font-bold text-base sm:text-lg hover:scale-105 transition-transform duration-300 neon-glow font-outfit"
-            >
-              QUIERO MI DESCUENTO AHORA
-            </button>
-          </div>
-
           {/* Main message */}
           <div className="text-center space-y-2 sm:space-y-3 animate-fade-in">
             <p className="text-sm sm:text-base text-white/60 max-w-2xl mx-auto font-inter">

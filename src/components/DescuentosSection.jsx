@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Lock, Zap } from 'lucide-react';
 
-const DescuentosSection = () => {
+const DescuentosSection = ({ onCTAClick }) => {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -273,6 +273,16 @@ const DescuentosSection = () => {
             <p className="text-white text-lg sm:text-xl font-inter font-bold leading-relaxed mt-1">
               Está en alquilar tu auto sin drama
             </p>
+          </div>
+
+          {/* CTA Button */}
+          <div className="flex justify-center mt-8 animate-fade-in">
+            <button
+              onClick={onCTAClick}
+              className="bg-gradient-to-r from-verde-neon to-emerald-400 text-azul-principal px-8 py-4 rounded-full font-bold text-base sm:text-lg hover:scale-105 transition-transform duration-300 neon-glow font-outfit"
+            >
+              QUIERO MI DESCUENTO AHORA
+            </button>
           </div>
 
         </div>

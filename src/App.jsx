@@ -25,7 +25,7 @@ function App() {
         <HeroSection />
 
         {/* Descuentos Section - Countdown */}
-        <DescuentosSection />
+        <DescuentosSection onCTAClick={scrollToForm} />
 
         {/* Problema Section */}
         <ProblemaSection onCTAClick={scrollToForm} />
