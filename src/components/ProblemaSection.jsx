@@ -13,24 +13,24 @@ const ProblemaSection = ({ onCTAClick }) => {
       <div className="absolute top-1/4 -left-32 w-64 h-64 bg-verde-neon/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-1/4 -right-32 w-64 h-64 bg-verde-neon/5 rounded-full blur-3xl"></div>
 
+      {/* Metallic ribbon banner message - Full width */}
+      <div className="relative z-10 w-full mb-4 sm:mb-6 animate-fade-in">
+        <div className="relative py-3 backdrop-blur-md" style={{
+          background: 'linear-gradient(90deg, #021938 0%, #0f2847 15%, #2a5580 35%, #6B95BF 50%, #2a5580 65%, #0f2847 85%, #021938 100%)'
+        }}>
+          <div className="text-center space-y-2">
+            <p className="text-sm sm:text-base text-white font-inter">
+              Sí, todos hemos pasado por eso
+            </p>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white font-outfit">
+              Y duele más que una cachetada
+            </h2>
+          </div>
+        </div>
+      </div>
+
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="space-y-4 sm:space-y-6">
-
-          {/* Metallic ribbon banner message */}
-          <div className="relative w-screen -ml-4 sm:-ml-6 lg:-ml-8 left-0 animate-fade-in">
-            <div className="relative py-3 px-4 sm:px-6 lg:px-8 backdrop-blur-md" style={{
-              background: 'linear-gradient(90deg, #021938 0%, #0f2847 15%, #2a5580 35%, #6B95BF 50%, #2a5580 65%, #0f2847 85%, #021938 100%)'
-            }}>
-              <div className="text-center space-y-2">
-                <p className="text-sm sm:text-base text-white font-inter">
-                  Sí, todos hemos pasado por eso
-                </p>
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white font-outfit">
-                  Y duele más que una cachetada
-                </h2>
-              </div>
-            </div>
-          </div>
 
           {/* Main message */}
           <div className="text-center space-y-2 sm:space-y-3 animate-fade-in">
