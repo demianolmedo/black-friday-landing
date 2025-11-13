@@ -12,28 +12,26 @@ const HeroSection = () => {
       const rect = section.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 
-      // Calculate when animation should complete
-      // We want the animation to finish BEFORE the image leaves the viewport
-      // So we use a smaller scroll range to complete all frames while image is visible
+      // Simple and effective scroll calculation
+      // Animation progresses as the Hero scrolls through the viewport
 
       const sectionTop = rect.top;
-      const sectionHeight = section.offsetHeight;
+      const sectionBottom = rect.bottom;
 
-      // Animation completes when we've scrolled through about 40% of the section
-      // This ensures the last frame is visible before the section scrolls out
-      const animationRange = sectionHeight * 0.4;
+      // Animation starts when Hero is visible and completes after scrolling ~1.5 screens
+      const scrollRange = windowHeight * 1.5;
 
       // Calculate scroll progress (0 to 1)
       let scrollProgress;
-      if (sectionTop > 0) {
-        // Section hasn't started scrolling yet
+      if (sectionTop >= windowHeight) {
+        // Hero not yet visible
         scrollProgress = 0;
-      } else if (Math.abs(sectionTop) >= animationRange) {
+      } else if (sectionTop <= -scrollRange) {
         // Animation complete
         scrollProgress = 1;
       } else {
-        // Animation in progress
-        scrollProgress = Math.abs(sectionTop) / animationRange;
+        // Animation in progress: from top of viewport to 1.5 screens down
+        scrollProgress = Math.max(0, Math.min(1, (windowHeight - sectionTop) / scrollRange));
       }
 
       // Map progress to frame range (100-119, total 20 frames)
@@ -54,7 +52,7 @@ const HeroSection = () => {
     <section
       id="hero-section"
       ref={sectionRef}
-      className="relative w-full h-[200vh] overflow-hidden"
+      className="relative w-full min-h-screen overflow-hidden"
     >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-azul-principal via-azul-principal/90 to-azul-principal"></div>
@@ -63,8 +61,8 @@ const HeroSection = () => {
       <div className="absolute top-1/4 -left-32 w-64 h-64 bg-verde-neon/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-1/4 -right-32 w-64 h-64 bg-verde-neon/5 rounded-full blur-3xl"></div>
 
-      {/* Sticky container */}
-      <div className="sticky top-0 w-full min-h-screen flex items-center justify-center pt-32 pb-16">
+      {/* Content container */}
+      <div className="relative w-full min-h-screen flex items-center justify-center pt-32 pb-16">
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="flex flex-col items-center justify-center text-center space-y-8">
 
