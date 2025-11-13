@@ -216,12 +216,25 @@ const DescuentosSection = () => {
           {/* Countdown Card with Liquid Glass Effect */}
           <div className="relative bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 transition-all duration-300 w-full max-w-2xl mx-auto px-12 py-6 animate-scale-in overflow-hidden">
 
+            {/* Badge diagonal VIP (solo visible en fase 1 - antes del Black Friday) */}
+            {phase === 'before' && (
+              <div className="absolute top-0 right-0 z-20">
+                <div className="bg-gradient-to-br from-verde-neon to-emerald-400 text-azul-principal px-12 py-2 transform rotate-45 translate-x-10 translate-y-5 shadow-xl">
+                  <p className="text-[10px] sm:text-xs font-black uppercase tracking-wider whitespace-nowrap transform -rotate-45 flex items-center gap-1">
+                    <span>🔐</span>
+                    <span>ACCESO VIP</span>
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* Badge diagonal de extensión (solo visible en fase 3) */}
             {phase === 'phase2' && (
               <div className="absolute top-0 right-0 z-20">
-                <div className="bg-gradient-to-br from-verde-neon to-emerald-400 text-azul-principal px-16 py-2 transform rotate-45 translate-x-12 translate-y-6 shadow-lg">
-                  <p className="text-xs sm:text-sm font-black uppercase tracking-wide whitespace-nowrap transform -rotate-45">
-                    ¡EXTENDIDO 48H!
+                <div className="bg-gradient-to-br from-verde-neon to-emerald-400 text-azul-principal px-12 py-2 transform rotate-45 translate-x-10 translate-y-5 shadow-xl">
+                  <p className="text-[10px] sm:text-xs font-black uppercase tracking-wider whitespace-nowrap transform -rotate-45 flex items-center gap-1">
+                    <span>⚡</span>
+                    <span>¡EXTENDIDO 48H!</span>
                   </p>
                 </div>
               </div>
