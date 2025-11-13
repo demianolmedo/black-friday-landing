@@ -17,7 +17,7 @@ const ProblemaSection = ({ onCTAClick }) => {
         <div className="space-y-4 sm:space-y-6">
 
           {/* Metallic ribbon banner message */}
-          <div className="relative animate-fade-in" style={{
+          <div className="relative animate-fade-in mb-8 sm:mb-10" style={{
             left: '50%',
             right: '50%',
             marginLeft: '-50vw',
