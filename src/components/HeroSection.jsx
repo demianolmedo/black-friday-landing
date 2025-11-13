@@ -12,26 +12,28 @@ const HeroSection = () => {
       const rect = section.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 
-      // Simple and effective scroll calculation
-      // Animation progresses as the Hero scrolls through the viewport
+      // Fast animation that completes while image is still visible
+      // Animation range: from when section enters view until ~60% through
 
       const sectionTop = rect.top;
-      const sectionBottom = rect.bottom;
+      const sectionHeight = section.offsetHeight;
 
-      // Animation starts when Hero is visible and completes after scrolling ~1.5 screens
-      const scrollRange = windowHeight * 1.5;
+      // Animation completes in just 60% of one viewport scroll
+      // This makes it fast enough to see all frames while image is visible
+      const animationRange = windowHeight * 0.6;
 
       // Calculate scroll progress (0 to 1)
       let scrollProgress;
       if (sectionTop >= windowHeight) {
-        // Hero not yet visible
+        // Section not yet visible - show first frame
         scrollProgress = 0;
-      } else if (sectionTop <= -scrollRange) {
-        // Animation complete
+      } else if (sectionTop <= (windowHeight - animationRange)) {
+        // Animation complete - show last frame
         scrollProgress = 1;
       } else {
-        // Animation in progress: from top of viewport to 1.5 screens down
-        scrollProgress = Math.max(0, Math.min(1, (windowHeight - sectionTop) / scrollRange));
+        // Animation in progress
+        const scrolled = windowHeight - sectionTop;
+        scrollProgress = scrolled / animationRange;
       }
 
       // Map progress to frame range (100-119, total 20 frames)
