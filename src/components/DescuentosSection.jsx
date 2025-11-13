@@ -219,10 +219,10 @@ const DescuentosSection = () => {
 
             {/* Badge diagonal VIP (solo visible en fase 1 - antes del Black Friday) */}
             {phase === 'before' && (
-              <div className="absolute top-4 right-0 z-20">
-                <div className="bg-gradient-to-br from-verde-neon to-emerald-400 px-16 py-3 transform rotate-45 translate-x-8 shadow-xl">
-                  <p className="text-[9px] sm:text-[11px] font-black uppercase tracking-wide whitespace-nowrap flex items-center justify-center gap-1 text-white">
-                    <Lock size={12} className="sm:w-4 sm:h-4" strokeWidth={3} />
+              <div className="absolute top-6 right-0 z-20">
+                <div className="bg-gradient-to-br from-verde-neon to-emerald-400 px-16 py-4 transform rotate-45 translate-x-8 shadow-xl">
+                  <p className="text-xs sm:text-sm font-black uppercase tracking-wide whitespace-nowrap flex items-center justify-center gap-1.5 text-azul-principal">
+                    <Lock size={14} className="sm:w-5 sm:h-5" strokeWidth={3} />
                     <span>ACCESO VIP</span>
                   </p>
                 </div>
@@ -231,10 +231,10 @@ const DescuentosSection = () => {
 
             {/* Badge diagonal de extensión (solo visible en fase 3) */}
             {phase === 'phase2' && (
-              <div className="absolute top-4 right-0 z-20">
-                <div className="bg-gradient-to-br from-verde-neon to-emerald-400 px-14 py-3 transform rotate-45 translate-x-8 shadow-xl">
-                  <p className="text-[9px] sm:text-[11px] font-black uppercase tracking-wide whitespace-nowrap flex items-center justify-center gap-1 text-white">
-                    <Zap size={12} className="sm:w-4 sm:h-4" strokeWidth={3} fill="white" />
+              <div className="absolute top-6 right-0 z-20">
+                <div className="bg-gradient-to-br from-verde-neon to-emerald-400 px-14 py-4 transform rotate-45 translate-x-8 shadow-xl">
+                  <p className="text-xs sm:text-sm font-black uppercase tracking-wide whitespace-nowrap flex items-center justify-center gap-1.5 text-azul-principal">
+                    <Zap size={14} className="sm:w-5 sm:h-5" strokeWidth={3} fill="#021938" />
                     <span>¡EXTENDIDO 48H!</span>
                   </p>
                 </div>
