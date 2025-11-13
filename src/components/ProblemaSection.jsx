@@ -66,17 +66,31 @@ const ProblemaSection = ({ onCTAClick }) => {
             </div>
           </div>
 
-          {/* Features text */}
-          <div className="text-center space-y-3 animate-slide-left">
-            <p className="text-sm sm:text-base text-white/60 font-inter">
-              A tus clientes les
-            </p>
-            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blanco font-outfit">
-              firmas, <span className="text-verde-neon neon-text">alertizas</span> y manejas
-            </h3>
-            <p className="text-xs sm:text-sm text-white/50 max-w-2xl mx-auto font-inter">
-              Sin el dinero, de las formas tradicionales.
-            </p>
+          {/* Second ribbon banner */}
+          <div className="relative animate-fade-in mb-8 sm:mb-10" style={{
+            left: '50%',
+            right: '50%',
+            marginLeft: '-50vw',
+            marginRight: '-50vw',
+            width: '100vw',
+            background: 'repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 2px)',
+            backgroundColor: '#01132a'
+          }}>
+            <div className="relative py-3 px-4 sm:px-6 lg:px-8 backdrop-blur-md" style={{
+              background: 'linear-gradient(90deg, #021938 0%, #0f2847 15%, #2a5580 35%, #6B95BF 50%, #2a5580 65%, #0f2847 85%, #021938 100%)'
+            }}>
+              <div className="text-center space-y-2">
+                <p className="text-sm sm:text-base text-white font-inter">
+                  Aquí es diferente
+                </p>
+                <p className="text-sm sm:text-base text-white font-inter">
+                  firmas, aterrizas y manejas
+                </p>
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white font-outfit">
+                  Sin el drama, de las novelas mexicanas
+                </h3>
+              </div>
+            </div>
           </div>
 
           {/* Spacer */}
