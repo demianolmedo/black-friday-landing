@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Lock, Zap } from 'lucide-react';
 
 const DescuentosSection = () => {
   const [timeLeft, setTimeLeft] = useState({
@@ -218,10 +219,10 @@ const DescuentosSection = () => {
 
             {/* Badge diagonal VIP (solo visible en fase 1 - antes del Black Friday) */}
             {phase === 'before' && (
-              <div className="absolute -top-8 -right-8 z-20">
-                <div className="bg-gradient-to-br from-verde-neon to-emerald-400 text-azul-principal px-20 py-2 transform rotate-45 shadow-xl">
-                  <p className="text-[10px] sm:text-xs font-black uppercase tracking-wider whitespace-nowrap flex items-center justify-center gap-1">
-                    <span>🔐</span>
+              <div className="absolute top-4 right-0 z-20">
+                <div className="bg-gradient-to-br from-verde-neon to-emerald-400 px-16 py-3 transform rotate-45 translate-x-8 shadow-xl">
+                  <p className="text-[9px] sm:text-[11px] font-black uppercase tracking-wide whitespace-nowrap flex items-center justify-center gap-1 text-white">
+                    <Lock size={12} className="sm:w-4 sm:h-4" strokeWidth={3} />
                     <span>ACCESO VIP</span>
                   </p>
                 </div>
@@ -230,10 +231,10 @@ const DescuentosSection = () => {
 
             {/* Badge diagonal de extensión (solo visible en fase 3) */}
             {phase === 'phase2' && (
-              <div className="absolute -top-8 -right-8 z-20">
-                <div className="bg-gradient-to-br from-verde-neon to-emerald-400 text-azul-principal px-20 py-2 transform rotate-45 shadow-xl">
-                  <p className="text-[10px] sm:text-xs font-black uppercase tracking-wider whitespace-nowrap flex items-center justify-center gap-1">
-                    <span>⚡</span>
+              <div className="absolute top-4 right-0 z-20">
+                <div className="bg-gradient-to-br from-verde-neon to-emerald-400 px-14 py-3 transform rotate-45 translate-x-8 shadow-xl">
+                  <p className="text-[9px] sm:text-[11px] font-black uppercase tracking-wide whitespace-nowrap flex items-center justify-center gap-1 text-white">
+                    <Zap size={12} className="sm:w-4 sm:h-4" strokeWidth={3} fill="white" />
                     <span>¡EXTENDIDO 48H!</span>
                   </p>
                 </div>
