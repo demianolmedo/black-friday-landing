@@ -236,10 +236,10 @@ const DescuentosSection = () => {
 
             {/* Texto de reservas disponibles con contador integrado */}
             <div className="text-center mb-6">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-tight font-outfit">
-                <span className="text-white">Solo </span>
-                <span className="text-verde-neon drop-shadow-[0_0_40px_rgba(0,255,127,0.6)] neon-text">{reservasRestantes}</span>
-                <span className="text-white"> reservas disponibles</span>
+              <h2 className="font-black leading-tight font-outfit flex items-center justify-center gap-2 flex-wrap">
+                <span className="text-xl sm:text-2xl md:text-3xl text-white">Solo</span>
+                <span className="text-4xl sm:text-5xl md:text-6xl text-verde-neon drop-shadow-[0_0_40px_rgba(0,255,127,0.6)] neon-text">{reservasRestantes}</span>
+                <span className="text-xl sm:text-2xl md:text-3xl text-white">reservas disponibles</span>
               </h2>
             </div>
 
