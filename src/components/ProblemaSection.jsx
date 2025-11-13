@@ -49,14 +49,19 @@ const ProblemaSection = ({ onCTAClick }) => {
           </div>
 
           {/* Speech bubbles section */}
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-6 max-w-4xl mx-auto animate-fade-in">
-            <div className="glass-card glass-card-hover rounded-2xl px-6 py-3 text-white/80 text-sm sm:text-base font-inter">
-              ¿Y esta espera?
+          <div className="flex flex-col items-center gap-4 sm:gap-6 max-w-4xl mx-auto animate-fade-in">
+            {/* First row - 2 cards */}
+            <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
+              <div className="glass-card glass-card-hover rounded-2xl px-6 py-3 text-white/80 text-sm sm:text-base font-inter flex items-center">
+                ¿Y esta espera?
+              </div>
+              <div className="glass-card glass-card-hover rounded-2xl px-6 py-3 text-white/80 text-sm sm:text-base font-inter">
+                ¡No se supone que era rápido!
+              </div>
             </div>
-            <div className="glass-card glass-card-hover rounded-2xl px-6 py-3 text-white/80 text-sm sm:text-base font-inter">
-              ¡No se supone que era rápido!
-            </div>
-            <div className="glass-card glass-card-hover rounded-2xl px-6 py-3 text-white/80 text-sm sm:text-base text-center font-inter">
+
+            {/* Second row - 1 card with larger text */}
+            <div className="glass-card glass-card-hover rounded-2xl px-6 py-3 text-white/80 text-base sm:text-lg md:text-xl text-center font-inter">
               ¿Por qué mi#%$a me<br />están cobrando esto?
             </div>
           </div>
