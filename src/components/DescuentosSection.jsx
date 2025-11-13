@@ -192,10 +192,10 @@ const DescuentosSection = () => {
               </svg>
             </div>
 
-            {/* TARJETA 2: 50 reservas */}
+            {/* TARJETA 2: 100 reservas */}
             <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto min-w-[320px] px-12 py-6">
               <h3 className="text-white font-outfit font-bold italic text-5xl leading-none mb-5">
-                <span className="text-white">50</span> reservas
+                <span className="text-white">100</span> reservas
               </h3>
               <p className="text-white/60 text-[13px] font-inter leading-relaxed mb-1">
                 las filas no esperan...
