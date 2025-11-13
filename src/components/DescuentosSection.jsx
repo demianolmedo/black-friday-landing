@@ -207,13 +207,6 @@ const DescuentosSection = () => {
 
           </div>
 
-          {/* "Solo X reservas disponibles" */}
-          <div className="text-center animate-fade-in">
-            <p className="text-blanco text-base sm:text-lg md:text-xl font-medium font-inter">
-              Solo <span className="text-verde-neon font-bold neon-text">{reservasRestantes}</span> reservas disponibles
-            </p>
-          </div>
-
           {/* Countdown Card with Liquid Glass Effect */}
           <div className="relative bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 transition-all duration-300 w-full max-w-2xl mx-auto px-12 py-6 animate-scale-in overflow-hidden">
 
@@ -241,11 +234,13 @@ const DescuentosSection = () => {
               </div>
             )}
 
-            {/* Main countdown number */}
+            {/* Texto de reservas disponibles con contador integrado */}
             <div className="text-center mb-6">
-              <div className="text-7xl sm:text-8xl md:text-9xl font-black text-verde-neon leading-none drop-shadow-[0_0_40px_rgba(0,255,127,0.6)] font-outfit neon-text">
-                {reservasRestantes}
-              </div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-tight font-outfit">
+                <span className="text-white">Solo </span>
+                <span className="text-verde-neon drop-shadow-[0_0_40px_rgba(0,255,127,0.6)] neon-text">{reservasRestantes}</span>
+                <span className="text-white"> reservas disponibles</span>
+              </h2>
             </div>
 
             {/* "Termina en" */}
