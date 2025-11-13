@@ -12,14 +12,29 @@ const HeroSection = () => {
       const rect = section.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 
-      // More sensitive scroll calculation
-      // Animation progresses through the entire Hero section height
-      const sectionHeight = section.offsetHeight;
-      const scrollableDistance = sectionHeight - windowHeight;
+      // Calculate when animation should complete
+      // We want the animation to finish BEFORE the image leaves the viewport
+      // So we use a smaller scroll range to complete all frames while image is visible
 
-      // Start animation as soon as user starts scrolling
-      const scrolled = window.pageYOffset || document.documentElement.scrollTop;
-      const scrollProgress = Math.max(0, Math.min(1, scrolled / scrollableDistance));
+      const sectionTop = rect.top;
+      const sectionHeight = section.offsetHeight;
+
+      // Animation completes when we've scrolled through about 70% of the section
+      // This ensures the last frame is visible before the section scrolls out
+      const animationRange = sectionHeight * 0.7;
+
+      // Calculate scroll progress (0 to 1)
+      let scrollProgress;
+      if (sectionTop > 0) {
+        // Section hasn't started scrolling yet
+        scrollProgress = 0;
+      } else if (Math.abs(sectionTop) >= animationRange) {
+        // Animation complete
+        scrollProgress = 1;
+      } else {
+        // Animation in progress
+        scrollProgress = Math.abs(sectionTop) / animationRange;
+      }
 
       // Map progress to frame range (100-119, total 20 frames)
       const startFrame = 100;
@@ -94,7 +109,7 @@ const HeroSection = () => {
                 <img
                   src={`/assets/Fondos e imagenes/${currentFrame}.png`}
                   alt={`Animation frame ${currentFrame}`}
-                  className="relative z-10 w-full h-full object-contain drop-shadow-2xl transition-all duration-300 ease-out"
+                  className="relative z-10 w-full h-full object-contain drop-shadow-2xl transition-all duration-100 ease-linear"
                 />
               </div>
             </div>
