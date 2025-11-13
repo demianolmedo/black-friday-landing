@@ -99,18 +99,16 @@ const DescuentosSection = () => {
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-0 relative animate-scale-in">
 
             {/* TARJETA 1: Hasta 50% OFF */}
-            <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto min-w-[320px] px-20">
-              <div className="py-16">
-                <p className="text-white/60 text-sm font-inter mb-4 tracking-wide">
-                  Hasta
-                </p>
-                <h3 className="text-white font-outfit font-bold italic text-5xl leading-none mb-4">
-                  50% OFF
-                </h3>
-                <p className="text-white text-sm font-inter">
-                  solo para las primeras
-                </p>
-              </div>
+            <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto min-w-[320px]" style={{ paddingLeft: '80px', paddingRight: '80px', paddingTop: '64px', paddingBottom: '64px' }}>
+              <p className="text-white/60 text-sm font-inter mb-4 tracking-wide">
+                Hasta
+              </p>
+              <h3 className="text-white font-outfit font-bold italic text-5xl leading-none mb-4">
+                50% OFF
+              </h3>
+              <p className="text-white text-sm font-inter">
+                solo para las primeras
+              </p>
             </div>
 
             {/* LÍNEA CONECTORA (Desktop) */}
@@ -161,18 +159,16 @@ const DescuentosSection = () => {
             </div>
 
             {/* TARJETA 2: 50 reservas */}
-            <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto min-w-[320px] px-20">
-              <div className="py-16">
-                <h3 className="text-white font-outfit font-bold italic text-5xl leading-none mb-5">
-                  <span className="text-white">50</span> reservas
-                </h3>
-                <p className="text-white/60 text-[13px] font-inter leading-relaxed mb-1">
-                  las filas no esperan...
-                </p>
-                <p className="text-white/60 text-[13px] font-inter leading-relaxed">
-                  y estos precios tampoco
-                </p>
-              </div>
+            <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto min-w-[320px]" style={{ paddingLeft: '80px', paddingRight: '80px', paddingTop: '64px', paddingBottom: '64px' }}>
+              <h3 className="text-white font-outfit font-bold italic text-5xl leading-none mb-5">
+                <span className="text-white">50</span> reservas
+              </h3>
+              <p className="text-white/60 text-[13px] font-inter leading-relaxed mb-1">
+                las filas no esperan...
+              </p>
+              <p className="text-white/60 text-[13px] font-inter leading-relaxed">
+                y estos precios tampoco
+              </p>
             </div>
 
           </div>
