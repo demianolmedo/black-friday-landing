@@ -1,7 +1,6 @@
 import React from 'react';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
-import CachetadaSection from './components/CachetadaSection';
 import DescuentosSection from './components/DescuentosSection';
 import ProblemaSection from './components/ProblemaSection';
 import SolucionSection from './components/SolucionSection';
@@ -21,12 +20,9 @@ function App() {
     <div className="min-h-screen bg-azul-principal">
       <Navbar />
 
-      <main className="pt-32 sm:pt-36">
-        {/* Hero Section */}
+      <main className="pt-0">
+        {/* Hero Section with scroll animation */}
         <HeroSection />
-
-        {/* Cachetada Section - Scroll Animation */}
-        <CachetadaSection />
 
         {/* Descuentos Section - Countdown */}
         <DescuentosSection />
