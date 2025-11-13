@@ -39,7 +39,7 @@ const HeroSection = () => {
     <section
       id="hero-section"
       ref={sectionRef}
-      className="relative w-full min-h-[200vh] overflow-hidden"
+      className="relative w-full min-h-[300vh] overflow-hidden"
     >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-azul-principal via-azul-principal/90 to-azul-principal"></div>
@@ -94,7 +94,7 @@ const HeroSection = () => {
                 <img
                   src={`/assets/Fondos e imagenes/${currentFrame}.png`}
                   alt={`Animation frame ${currentFrame}`}
-                  className="relative z-10 w-full h-full object-contain drop-shadow-2xl transition-opacity duration-150"
+                  className="relative z-10 w-full h-full object-contain drop-shadow-2xl transition-all duration-300 ease-out"
                 />
               </div>
             </div>
