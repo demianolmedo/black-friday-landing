@@ -21,11 +21,9 @@ const ProblemaSection = ({ onCTAClick }) => {
             background: 'repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 2px)',
             backgroundColor: '#01132a'
           }}>
-            <div className="relative py-4 px-4 sm:px-6 lg:px-8" style={{
-              background: 'linear-gradient(90deg, #021938 0%, #0f2847 15%, #2a5580 35%, #d0dce8 50%, #2a5580 65%, #0f2847 85%, #021938 100%)',
-              boxShadow: 'inset 0 2px 4px rgba(255,255,255,0.2), inset 0 -2px 4px rgba(0,0,0,0.4)',
-              borderTop: '1px solid rgba(255,255,255,0.1)',
-              borderBottom: '1px solid rgba(0,0,0,0.3)'
+            <div className="relative py-3 px-4 sm:px-6 lg:px-8 backdrop-blur-md" style={{
+              background: 'linear-gradient(90deg, #021938 0%, #0f2847 15%, #2a5580 35%, #6B95BF 50%, #2a5580 65%, #0f2847 85%, #021938 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.1)'
             }}>
               <div className="text-center space-y-2">
                 <p className="text-sm sm:text-base text-white font-inter">
