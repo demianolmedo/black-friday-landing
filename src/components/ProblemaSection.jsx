@@ -83,12 +83,12 @@ const ProblemaSection = ({ onCTAClick }) => {
                 <p className="text-sm sm:text-base text-white font-inter">
                   Aquí es diferente
                 </p>
-                <p className="text-sm sm:text-base text-white font-inter">
-                  firmas, aterrizas y manejas
-                </p>
                 <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white font-outfit">
-                  Sin el drama, de las novelas mexicanas
+                  firmas, aterrizas y manejas
                 </h3>
+                <p className="text-sm sm:text-base text-white font-inter">
+                  Sin el drama, de las novelas mexicanas
+                </p>
               </div>
             </div>
           </div>
