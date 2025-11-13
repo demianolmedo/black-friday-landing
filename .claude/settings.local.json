@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss:*)",
+      "Bash(node ./node_modules/tailwindcss/lib/cli.js:*)",
+      "Bash(npm run dev:*)",
+      "Bash(chmod:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(npm run build:*)",
+      "Bash(find:*)",
+      "Bash(powershell -Command:*)",
+      "Bash(dir:*)",
+      "Bash(for i in {100..119})",
+      "Bash(do ls \"public/assets/Fondos e imagenes/$i.png\")",
+      "Bash(echo:*)",
+      "Bash(done)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
