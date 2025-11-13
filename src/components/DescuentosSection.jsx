@@ -99,16 +99,19 @@ const DescuentosSection = () => {
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-0 relative animate-scale-in">
 
             {/* TARJETA 1: Hasta 50% OFF */}
-            <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto max-w-md px-16 py-12 md:px-20 md:py-14 lg:px-24 lg:py-16">
-              <p className="text-white/60 text-sm font-inter mb-6 tracking-wide">
-                Hasta
-              </p>
-              <h3 className="text-white font-outfit font-bold italic text-5xl leading-none mb-6">
-                50% OFF
-              </h3>
-              <p className="text-white text-sm font-inter">
-                solo para las primeras
-              </p>
+            <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto">
+              {/* PADDING AUMENTADO: px-16 py-10 */}
+              <div className="px-16 py-10 min-w-[280px]">
+                <p className="text-white/60 text-sm font-inter mb-3 tracking-wide">
+                  Hasta
+                </p>
+                <h3 className="text-white font-outfit font-bold italic text-5xl leading-none mb-3">
+                  50% OFF
+                </h3>
+                <p className="text-white text-sm font-inter">
+                  solo para las primeras
+                </p>
+              </div>
             </div>
 
             {/* LÍNEA CONECTORA (Desktop) */}
@@ -120,10 +123,7 @@ const DescuentosSection = () => {
                 className="connection-line"
                 style={{ overflow: 'visible' }}
               >
-                {/* Punto izquierdo */}
                 <circle cx="4" cy="4" r="4" fill="#00FF7F" />
-
-                {/* Línea punteada */}
                 <line
                   x1="8"
                   y1="4"
@@ -134,8 +134,6 @@ const DescuentosSection = () => {
                   strokeDasharray="4 4"
                   strokeLinecap="round"
                 />
-
-                {/* Punto derecho */}
                 <circle cx="156" cy="4" r="4" fill="#00FF7F" />
               </svg>
             </div>
@@ -148,10 +146,7 @@ const DescuentosSection = () => {
                 viewBox="0 0 8 60"
                 className="connection-line-vertical"
               >
-                {/* Punto superior */}
                 <circle cx="4" cy="4" r="4" fill="#00FF7F" />
-
-                {/* Línea punteada vertical */}
                 <line
                   x1="4"
                   y1="8"
@@ -162,23 +157,24 @@ const DescuentosSection = () => {
                   strokeDasharray="4 4"
                   strokeLinecap="round"
                 />
-
-                {/* Punto inferior */}
                 <circle cx="4" cy="56" r="4" fill="#00FF7F" />
               </svg>
             </div>
 
             {/* TARJETA 2: 50 reservas */}
-            <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto max-w-md px-16 py-12 md:px-20 md:py-14 lg:px-24 lg:py-16">
-              <h3 className="text-white font-outfit font-bold italic text-5xl leading-none mb-6">
-                <span className="text-white">50</span> reservas
-              </h3>
-              <p className="text-white/60 text-[13px] font-inter leading-relaxed mb-2">
-                las filas no esperan...
-              </p>
-              <p className="text-white/60 text-[13px] font-inter leading-relaxed">
-                y estos precios tampoco
-              </p>
+            <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto">
+              {/* PADDING AUMENTADO: px-16 py-10 */}
+              <div className="px-16 py-10 min-w-[280px]">
+                <h3 className="text-white font-outfit font-bold italic text-5xl leading-none mb-4">
+                  <span className="text-white">50</span> reservas
+                </h3>
+                <p className="text-white/60 text-[13px] font-inter leading-relaxed">
+                  las filas no esperan...
+                </p>
+                <p className="text-white/60 text-[13px] font-inter leading-relaxed">
+                  y estos precios tampoco
+                </p>
+              </div>
             </div>
 
           </div>
