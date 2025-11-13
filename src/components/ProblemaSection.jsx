@@ -99,7 +99,7 @@ const ProblemaSection = ({ onCTAClick }) => {
           {/* Black Friday Announcement */}
           <div className="text-center space-y-6 sm:space-y-8 animate-fade-in">
             <div className="space-y-3">
-              <p className="text-sm sm:text-base md:text-2xl lg:text-3xl text-white/60 font-inter uppercase" style={{ letterSpacing: '0.3em' }}>
+              <p className="text-sm sm:text-base md:text-xl lg:text-2xl text-white/60 font-inter uppercase" style={{ letterSpacing: '0.3em' }}>
                 Reserva ya con el
               </p>
 
@@ -107,7 +107,7 @@ const ProblemaSection = ({ onCTAClick }) => {
                 50% OFF
               </h3>
 
-              <div className="space-y-2 mt-6 sm:mt-8">
+              <div className="space-y-2 mt-16 sm:mt-20 md:mt-24">
                 <p className="text-xl sm:text-2xl md:text-3xl text-blanco font-bold font-outfit">
                   Esta <span className="bg-black text-blanco px-3 py-1 rounded">Black Friday</span>, tú das la cachetada
                 </p>
