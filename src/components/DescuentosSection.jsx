@@ -99,7 +99,7 @@ const DescuentosSection = () => {
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-0 relative animate-scale-in">
 
             {/* TARJETA 1: Hasta 50% OFF */}
-            <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto max-w-xs">
+            <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto max-w-md">
               <div className="px-20 py-12">
                 <p className="text-white/60 text-sm font-inter mb-4 tracking-wide">
                   Hasta
@@ -171,7 +171,7 @@ const DescuentosSection = () => {
             </div>
 
             {/* TARJETA 2: 50 reservas */}
-            <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto max-w-xs">
+            <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto max-w-md">
               <div className="px-20 py-12">
                 <h3 className="text-white font-outfit font-bold italic text-5xl leading-none mb-5">
                   <span className="text-white">50</span> reservas
