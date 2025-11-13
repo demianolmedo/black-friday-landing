@@ -67,7 +67,7 @@ const ProblemaSection = ({ onCTAClick }) => {
           </div>
 
           {/* Second ribbon banner */}
-          <div className="relative animate-fade-in mb-8 sm:mb-10" style={{
+          <div className="relative animate-fade-in mt-8 sm:mt-10 mb-8 sm:mb-10" style={{
             left: '50%',
             right: '50%',
             marginLeft: '-50vw',
@@ -83,7 +83,7 @@ const ProblemaSection = ({ onCTAClick }) => {
                 <p className="text-sm sm:text-base text-white font-inter">
                   Aquí es diferente
                 </p>
-                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white font-outfit">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white font-outfit">
                   firmas, aterrizas y manejas
                 </h3>
                 <p className="text-sm sm:text-base text-white font-inter">
