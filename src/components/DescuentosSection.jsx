@@ -100,14 +100,14 @@ const DescuentosSection = () => {
 
             {/* TARJETA 1: Hasta 50% OFF */}
             <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto max-w-md">
-              <div className="px-20 py-12">
-                <p className="text-white/60 text-sm font-inter mb-4 tracking-wide">
+              <div className="px-12 py-10 md:px-16 md:py-12">
+                <p className="text-white/60 text-sm font-inter mb-6 tracking-wide">
                   Hasta
                 </p>
-                <h3 className="text-white font-outfit font-bold italic text-5xl leading-none mb-4">
+                <h3 className="text-white font-outfit font-bold italic text-5xl leading-none mb-6 px-4">
                   50% OFF
                 </h3>
-                <p className="text-white text-sm font-inter">
+                <p className="text-white text-sm font-inter px-4">
                   solo para las primeras
                 </p>
               </div>
@@ -172,14 +172,14 @@ const DescuentosSection = () => {
 
             {/* TARJETA 2: 50 reservas */}
             <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto max-w-md">
-              <div className="px-20 py-12">
-                <h3 className="text-white font-outfit font-bold italic text-5xl leading-none mb-5">
+              <div className="px-12 py-10 md:px-16 md:py-12">
+                <h3 className="text-white font-outfit font-bold italic text-5xl leading-none mb-6 px-4">
                   <span className="text-white">50</span> reservas
                 </h3>
-                <p className="text-white/60 text-[13px] font-inter leading-relaxed mb-2">
+                <p className="text-white/60 text-[13px] font-inter leading-relaxed mb-2 px-4">
                   las filas no esperan...
                 </p>
-                <p className="text-white/60 text-[13px] font-inter leading-relaxed">
+                <p className="text-white/60 text-[13px] font-inter leading-relaxed px-4">
                   y estos precios tampoco
                 </p>
               </div>
