@@ -12,22 +12,24 @@ const HeroSection = () => {
       const rect = section.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 
-      // Calculate scroll progress through Hero section
-      // Animation starts when section is visible and progresses as we scroll through it
-      const scrollStart = Math.max(0, -rect.top);
-      const scrollEnd = section.offsetHeight - windowHeight;
-      const scrollProgress = Math.max(0, Math.min(1, scrollStart / scrollEnd));
+      // More sensitive scroll calculation
+      // Animation progresses through the entire Hero section height
+      const sectionHeight = section.offsetHeight;
+      const scrollableDistance = sectionHeight - windowHeight;
+
+      // Start animation as soon as user starts scrolling
+      const scrolled = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollProgress = Math.max(0, Math.min(1, scrolled / scrollableDistance));
 
       // Map progress to frame range (100-119, total 20 frames)
       const startFrame = 100;
       const endFrame = 119;
-      const totalFrames = endFrame - startFrame + 1;
-      const frame = Math.floor(startFrame + scrollProgress * (totalFrames - 1));
+      const frame = Math.round(startFrame + scrollProgress * (endFrame - startFrame));
 
       setCurrentFrame(frame);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll(); // Initialize on mount
 
     return () => window.removeEventListener('scroll', handleScroll);
@@ -92,21 +94,8 @@ const HeroSection = () => {
                 <img
                   src={`/assets/Fondos e imagenes/${currentFrame}.png`}
                   alt={`Animation frame ${currentFrame}`}
-                  className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
+                  className="relative z-10 w-full h-full object-contain drop-shadow-2xl transition-opacity duration-150"
                 />
-              </div>
-
-              {/* Progress indicator */}
-              <div className="mt-6 w-48 mx-auto">
-                <div className="h-1 bg-white/10 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-verde-neon to-emerald-400 transition-all duration-100"
-                    style={{ width: `${((currentFrame - 100) / 19) * 100}%` }}
-                  ></div>
-                </div>
-                <p className="text-center text-white/40 text-xs mt-2 font-inter">
-                  Scroll para ver la animación
-                </p>
               </div>
             </div>
 
