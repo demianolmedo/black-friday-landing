@@ -218,9 +218,9 @@ const DescuentosSection = () => {
 
             {/* Badge diagonal VIP (solo visible en fase 1 - antes del Black Friday) */}
             {phase === 'before' && (
-              <div className="absolute top-0 right-0 z-20">
-                <div className="bg-gradient-to-br from-verde-neon to-emerald-400 text-azul-principal px-12 py-2 transform rotate-45 translate-x-10 translate-y-5 shadow-xl">
-                  <p className="text-[10px] sm:text-xs font-black uppercase tracking-wider whitespace-nowrap transform -rotate-45 flex items-center gap-1">
+              <div className="absolute -top-8 -right-8 z-20">
+                <div className="bg-gradient-to-br from-verde-neon to-emerald-400 text-azul-principal px-20 py-2 transform rotate-45 shadow-xl">
+                  <p className="text-[10px] sm:text-xs font-black uppercase tracking-wider whitespace-nowrap flex items-center justify-center gap-1">
                     <span>🔐</span>
                     <span>ACCESO VIP</span>
                   </p>
@@ -230,9 +230,9 @@ const DescuentosSection = () => {
 
             {/* Badge diagonal de extensión (solo visible en fase 3) */}
             {phase === 'phase2' && (
-              <div className="absolute top-0 right-0 z-20">
-                <div className="bg-gradient-to-br from-verde-neon to-emerald-400 text-azul-principal px-12 py-2 transform rotate-45 translate-x-10 translate-y-5 shadow-xl">
-                  <p className="text-[10px] sm:text-xs font-black uppercase tracking-wider whitespace-nowrap transform -rotate-45 flex items-center gap-1">
+              <div className="absolute -top-8 -right-8 z-20">
+                <div className="bg-gradient-to-br from-verde-neon to-emerald-400 text-azul-principal px-20 py-2 transform rotate-45 shadow-xl">
+                  <p className="text-[10px] sm:text-xs font-black uppercase tracking-wider whitespace-nowrap flex items-center justify-center gap-1">
                     <span>⚡</span>
                     <span>¡EXTENDIDO 48H!</span>
                   </p>
