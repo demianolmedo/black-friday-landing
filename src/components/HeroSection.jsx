@@ -2,7 +2,19 @@ import React, { useState, useEffect, useRef } from 'react';
 
 const HeroSection = () => {
   const [currentFrame, setCurrentFrame] = useState(100);
+  const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef(null);
+
+  // Detectar si es móvil
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -95,7 +107,7 @@ const HeroSection = () => {
 
                 {/* Image - Optimized for LCP (Largest Contentful Paint) */}
                 <img
-                  src={`/assets/Fondos e imagenes/${currentFrame}.png`}
+                  src={isMobile ? `/cachetada-movil/${currentFrame}.png` : `/assets/Fondos e imagenes/${currentFrame}.png`}
                   alt="RentSmart Black Friday - 50% OFF en alquiler de autos Miami Orlando"
                   className="relative z-10 w-full h-full object-contain drop-shadow-2xl transition-all duration-50 ease-linear"
                   loading="eager"
