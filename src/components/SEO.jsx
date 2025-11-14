@@ -155,10 +155,10 @@ const SEO = () => {
       },
       {
         "@type": "Question",
-        "name": "¿Los autos son del año?",
+        "name": "¿Cómo funciona el proceso de alquiler?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Sí. Toda nuestra flota son vehículos del año en excelente estado. Mantenimiento garantizado y totalmente asegurados."
+          "text": "Firmas, aterrizas y manejas. Proceso simple: completa tu reserva, recoge el auto al llegar y comienza a disfrutar. Sin complicaciones, sin esperas innecesarias."
         }
       }
     ]
