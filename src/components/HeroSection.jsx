@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef } from 'react';
 const HeroSection = () => {
   const [currentFrame, setCurrentFrame] = useState(100);
   const [isMobile, setIsMobile] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
   const sectionRef = useRef(null);
 
   // Detectar si es móvil
@@ -15,6 +17,45 @@ const HeroSection = () => {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Precargar todas las imágenes de la secuencia
+  useEffect(() => {
+    const startFrame = 100;
+    const endFrame = 119;
+    const totalFrames = endFrame - startFrame + 1;
+    let loadedCount = 0;
+
+    const basePath = isMobile ? '/cachetada-movil' : '/assets/Fondos e imagenes';
+
+    const preloadImages = () => {
+      for (let i = startFrame; i <= endFrame; i++) {
+        const img = new Image();
+        img.src = `${basePath}/${i}.png`;
+
+        img.onload = () => {
+          loadedCount++;
+          const progress = Math.round((loadedCount / totalFrames) * 100);
+          setLoadingProgress(progress);
+
+          if (loadedCount === totalFrames) {
+            setImagesLoaded(true);
+          }
+        };
+
+        img.onerror = () => {
+          loadedCount++;
+          const progress = Math.round((loadedCount / totalFrames) * 100);
+          setLoadingProgress(progress);
+
+          if (loadedCount === totalFrames) {
+            setImagesLoaded(true);
+          }
+        };
+      }
+    };
+
+    preloadImages();
+  }, [isMobile]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -63,8 +104,43 @@ const HeroSection = () => {
       <div className="absolute top-1/4 -left-32 w-64 h-64 bg-verde-neon/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-1/4 -right-32 w-64 h-64 bg-verde-neon/5 rounded-full blur-3xl"></div>
 
+      {/* Loading Overlay - Mostrar mientras se cargan las imágenes */}
+      {!imagesLoaded && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-azul-principal">
+          <div className="flex flex-col items-center space-y-6">
+            {/* Logo o texto de marca */}
+            <div className="text-center">
+              <h2 className="text-verde-neon font-black text-4xl md:text-6xl font-outfit neon-text">
+                RentSmart
+              </h2>
+              <p className="text-blanco/70 text-sm md:text-base mt-2 font-inter">
+                Black Friday - 50% OFF
+              </p>
+            </div>
+
+            {/* Spinner de carga */}
+            <div className="relative">
+              <div className="w-20 h-20 border-4 border-white/10 border-t-verde-neon rounded-full animate-spin"></div>
+            </div>
+
+            {/* Barra de progreso */}
+            <div className="w-64 bg-white/10 rounded-full h-2 overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-verde-neon to-verde-neon/70 transition-all duration-300 ease-out"
+                style={{ width: `${loadingProgress}%` }}
+              ></div>
+            </div>
+
+            {/* Porcentaje de carga */}
+            <p className="text-blanco/60 text-sm font-inter">
+              Cargando experiencia... {loadingProgress}%
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Content container */}
-      <div className="relative w-full min-h-screen flex items-center justify-center pt-32 pb-16">
+      <div className={`relative w-full min-h-screen flex items-center justify-center pt-32 pb-16 transition-opacity duration-700 ${imagesLoaded ? 'opacity-100' : 'opacity-0'}`}>
         <div className="relative z-10 max-w-7xl mx-auto px-8 sm:px-6 lg:px-8 w-full">
           <div className="flex flex-col items-center justify-center text-center space-y-8">
 
