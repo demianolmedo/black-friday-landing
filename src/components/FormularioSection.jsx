@@ -323,7 +323,7 @@ const FormularioSection = () => {
         /* ===== BOTONES 3D CON EFECTO DE RELIEVE (Tendencia 2025) ===== */
         .city-selector-btn {
           position: relative;
-          padding: 16px 36px;
+          padding: 16px 16px;
           font-family: 'Outfit', sans-serif;
           font-weight: 700;
           font-size: 18px;
