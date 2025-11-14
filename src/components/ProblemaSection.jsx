@@ -109,8 +109,10 @@ const ProblemaSection = ({ onCTAClick }) => {
 
               <div className="space-y-2 mt-16 sm:mt-20 md:mt-24">
                 <p className="text-xl sm:text-2xl md:text-3xl text-blanco font-bold font-outfit">
-                  Esta <span className="bg-black text-blanco px-3 py-1 rounded" style={{
-                    boxShadow: '0 0 20px rgba(0, 255, 127, 0.6), 0 0 40px rgba(0, 255, 127, 0.4), 0 0 60px rgba(0, 255, 127, 0.2)'
+                  Esta <span className="text-blanco px-4 py-2 rounded-full backdrop-blur-md" style={{
+                    background: 'rgba(0, 0, 0, 0.7)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3)'
                   }}>Black Friday</span>, tú das la cachetada
                 </p>
 
