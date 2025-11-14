@@ -66,6 +66,24 @@ const FormularioSection = () => {
           </div>
         </div>
 
+        {/* Promotion disclaimer */}
+        <div className="text-center mt-6 sm:mt-8 space-y-4 animate-fade-in">
+          <p className="text-white/60 text-xs sm:text-sm font-inter">
+            *Promoción válida hasta agotar cupos.
+          </p>
+
+          <a
+            href="#contact-form"
+            className="inline-block px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-verde-neon to-emerald-400 text-azul-principal font-black text-sm sm:text-base rounded-full hover:shadow-[0_0_30px_rgba(0,255,127,0.5)] transition-all duration-300 uppercase tracking-wide font-outfit"
+          >
+            RESERVA YA - Quiero mi 50% OFF
+          </a>
+
+          <p className="text-white/60 text-xs sm:text-sm font-inter max-w-2xl mx-auto">
+            Toca antes de que otro tome el último auto. Tus próximas vacaciones ya están esperando.
+          </p>
+        </div>
+
       </div>
     </section>
   );
