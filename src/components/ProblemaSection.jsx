@@ -119,24 +119,12 @@ const ProblemaSection = ({ onCTAClick }) => {
                   }}>Black Friday</span>, tú das la cachetada
                 </p>
 
-                <div className="text-center space-y-3 text-base sm:text-lg md:text-xl text-white font-inter mt-20 sm:mt-24 md:mt-28">
-                  <p>A los abusivos <span className="text-verde-neon">•</span> A los lentos pequeños</p>
-                  <p><span className="text-verde-neon">•</span> A los que creen que son buenos tratándole si no eres empresas</p>
+                <div className="text-center space-y-3 text-base sm:text-lg md:text-xl text-white font-inter mt-12 sm:mt-16 md:mt-20">
+                  <p>A los <span className="font-bold">abusos</span>, a las <span className="font-bold">letras pequeñas</span></p>
+                  <p>A los que creen que aun pueden <span className="font-bold">tratarte como si no supieras</span></p>
+                  <p className="mt-8 sm:mt-10 font-bold">Empieza tu viaje sin drama</p>
                 </div>
               </div>
-
-              <p className="text-base sm:text-lg text-white text-center max-w-3xl mx-auto pt-4 font-inter">
-                y alquila tu auto sin drama
-              </p>
-            </div>
-          </div>
-
-          {/* Bottom text */}
-          <div className="text-center space-y-3 animate-fade-in">
-            <p className="text-sm sm:text-base text-white max-w-3xl mx-auto font-inter">
-              Recibe tu cotización personalizada en segundos
-            </p>
-          </div>
 
         </div>
       </div>
