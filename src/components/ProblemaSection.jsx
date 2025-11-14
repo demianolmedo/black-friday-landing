@@ -107,7 +107,7 @@ const ProblemaSection = ({ onCTAClick }) => {
                 50% OFF
               </h3>
 
-              <div className="space-y-10 sm:space-y-12 mt-16 sm:mt-20 md:mt-24">
+              <div className="space-y-16 sm:space-y-20 mt-16 sm:mt-20 md:mt-24">
                 <p className="text-xl sm:text-2xl md:text-3xl text-blanco font-bold font-outfit">
                   Este <span className="px-2 rounded-full backdrop-blur-xl" style={{
                     paddingTop: '0',
@@ -119,7 +119,7 @@ const ProblemaSection = ({ onCTAClick }) => {
                   }}>Black Friday</span>, tú das la cachetada
                 </p>
 
-                <div className="text-center space-y-2 text-sm sm:text-base text-white font-inter">
+                <div className="text-center space-y-3 text-base sm:text-lg md:text-xl text-white font-inter">
                   <p>A los abusivos <span className="text-verde-neon">•</span> A los lentos pequeños</p>
                   <p><span className="text-verde-neon">•</span> A los que creen que son buenos tratándole si no eres empresas</p>
                 </div>
