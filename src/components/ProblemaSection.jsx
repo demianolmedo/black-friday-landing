@@ -49,19 +49,19 @@ const ProblemaSection = ({ onCTAClick }) => {
           </div>
 
           {/* Speech bubbles section */}
-          <div className="flex flex-col items-center gap-4 sm:gap-6 max-w-4xl mx-auto animate-fade-in">
+          <div className="flex flex-col items-center gap-6 sm:gap-8 max-w-4xl mx-auto animate-fade-in pt-4">
             {/* First row - 2 cards */}
-            <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
-              <div className="relative glass-card glass-card-hover rounded-2xl px-6 py-4 text-white/80 text-lg sm:text-xl md:text-2xl font-inter flex items-center speech-bubble">
+            <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
+              <div className="relative glass-card glass-card-hover px-6 py-4 text-white/80 text-lg sm:text-xl md:text-2xl font-inter flex items-center speech-bubble">
                 ¿Y esta espera?
               </div>
-              <div className="relative glass-card glass-card-hover rounded-2xl px-6 py-4 text-white/80 text-lg sm:text-xl md:text-2xl font-inter speech-bubble">
+              <div className="relative glass-card glass-card-hover px-6 py-4 text-white/80 text-lg sm:text-xl md:text-2xl font-inter speech-bubble">
                 ¡No se supone que era rápido!
               </div>
             </div>
 
             {/* Second row - 1 card with larger text */}
-            <div className="relative glass-card glass-card-hover rounded-2xl px-6 py-4 text-white/80 text-lg sm:text-xl md:text-2xl text-center font-inter speech-bubble">
+            <div className="relative glass-card glass-card-hover px-6 py-4 text-white/80 text-lg sm:text-xl md:text-2xl text-center font-inter speech-bubble">
               ¿Por qué mi#%$a me<br />están cobrando esto?
             </div>
           </div>

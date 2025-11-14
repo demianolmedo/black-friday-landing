@@ -107,31 +107,54 @@ body {
   transform: translateY(-2px);
 }
 
-/* Speech Bubble Tail Effect */
+/* Speech Bubble Tail Effect - Authentic Chat Bubble Style */
+.speech-bubble {
+  /* Asymmetric border radius - bottom-left has minimal radius for tail integration */
+  border-radius: 20px 20px 20px 4px !important;
+  position: relative;
+}
+
+/* Main tail element - creates the pointed speech bubble tail */
 .speech-bubble::after {
   content: '';
   position: absolute;
-  bottom: -12px;
-  left: 30px;
-  width: 0;
-  height: 0;
-  border-left: 15px solid transparent;
-  border-right: 15px solid transparent;
-  border-top: 12px solid rgba(255, 255, 255, 0.05);
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  bottom: -1px;
+  left: -8px;
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transform: rotate(45deg) skew(-10deg, -10deg);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: -2px 2px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Border overlay for the tail - creates seamless integration */
 .speech-bubble::before {
   content: '';
   position: absolute;
-  bottom: -11px;
-  left: 31px;
-  width: 0;
-  height: 0;
-  border-left: 14px solid transparent;
-  border-right: 14px solid transparent;
-  border-top: 11px solid rgba(255, 255, 255, 0.1);
+  bottom: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 0 0 0 2px;
   z-index: 1;
+}
+
+/* Hover effect for speech bubbles */
+.speech-bubble:hover::after {
+  background: rgba(255, 255, 255, 0.08);
+  border-left-color: rgba(0, 255, 127, 0.3);
+  border-bottom-color: rgba(0, 255, 127, 0.3);
+}
+
+.speech-bubble:hover::before {
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* Neon Glow Effects */
