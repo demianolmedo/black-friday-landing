@@ -212,18 +212,10 @@ const FormularioSection = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="text-center mb-8"
           >
-            <h2 className="text-blanco font-black text-3xl md:text-4xl lg:text-5xl leading-tight mb-4 font-outfit">
-              Recibe tu <span className="text-verde-neon neon-text">cotización</span> personalizada
+            <h2 className="text-blanco font-black text-3xl md:text-4xl lg:text-5xl leading-tight mb-8 font-outfit">
+              Recibe tu <span className="text-verde-neon neon-text">cotización</span> personalizada en segundos<br />
+              y alquila tu auto sin drama
             </h2>
-            <h3 className="text-blanco font-bold text-2xl md:text-3xl lg:text-4xl leading-tight mb-6 font-outfit">
-              Sin filas, sin sorpresas
-            </h3>
-            <p className="text-white/90 font-normal text-sm md:text-base leading-relaxed max-w-xl mx-auto mb-2 font-inter">
-              Completa tus datos y recibe tu cotización personalizada al instante.
-            </p>
-            <p className="text-white/80 font-normal text-xs md:text-sm leading-relaxed max-w-xl mx-auto mb-8 font-inter">
-              Autos del año, entrega en aeropuerto y tarifas claras desde el inicio.
-            </p>
 
             {/* Grid de Selección - 2 Columnas con Separador */}
             <div className="selection-grid">

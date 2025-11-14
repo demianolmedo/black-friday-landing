@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ContactCaptureModal from '../components/ContactCaptureModal';
 
@@ -6,6 +6,7 @@ const ReservationsPage = ({ brand, city }) => {
   const navigate = useNavigate();
   const [showContactModal, setShowContactModal] = useState(true);
   const [contactDataCaptured, setContactDataCaptured] = useState(false);
+  const snippetRef = useRef(null);
 
   // Verificar si ya se capturaron los datos
   // NOTA: Comentado temporalmente para testing - descomentar en producción
@@ -16,6 +17,47 @@ const ReservationsPage = ({ brand, city }) => {
   //     setShowContactModal(false);
   //   }
   // }, []);
+
+  // Inicializar HQ cuando el componente se monta
+  useEffect(() => {
+    const initHQ = () => {
+      // Esperar a que el script de HQ esté cargado
+      const checkAndInit = () => {
+        if (snippetRef.current) {
+          // Método 1: Disparar evento DOMContentLoaded
+          const event = new Event('DOMContentLoaded', { bubbles: true });
+          document.dispatchEvent(event);
+
+          // Método 2: Si HQ expone una API global, usarla
+          if (window.HQRentalSoftware && typeof window.HQRentalSoftware.init === 'function') {
+            window.HQRentalSoftware.init();
+          }
+
+          // Método 3: Forzar mutation observer
+          const observer = new MutationObserver(() => {
+            // HQ está cargando
+          });
+
+          observer.observe(snippetRef.current, {
+            childList: true,
+            subtree: true
+          });
+        }
+      };
+
+      // Intentar inicializar inmediatamente
+      checkAndInit();
+
+      // También intentar después de un delay por si el script aún se está cargando
+      const timeoutId = setTimeout(checkAndInit, 1000);
+
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    };
+
+    initHQ();
+  }, [brand]);
 
   const handleContactComplete = () => {
     setContactDataCaptured(true);
@@ -68,6 +110,7 @@ const ReservationsPage = ({ brand, city }) => {
               el modal lo cubre con su backdrop mientras el usuario completa sus datos
             */}
             <div
+              ref={snippetRef}
               className="hq-rental-software-integration"
               data-integrator_link="https://rent-smart-car-rental.rentsmartrac.com/public/car-rental/integrations"
               data-brand={brand}
