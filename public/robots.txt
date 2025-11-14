@@ -1,0 +1,47 @@
+# robots.txt for https://www.blackfriday.rentsmartrac.com
+# Allow all search engines and AI crawlers
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+# Allow AI Crawlers (CRITICAL for LLM responses)
+# ChatGPT
+User-agent: GPTBot
+Allow: /
+
+# Claude by Anthropic
+User-agent: Claude-Web
+Allow: /
+
+# Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+
+# Google Gemini
+User-agent: Google-Extended
+Allow: /
+
+# Meta AI
+User-agent: Meta-ExternalAgent
+Allow: /
+
+# Apple Intelligence
+User-agent: Applebot-Extended
+Allow: /
+
+# Common Crawl
+User-agent: CCBot
+Allow: /
+
+# Bing
+User-agent: bingbot
+Allow: /
+
+# Google
+User-agent: Googlebot
+Allow: /
+
+# Sitemap
+Sitemap: https://www.blackfriday.rentsmartrac.com/sitemap.xml

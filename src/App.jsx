@@ -9,6 +9,7 @@ import SolucionSection from './components/SolucionSection';
 import FormularioSection from './components/FormularioSection';
 import FooterNew from './components/FooterNew';
 import ReservationsPage from './pages/ReservationsPage';
+import SEO from './components/SEO';
 
 function HomePage() {
   // Scroll to contact form
@@ -21,6 +22,7 @@ function HomePage() {
 
   return (
     <div className="min-h-screen bg-azul-principal">
+      <SEO />
       <Navbar />
 
       <main className="pt-0">

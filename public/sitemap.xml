@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Homepage -->
+  <url>
+    <loc>https://www.blackfriday.rentsmartrac.com/</loc>
+    <lastmod>2025-11-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.blackfriday.rentsmartrac.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.blackfriday.rentsmartrac.com/" />
+  </url>
+
+  <!-- Descuentos Section -->
+  <url>
+    <loc>https://www.blackfriday.rentsmartrac.com/#descuentos-section</loc>
+    <lastmod>2025-11-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Problema Section -->
+  <url>
+    <loc>https://www.blackfriday.rentsmartrac.com/#problema-section</loc>
+    <lastmod>2025-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Solución Section -->
+  <url>
+    <loc>https://www.blackfriday.rentsmartrac.com/#solucion-section</loc>
+    <lastmod>2025-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Formulario/Cotización Section -->
+  <url>
+    <loc>https://www.blackfriday.rentsmartrac.com/#contact-form</loc>
+    <lastmod>2025-11-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Reservations Miami -->
+  <url>
+    <loc>https://www.blackfriday.rentsmartrac.com/reservations-miami</loc>
+    <lastmod>2025-11-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.blackfriday.rentsmartrac.com/reservations-miami" />
+  </url>
+
+  <!-- Reservations Orlando -->
+  <url>
+    <loc>https://www.blackfriday.rentsmartrac.com/reservations-orlando</loc>
+    <lastmod>2025-11-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.blackfriday.rentsmartrac.com/reservations-orlando" />
+  </url>
+
+</urlset>

@@ -12,8 +12,11 @@ const FooterNew = () => {
             <div className="mb-4">
               <img
                 src="/assets/Fondos e imagenes/Logo.png"
-                alt="RentSmart Logo"
+                alt="RentSmart Car Rental Logo"
                 className="h-10 w-auto object-contain"
+                loading="lazy"
+                width="150"
+                height="40"
               />
             </div>
             <p className="text-white/60 text-sm font-inter leading-relaxed">

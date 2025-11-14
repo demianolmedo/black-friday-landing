@@ -75,8 +75,12 @@ const ReservationsPage = ({ brand, city }) => {
             <div className="flex items-center gap-3 md:gap-4">
               <img
                 src="/assets/Fondos e imagenes/Logo.png"
-                alt="RentSmart Logo"
+                alt="RentSmart Car Rental"
                 className="h-7 md:h-8 w-auto"
+                loading="eager"
+                fetchpriority="high"
+                width="150"
+                height="40"
               />
               <div className="hidden sm:block h-8 w-px bg-white/20" />
               <h1 className="text-blanco font-bold text-base sm:text-lg md:text-xl font-outfit">

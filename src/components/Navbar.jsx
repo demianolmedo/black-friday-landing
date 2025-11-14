@@ -45,7 +45,14 @@ const Navbar = () => {
     >
       <div className="navbar-container">
         <a href="#hero-section" onClick={(e) => handleNavClick(e, '#hero-section')} className="navbar-logo">
-          <img src="/assets/Fondos e imagenes/Logo.png" alt="RentSmart Logo" />
+          <img
+            src="/assets/Fondos e imagenes/Logo.png"
+            alt="RentSmart Car Rental - Black Friday"
+            loading="eager"
+            fetchpriority="high"
+            width="150"
+            height="40"
+          />
         </a>
 
         <button

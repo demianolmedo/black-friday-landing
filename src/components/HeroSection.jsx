@@ -93,11 +93,15 @@ const HeroSection = () => {
                 {/* Glow effect */}
                 <div className="absolute inset-0 bg-verde-neon/20 blur-3xl rounded-full"></div>
 
-                {/* Image */}
+                {/* Image - Optimized for LCP (Largest Contentful Paint) */}
                 <img
                   src={`/assets/Fondos e imagenes/${currentFrame}.png`}
-                  alt={`Animation frame ${currentFrame}`}
+                  alt="RentSmart Black Friday - 50% OFF en alquiler de autos Miami Orlando"
                   className="relative z-10 w-full h-full object-contain drop-shadow-2xl transition-all duration-50 ease-linear"
+                  loading="eager"
+                  fetchpriority="high"
+                  width="800"
+                  height="800"
                 />
               </div>
             </div>
