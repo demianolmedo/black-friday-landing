@@ -119,7 +119,7 @@ const WhatsAppModal = ({ isOpen, onClose, selectedCity }) => {
     };
 
     // Construir mensaje
-    const mensaje = `Hola, quiero cotizar un auto.
+    const mensaje = `Hola, quiero cotizar un auto con la promoción del 50% OFF de Black Friday.
 
 Entrega: ${formData.lugarEntrega}
 Devolucion: ${formData.lugarDevolucion}

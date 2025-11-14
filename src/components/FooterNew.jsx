@@ -55,6 +55,14 @@ const FooterNew = () => {
             <ul className="space-y-2">
               <li>
                 <a
+                  href="#contact-form"
+                  className="text-white/60 hover:text-verde-neon transition-colors text-sm font-inter"
+                >
+                  Cotizar
+                </a>
+              </li>
+              <li>
+                <a
                   href="#problema-section"
                   className="text-white/60 hover:text-verde-neon transition-colors text-sm font-inter"
                 >
