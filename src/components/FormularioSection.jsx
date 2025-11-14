@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUp } from 'lucide-react';
 import WhatsAppModal from './WhatsAppModal';
 
 const FormularioSection = () => {
@@ -213,8 +212,7 @@ const FormularioSection = () => {
             className="text-center mb-8"
           >
             <h2 className="text-blanco font-black text-3xl md:text-4xl lg:text-5xl leading-tight mb-8 font-outfit">
-              Recibe tu <span className="text-verde-neon neon-text">cotización</span> personalizada en segundos<br />
-              y alquila tu auto sin drama
+              Recibe tu <span className="text-verde-neon neon-text">cotización</span> personalizada en segundos y alquila tu auto sin drama
             </h2>
 
             {/* Grid de Selección - 2 Columnas con Separador */}
@@ -266,26 +264,13 @@ const FormularioSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 md:p-8 shadow-2xl relative mt-8"
+              className="backdrop-blur-md border border-white/10 rounded-2xl p-6 md:p-8 shadow-2xl relative mt-8"
             >
               <div
                 ref={wrapperRef}
                 id={ciudadActual.wrapperId}
                 className="min-h-[400px]"
               />
-
-              {/* Nota sobre formato de teléfono */}
-              {formularioCargado && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.3 }}
-                  className="phone-format-notice"
-                >
-                  <ArrowUp className="phone-format-icon" />
-                  <span>Número Telefónico (ej: +57 123 4567890)</span>
-                </motion.div>
-              )}
             </motion.div>
           )}
 
@@ -676,44 +661,6 @@ const FormularioSection = () => {
           width: 24px;
           height: 24px;
           flex-shrink: 0;
-        }
-
-        /* ===== NOTA DE FORMATO DE TELÉFONO - LIQUID GLASS ===== */
-        .phone-format-notice {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          margin-top: 16px;
-          padding: 12px 16px;
-          background: rgba(0, 0, 0, 0.6);
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 8px;
-          font-family: 'Outfit', sans-serif;
-          font-size: 13px;
-          color: rgba(255, 255, 255, 0.85);
-          line-height: 1.5;
-        }
-
-        .phone-format-icon {
-          width: 16px;
-          height: 16px;
-          color: rgba(255, 255, 255, 0.7);
-          flex-shrink: 0;
-        }
-
-        @media (max-width: 768px) {
-          .phone-format-notice {
-            font-size: 12px;
-            padding: 10px 14px;
-          }
-
-          .phone-format-icon {
-            width: 14px;
-            height: 14px;
-          }
         }
       `}</style>
 
