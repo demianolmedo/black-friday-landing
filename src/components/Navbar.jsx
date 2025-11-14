@@ -32,8 +32,6 @@ const Navbar = () => {
   };
 
   const navItems = [
-    { name: 'Inicio', href: '#hero-section' },
-    { name: 'Descuentos', href: '#descuentos-section' },
     { name: 'Problema', href: '#problema-section' },
     { name: 'Solución', href: '#solucion-section' }
   ];
