@@ -82,12 +82,18 @@
     <link rel="preconnect" href="https://rent-smart-car-rental.rentsmartrac.com" crossorigin />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
 
-    <!-- HQ Rental Software Integrator -->
+    <!-- Preload critical assets -->
+    <link rel="preload" as="image" href="/cachetada-movil/100.png" media="(max-width: 768px)" />
+    <link rel="preload" as="image" href="/assets/Fondos e imagenes/100.png" media="(min-width: 769px)" />
+    <link rel="preload" as="image" href="/assets/Fondos e imagenes/Logo.png" />
+
+    <!-- HQ Rental Software Integrator - Defer para no bloquear renderizado -->
     <script src="https://rent-smart-car-rental.rentsmartrac.com/public/car-rental/integrations/assets/integrator" defer></script>
   </head>
   <body>
     <div id="root"></div>
 
-    <script type="module" src="/src/main.jsx"></script>
+    <!-- Main script con defer para mejor performance -->
+    <script type="module" src="/src/main.jsx" defer></script>
   </body>
 </html>
