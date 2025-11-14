@@ -109,7 +109,9 @@ const ProblemaSection = ({ onCTAClick }) => {
 
               <div className="space-y-2 mt-16 sm:mt-20 md:mt-24">
                 <p className="text-xl sm:text-2xl md:text-3xl text-blanco font-bold font-outfit">
-                  Esta <span className="bg-black text-blanco px-3 py-1 rounded">Black Friday</span>, tú das la cachetada
+                  Esta <span className="bg-black text-blanco px-3 py-1 rounded" style={{
+                    boxShadow: '0 0 20px rgba(0, 255, 127, 0.6), 0 0 40px rgba(0, 255, 127, 0.4), 0 0 60px rgba(0, 255, 127, 0.2)'
+                  }}>Black Friday</span>, tú das la cachetada
                 </p>
 
                 <div className="flex flex-wrap justify-center gap-3 sm:gap-4 text-sm sm:text-base text-white/70 max-w-3xl mx-auto font-inter">
