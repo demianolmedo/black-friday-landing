@@ -66,11 +66,6 @@ const FormularioSection = () => {
           </div>
         </div>
 
-        {/* Security note */}
-        <p className="text-center text-white/50 text-xs mt-6 font-inter">
-          🔒 Tu información está segura y protegida
-        </p>
-
       </div>
     </section>
   );
