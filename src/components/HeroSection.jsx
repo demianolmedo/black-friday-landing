@@ -53,7 +53,7 @@ const HeroSection = () => {
 
       {/* Content container */}
       <div className="relative w-full min-h-screen flex items-center justify-center pt-32 pb-16">
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="relative z-10 max-w-7xl mx-auto px-8 sm:px-6 lg:px-8 w-full">
           <div className="flex flex-col items-center justify-center text-center space-y-8">
 
             {/* Green dot indicator */}
@@ -65,10 +65,10 @@ const HeroSection = () => {
             {/* Main Heading - 50% OFF */}
             <div className="space-y-4 animate-slide-up">
               <h1 className="flex items-end justify-center font-black tracking-tight leading-none font-outfit">
-                <span className="text-[10rem] sm:text-[12rem] md:text-[16rem] lg:text-[20rem] text-verde-neon drop-shadow-[0_0_40px_rgba(0,255,127,0.6)] neon-text">
+                <span className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[20rem] text-verde-neon drop-shadow-[0_0_40px_rgba(0,255,127,0.6)] neon-text">
                   50%
                 </span>
-                <span className="text-[5rem] sm:text-[6rem] md:text-[8rem] lg:text-[10rem] text-blanco ml-4 mb-2">
+                <span className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[10rem] text-blanco ml-4 mb-2">
                   off
                 </span>
               </h1>
