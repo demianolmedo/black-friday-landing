@@ -119,7 +119,7 @@ const ProblemaSection = ({ onCTAClick }) => {
                   }}>Black Friday</span>, tú das la cachetada
                 </p>
 
-                <div className="text-center space-y-3 text-base sm:text-lg md:text-xl text-white font-inter">
+                <div className="text-center space-y-3 text-base sm:text-lg md:text-xl text-white font-inter mt-20 sm:mt-24 md:mt-28">
                   <p>A los abusivos <span className="text-verde-neon">•</span> A los lentos pequeños</p>
                   <p><span className="text-verde-neon">•</span> A los que creen que son buenos tratándole si no eres empresas</p>
                 </div>
