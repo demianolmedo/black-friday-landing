@@ -9,6 +9,7 @@ import SolucionSection from './components/SolucionSection';
 import FormularioSection from './components/FormularioSection';
 import FooterNew from './components/FooterNew';
 import ReservationsPage from './pages/ReservationsPage';
+import TerminosCondiciones from './pages/TerminosCondiciones';
 import SEO from './components/SEO';
 
 function HomePage() {
@@ -53,6 +54,9 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
+
+          {/* Términos y Condiciones */}
+          <Route path="/terminos-condiciones" element={<TerminosCondiciones />} />
 
           {/* Rutas de Reservations para HQ */}
           <Route

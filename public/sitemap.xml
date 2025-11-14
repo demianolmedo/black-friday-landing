@@ -62,4 +62,13 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://www.blackfriday.rentsmartrac.com/reservations-orlando" />
   </url>
 
+  <!-- Términos y Condiciones -->
+  <url>
+    <loc>https://www.blackfriday.rentsmartrac.com/terminos-condiciones</loc>
+    <lastmod>2025-11-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.blackfriday.rentsmartrac.com/terminos-condiciones" />
+  </url>
+
 </urlset>

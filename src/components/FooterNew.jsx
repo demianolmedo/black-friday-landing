@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Facebook, Instagram } from 'lucide-react';
 
 const FooterNew = () => {
@@ -81,12 +82,12 @@ const FooterNew = () => {
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/terminos-condiciones"
                   className="text-white/60 hover:text-verde-neon transition-colors text-sm font-inter"
                 >
                   Términos y Condiciones
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
