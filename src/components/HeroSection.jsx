@@ -165,7 +165,7 @@ const HeroSection = () => {
               <div className="h-px w-64 mx-auto bg-gradient-to-r from-transparent via-verde-neon/50 to-transparent"></div>
 
               {/* Subtitle "cachetadas de" */}
-              <p className="text-2xl sm:text-4xl md:text-6xl text-white/70 font-medium font-inter tracking-wide">
+              <p className="text-4xl sm:text-4xl md:text-6xl text-white/70 font-medium font-inter tracking-wide">
                 cachetadas de
               </p>
 
