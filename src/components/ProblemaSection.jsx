@@ -109,7 +109,7 @@ const ProblemaSection = ({ onCTAClick }) => {
 
               <div className="space-y-8 sm:space-y-10 mt-16 sm:mt-20 md:mt-24">
                 <p className="text-xl sm:text-2xl md:text-3xl text-blanco font-bold font-outfit">
-                  Esta <span className="px-4 py-2 rounded-full backdrop-blur-xl" style={{
+                  Esta <span className="px-3 py-1 rounded-full backdrop-blur-xl" style={{
                     background: 'rgba(255, 255, 255, 0.9)',
                     border: '1px solid rgba(255, 255, 255, 0.5)',
                     boxShadow: '0 4px 16px rgba(255, 255, 255, 0.2)',
