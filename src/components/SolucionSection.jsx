@@ -59,7 +59,7 @@ const SolucionSection = () => {
 
               <div className="space-y-16 sm:space-y-20 mt-16 sm:mt-20 md:mt-24">
                 <p className="text-xl sm:text-2xl md:text-3xl text-blanco font-bold font-outfit">
-                  Este <span className="px-2 rounded-full backdrop-blur-xl" style={{
+                  Este <span className="italic px-2 rounded-full backdrop-blur-xl" style={{
                     paddingTop: '0',
                     paddingBottom: '0',
                     background: 'rgba(255, 255, 255, 0.9)',
