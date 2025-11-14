@@ -52,10 +52,10 @@ const ProblemaSection = ({ onCTAClick }) => {
           <div className="flex flex-col items-center gap-4 sm:gap-6 max-w-4xl mx-auto animate-fade-in">
             {/* First row - 2 cards */}
             <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
-              <div className="glass-card glass-card-hover rounded-2xl px-6 py-3 text-white/80 text-sm sm:text-base font-inter flex items-center">
+              <div className="glass-card glass-card-hover rounded-2xl px-6 py-3 text-white/80 text-base sm:text-lg md:text-xl font-inter flex items-center">
                 ¿Y esta espera?
               </div>
-              <div className="glass-card glass-card-hover rounded-2xl px-6 py-3 text-white/80 text-sm sm:text-base font-inter">
+              <div className="glass-card glass-card-hover rounded-2xl px-6 py-3 text-white/80 text-base sm:text-lg md:text-xl font-inter">
                 ¡No se supone que era rápido!
               </div>
             </div>
