@@ -107,9 +107,9 @@ const ProblemaSection = ({ onCTAClick }) => {
                 50% OFF
               </h3>
 
-              <div className="space-y-8 sm:space-y-10 mt-16 sm:mt-20 md:mt-24">
+              <div className="space-y-10 sm:space-y-12 mt-16 sm:mt-20 md:mt-24">
                 <p className="text-xl sm:text-2xl md:text-3xl text-blanco font-bold font-outfit">
-                  Esta <span className="px-2 rounded-full backdrop-blur-xl" style={{
+                  Este <span className="px-2 rounded-full backdrop-blur-xl" style={{
                     paddingTop: '0',
                     paddingBottom: '0',
                     background: 'rgba(255, 255, 255, 0.9)',
@@ -119,27 +119,22 @@ const ProblemaSection = ({ onCTAClick }) => {
                   }}>Black Friday</span>, tú das la cachetada
                 </p>
 
-                <div className="flex flex-wrap justify-center gap-3 sm:gap-4 text-sm sm:text-base text-white/70 max-w-3xl mx-auto font-inter">
-                  <p>A los abusivos</p>
-                  <span className="text-verde-neon">•</span>
-                  <p>A los lentos pequeños</p>
-                  <span className="text-verde-neon">•</span>
-                  <p>A los que creen que son buenos tratándole si no eres empresas</p>
+                <div className="text-center space-y-2 text-sm sm:text-base text-white font-inter">
+                  <p>A los abusivos <span className="text-verde-neon">•</span> A los lentos pequeños</p>
+                  <p><span className="text-verde-neon">•</span> A los que creen que son buenos tratándole si no eres empresas</p>
                 </div>
               </div>
 
-              <p className="text-base sm:text-lg text-white/60 max-w-3xl mx-auto pt-4 font-inter">
-                Empresas tu salta del apuro<br />
-                La página se abre en directo
+              <p className="text-base sm:text-lg text-white text-center max-w-3xl mx-auto pt-4 font-inter">
+                y alquila tu auto sin drama
               </p>
             </div>
           </div>
 
           {/* Bottom text */}
           <div className="text-center space-y-3 animate-fade-in">
-            <p className="text-sm sm:text-base text-white/50 max-w-3xl mx-auto font-inter">
-              Recibe tu cotización personalizada en segundos<br />
-              Y aprovecha el 30% de sobre
+            <p className="text-sm sm:text-base text-white max-w-3xl mx-auto font-inter">
+              Recibe tu cotización personalizada en segundos
             </p>
           </div>
 
