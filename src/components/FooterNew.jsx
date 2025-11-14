@@ -193,7 +193,7 @@ const FooterNew = () => {
               © 2025 – Todos los derechos reservados Rent Smart Car Rental
             </p>
             <p className="text-white/40 text-sm font-inter">
-              Black Friday 2025 - Oferta válida hasta el 30 de noviembre
+              Promoción válida hasta agotar cupos
             </p>
           </div>
         </div>
