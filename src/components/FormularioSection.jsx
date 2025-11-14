@@ -18,11 +18,12 @@ const FormularioSection = () => {
         {/* Heading */}
         <div className="text-center space-y-3 mb-6 sm:mb-8 animate-fade-in">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-blanco font-outfit">
-            APROVECHA TU{' '}
-            <span className="text-verde-neon neon-text">DESCUENTO</span>
+            Recibe tu{' '}
+            <span className="text-verde-neon neon-text">cotización</span>{' '}
+            personalizada en segundos
           </h2>
           <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto font-inter">
-            Completa el formulario y asegura tu 50% OFF en la inscripción
+            y alquila tu auto sin drama
           </p>
         </div>
 
