@@ -125,6 +125,8 @@ const ProblemaSection = ({ onCTAClick }) => {
                   <p className="mt-8 sm:mt-10 font-bold">Empieza tu viaje sin drama</p>
                 </div>
               </div>
+            </div>
+          </div>
 
         </div>
       </div>
