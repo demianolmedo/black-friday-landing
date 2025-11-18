@@ -106,10 +106,10 @@ const HeroSection = () => {
     const startFrame = 100;
     const endFrame = 129;
     const totalFrames = endFrame - startFrame + 1; // 30 frames
-    const scrollPerFrame = 30; // Pixels to scroll per frame
-    const animationScrollNeeded = totalFrames * scrollPerFrame; // 900px for animation
-    const bufferScrollNeeded = 400; // Extra 400px buffer zone for smooth fade
-    const totalScrollNeeded = animationScrollNeeded + bufferScrollNeeded; // 1300px total
+    const scrollPerFrame = 25; // Pixels to scroll per frame (reduced for smoother mobile)
+    const animationScrollNeeded = totalFrames * scrollPerFrame; // 750px for animation
+    const bufferScrollNeeded = 300; // Extra 300px buffer zone for smooth fade
+    const totalScrollNeeded = animationScrollNeeded + bufferScrollNeeded; // 1050px total
 
     let ticking = false;
 
@@ -266,7 +266,7 @@ const HeroSection = () => {
         e.stopPropagation();
 
         // Accumulate the touch delta (multiply for better sensitivity on mobile)
-        const sensitivity = 2.5;
+        const sensitivity = 3.0;
         scrollAccumulatorRef.current += touchDelta * sensitivity;
         scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
 
@@ -286,13 +286,16 @@ const HeroSection = () => {
           setIsPinned(false);
           setOverlayOpacity(0);
           isTouchActive = false;
+          // Delay overlay removal to allow smooth fade
           setTimeout(() => {
-            setShowOverlay(false);
-          }, 700);
+            if (setShowOverlay) {
+              setShowOverlay(false);
+            }
+          }, 800);
         }
       }
       // Reverse scroll - scrolling back up through animation
-      else if (animationCompleteRef.current && touchDelta < 0 && window.scrollY <= window.innerHeight + bufferScrollNeeded) {
+      else if (animationCompleteRef.current && touchDelta < 0 && window.scrollY <= (window.innerHeight + bufferScrollNeeded)) {
         if (!isPinned) {
           setIsPinned(true);
           setShowOverlay(true);
@@ -305,7 +308,7 @@ const HeroSection = () => {
         e.preventDefault();
         e.stopPropagation();
 
-        const sensitivity = 2.5;
+        const sensitivity = 3.0;
         scrollAccumulatorRef.current += touchDelta * sensitivity;
         scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
 
@@ -325,17 +328,24 @@ const HeroSection = () => {
           setIsPinned(false);
           setOverlayOpacity(1);
           isTouchActive = false;
+          // Delay overlay removal to allow smooth fade
           setTimeout(() => {
-            setShowOverlay(false);
-          }, 700);
+            if (setShowOverlay) {
+              setShowOverlay(false);
+            }
+          }, 800);
         }
       }
       // If we're in pinned mode but shouldn't be, allow natural scroll to happen
       else if (isPinned && touchDelta < 0 && scrollAccumulatorRef.current <= 0) {
         setIsPinned(false);
-        setShowOverlay(false);
         animationCompleteRef.current = false;
         isTouchActive = false;
+        setTimeout(() => {
+          if (setShowOverlay) {
+            setShowOverlay(false);
+          }
+        }, 100);
       }
     };
 
