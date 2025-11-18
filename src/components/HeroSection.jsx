@@ -4,7 +4,7 @@ const HeroSection = () => {
   return (
     <section
       id="hero-section"
-      className="relative w-full h-[50vh] overflow-hidden"
+      className="relative w-full h-[50vh] overflow-hidden mb-8"
     >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-azul-principal via-azul-principal/90 to-azul-principal"></div>
@@ -33,7 +33,7 @@ const HeroSection = () => {
               <div className="h-px w-48 mx-auto bg-gradient-to-r from-transparent via-verde-neon/50 to-transparent"></div>
 
               {/* Subtitle "cachetadas de" */}
-              <p className="text-4xl sm:text-6xl md:text-8xl text-white/70 font-medium font-inter tracking-wide">
+              <p className="text-xl sm:text-2xl md:text-3xl text-white/70 font-medium font-inter tracking-wide">
                 cachetadas de
               </p>
 

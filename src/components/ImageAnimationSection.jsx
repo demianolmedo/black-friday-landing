@@ -95,7 +95,7 @@ const ImageAnimationSection = () => {
     <section
       id="image-animation-section"
       ref={sectionRef}
-      className="relative w-full h-[50vh] flex items-center justify-center -mt-1"
+      className="relative w-full h-[50vh] flex items-center justify-center"
     >
       <div className="absolute inset-0 bg-gradient-to-b from-azul-principal via-azul-principal/90 to-azul-principal"></div>
 
@@ -130,7 +130,7 @@ const ImageAnimationSection = () => {
       )}
 
       <div className={`relative z-20 w-[90vw] h-[45vh] mx-auto transition-opacity duration-700 ${imagesLoaded ? 'opacity-100' : 'opacity-0'}`}>
-        <div className="relative w-full h-full flex items-center justify-center -mt-2">
+        <div className="relative w-full h-full flex items-center justify-center">
           <div className="absolute inset-0 bg-verde-neon/20 blur-3xl rounded-full"></div>
 
           <img
