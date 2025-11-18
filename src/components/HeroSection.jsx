@@ -7,6 +7,8 @@ const HeroSection = () => {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isPinned, setIsPinned] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [overlayOpacity, setOverlayOpacity] = useState(1);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   const sectionRef = useRef(null);
   const scrollAccumulatorRef = useRef(0);
@@ -14,15 +16,28 @@ const HeroSection = () => {
   const animationCompleteRef = useRef(false);
   const pinnedPositionRef = useRef(0);
 
-  // Detectar si es móvil
+  // Detectar si es móvil y preferencias de movimiento
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
 
+    // Check for reduced motion preference (accessibility)
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+
+    const handleMotionPreferenceChange = (e) => {
+      setPrefersReducedMotion(e.matches);
+    };
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    mediaQuery.addEventListener('change', handleMotionPreferenceChange);
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      mediaQuery.removeEventListener('change', handleMotionPreferenceChange);
+    };
   }, []);
 
   // Precargar todas las imágenes de la secuencia
@@ -64,17 +79,32 @@ const HeroSection = () => {
     preloadImages();
   }, [isMobile]);
 
-  // Advanced scroll-pinning effect with bidirectional animation
+  // Advanced scroll-pinning effect with buffer zone and smooth fade
   useEffect(() => {
     if (!imagesLoaded) return;
 
     const startFrame = 100;
     const endFrame = 129;
     const totalFrames = endFrame - startFrame + 1; // 30 frames
-    const scrollPerFrame = 30; // Pixels to scroll per frame (adjustable)
-    const totalScrollNeeded = totalFrames * scrollPerFrame; // 30 * 30 = 900px
+    const scrollPerFrame = 30; // Pixels to scroll per frame
+    const animationScrollNeeded = totalFrames * scrollPerFrame; // 900px for animation
+    const bufferScrollNeeded = 200; // Extra 200px buffer zone for smooth fade
+    const totalScrollNeeded = animationScrollNeeded + bufferScrollNeeded; // 1100px total
 
     let ticking = false;
+
+    const updateOverlayOpacity = (scrollAccumulator) => {
+      // Calculate overlay opacity based on scroll position
+      if (scrollAccumulator <= animationScrollNeeded) {
+        // During animation phase: overlay solid (opacity = 1)
+        setOverlayOpacity(1);
+      } else {
+        // During buffer phase: fade overlay from 1 to 0
+        const bufferProgress = (scrollAccumulator - animationScrollNeeded) / bufferScrollNeeded;
+        const opacity = Math.max(0, 1 - bufferProgress);
+        setOverlayOpacity(opacity);
+      }
+    };
 
     const handleWheel = (e) => {
       if (!sectionRef.current) return;
@@ -90,6 +120,7 @@ const HeroSection = () => {
         if (!isPinned) {
           setIsPinned(true);
           scrollAccumulatorRef.current = 0;
+          setOverlayOpacity(1);
         }
 
         if (isPinned) {
@@ -99,25 +130,31 @@ const HeroSection = () => {
           scrollAccumulatorRef.current += delta;
           scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
 
-          const progress = scrollAccumulatorRef.current / totalScrollNeeded;
-          setScrollProgress(progress);
+          // Update animation progress (capped at frame animation zone)
+          const animationProgress = Math.min(scrollAccumulatorRef.current / animationScrollNeeded, 1);
+          setScrollProgress(animationProgress);
 
-          const frame = Math.round(startFrame + progress * (endFrame - startFrame));
+          const frame = Math.round(startFrame + animationProgress * (endFrame - startFrame));
           setCurrentFrame(frame);
 
-          // Check if animation complete
-          if (progress >= 1) {
+          // Update overlay opacity
+          updateOverlayOpacity(scrollAccumulatorRef.current);
+
+          // Check if fully complete (animation + buffer)
+          if (scrollAccumulatorRef.current >= totalScrollNeeded) {
             animationCompleteRef.current = true;
             setIsPinned(false);
+            setOverlayOpacity(0);
           }
         }
-      } else if (animationCompleteRef.current && e.deltaY < 0 && window.scrollY <= window.innerHeight + 100) {
-        // Re-entering from below (scrolling up)
+      } else if (animationCompleteRef.current && e.deltaY < 0 && window.scrollY <= window.innerHeight + bufferScrollNeeded) {
+        // Re-entering from below (scrolling up) - enter buffer zone first
         if (!isPinned) {
           setIsPinned(true);
           scrollAccumulatorRef.current = totalScrollNeeded;
           setScrollProgress(1);
           setCurrentFrame(endFrame);
+          setOverlayOpacity(0);
         }
 
         if (isPinned) {
@@ -127,22 +164,27 @@ const HeroSection = () => {
           scrollAccumulatorRef.current += delta;
           scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
 
-          const progress = scrollAccumulatorRef.current / totalScrollNeeded;
-          setScrollProgress(progress);
+          // Update animation progress
+          const animationProgress = Math.min(scrollAccumulatorRef.current / animationScrollNeeded, 1);
+          setScrollProgress(animationProgress);
 
-          const frame = Math.round(startFrame + progress * (endFrame - startFrame));
+          const frame = Math.round(startFrame + animationProgress * (endFrame - startFrame));
           setCurrentFrame(frame);
 
+          // Update overlay opacity (reverse fade)
+          updateOverlayOpacity(scrollAccumulatorRef.current);
+
           // Check if back to start
-          if (progress <= 0) {
+          if (scrollAccumulatorRef.current <= 0) {
             animationCompleteRef.current = false;
             setIsPinned(false);
+            setOverlayOpacity(1);
           }
         }
       }
     };
 
-    // Handle touch events for mobile
+    // Handle touch events for mobile with buffer zone
     let touchStartY = 0;
     let lastTouchY = 0;
 
@@ -166,6 +208,7 @@ const HeroSection = () => {
         if (!isPinned) {
           setIsPinned(true);
           scrollAccumulatorRef.current = 0;
+          setOverlayOpacity(1);
         }
 
         if (isPinned) {
@@ -174,23 +217,30 @@ const HeroSection = () => {
           scrollAccumulatorRef.current += touchDelta * 1.5;
           scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
 
-          const progress = scrollAccumulatorRef.current / totalScrollNeeded;
-          setScrollProgress(progress);
+          // Update animation progress
+          const animationProgress = Math.min(scrollAccumulatorRef.current / animationScrollNeeded, 1);
+          setScrollProgress(animationProgress);
 
-          const frame = Math.round(startFrame + progress * (endFrame - startFrame));
+          const frame = Math.round(startFrame + animationProgress * (endFrame - startFrame));
           setCurrentFrame(frame);
 
-          if (progress >= 1) {
+          // Update overlay opacity
+          updateOverlayOpacity(scrollAccumulatorRef.current);
+
+          // Check if fully complete (animation + buffer)
+          if (scrollAccumulatorRef.current >= totalScrollNeeded) {
             animationCompleteRef.current = true;
             setIsPinned(false);
+            setOverlayOpacity(0);
           }
         }
-      } else if (animationCompleteRef.current && touchDelta < 0 && window.scrollY <= window.innerHeight + 100) {
+      } else if (animationCompleteRef.current && touchDelta < 0 && window.scrollY <= window.innerHeight + bufferScrollNeeded) {
         if (!isPinned) {
           setIsPinned(true);
           scrollAccumulatorRef.current = totalScrollNeeded;
           setScrollProgress(1);
           setCurrentFrame(endFrame);
+          setOverlayOpacity(0);
         }
 
         if (isPinned) {
@@ -199,15 +249,21 @@ const HeroSection = () => {
           scrollAccumulatorRef.current += touchDelta * 1.5;
           scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
 
-          const progress = scrollAccumulatorRef.current / totalScrollNeeded;
-          setScrollProgress(progress);
+          // Update animation progress
+          const animationProgress = Math.min(scrollAccumulatorRef.current / animationScrollNeeded, 1);
+          setScrollProgress(animationProgress);
 
-          const frame = Math.round(startFrame + progress * (endFrame - startFrame));
+          const frame = Math.round(startFrame + animationProgress * (endFrame - startFrame));
           setCurrentFrame(frame);
 
-          if (progress <= 0) {
+          // Update overlay opacity (reverse fade)
+          updateOverlayOpacity(scrollAccumulatorRef.current);
+
+          // Check if back to start
+          if (scrollAccumulatorRef.current <= 0) {
             animationCompleteRef.current = false;
             setIsPinned(false);
+            setOverlayOpacity(1);
           }
         }
       }
@@ -229,24 +285,36 @@ const HeroSection = () => {
       {/* Spacer to prevent layout shift when section is pinned */}
       {isPinned && <div style={{ height: '100vh' }} />}
 
-      {/* Dark overlay to hide sections below when pinned */}
+      {/* Dark overlay to hide sections below when pinned - with smooth fade transition */}
       {isPinned && (
         <div
           className="fixed inset-0 bg-azul-principal z-40"
-          style={{ top: 0, left: 0, right: 0, bottom: 0 }}
+          style={{
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            opacity: overlayOpacity,
+            transition: prefersReducedMotion
+              ? 'none'
+              : 'opacity 600ms cubic-bezier(0.4, 0.0, 0.2, 1)',
+          }}
         />
       )}
 
       <section
         id="hero-section"
         ref={sectionRef}
-        className={`w-full min-h-screen overflow-hidden transition-all duration-300 ${
+        className={`w-full min-h-screen overflow-hidden ${
           isPinned
             ? 'fixed top-0 left-0 right-0 z-50'
             : 'relative'
         }`}
         style={{
-          height: isPinned ? '100vh' : 'auto'
+          height: isPinned ? '100vh' : 'auto',
+          transition: prefersReducedMotion
+            ? 'none'
+            : 'all 600ms cubic-bezier(0.4, 0.0, 0.2, 1)',
         }}
       >
       {/* Background gradient */}
