@@ -128,13 +128,11 @@ const ImageAnimationSection = () => {
       const section = sectionRef.current;
       const rect = section.getBoundingClientRect();
 
-      // Check if section is at center of viewport
-      const viewportCenter = window.innerHeight / 2;
-      const sectionCenter = rect.top + rect.height / 2;
-      const isAtCenter = Math.abs(sectionCenter - viewportCenter) < 100;
+      // Check if section is visible in viewport (at least partially)
+      const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
 
       // Forward scroll - animating from start to end
-      if (isAtCenter && !animationCompleteRef.current) {
+      if (isVisible && !animationCompleteRef.current) {
         if (!isPinned) {
           setIsPinned(true);
           setShowOverlay(true);
@@ -222,12 +220,11 @@ const ImageAnimationSection = () => {
       const section = sectionRef.current;
       const rect = section.getBoundingClientRect();
 
-      const viewportCenter = window.innerHeight / 2;
-      const sectionCenter = rect.top + rect.height / 2;
-      const isAtCenter = Math.abs(sectionCenter - viewportCenter) < 100;
+      // Check if section is visible in viewport
+      const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
 
       // Forward scroll
-      if (isAtCenter && !animationCompleteRef.current) {
+      if (isVisible && !animationCompleteRef.current) {
         e.preventDefault();
         e.stopPropagation();
 
@@ -348,11 +345,11 @@ const ImageAnimationSection = () => {
       <section
         id="image-animation-section"
         ref={sectionRef}
-        className={`w-full min-h-screen flex items-center justify-center ${
+        className={`w-full h-[50vh] flex items-center justify-center ${
           isPinned ? 'fixed top-0 left-0 right-0 z-50' : 'relative'
         }`}
         style={{
-          height: isPinned ? '100vh' : 'auto',
+          height: isPinned ? '100vh' : '50vh',
           touchAction: isPinned ? 'none' : 'auto',
           transition: prefersReducedMotion
             ? 'none'
@@ -405,14 +402,14 @@ const ImageAnimationSection = () => {
           </div>
         )}
 
-        <div className={`relative z-10 w-[90vw] mx-auto transition-opacity duration-700 ${imagesLoaded ? 'opacity-100' : 'opacity-0'}`}>
-          <div ref={imageContainerRef} className="relative w-full aspect-square">
+        <div className={`relative z-10 w-[90vw] h-[45vh] mx-auto transition-opacity duration-700 ${imagesLoaded ? 'opacity-100' : 'opacity-0'}`}>
+          <div ref={imageContainerRef} className="relative w-full h-full flex items-center justify-center">
             <div className="absolute inset-0 bg-verde-neon/20 blur-3xl rounded-full"></div>
 
             <img
               src={isMobile ? `/cachetada-movil/${currentFrame}.png` : `/assets/Fondos e imagenes/${currentFrame}.png`}
               alt="RentSmart Black Friday - Animación de descuento 50% OFF"
-              className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
+              className="relative z-10 max-w-full max-h-full object-contain drop-shadow-2xl"
               style={{
                 transition: 'opacity 30ms ease-out',
                 willChange: 'opacity'
