@@ -71,10 +71,15 @@ const ImageAnimationSection = () => {
 
       let progress = 0;
 
-      if (sectionTop <= scrollStart && sectionTop >= scrollEnd) {
+      if (sectionTop > scrollStart) {
+        // La sección todavía no ha llegado al punto de inicio, frame = 100
+        progress = 0;
+      } else if (sectionTop <= scrollStart && sectionTop >= scrollEnd) {
+        // En el rango de animación
         progress = (scrollStart - sectionTop) / (scrollStart - scrollEnd);
         progress = Math.max(0, Math.min(1, progress));
       } else if (sectionTop < scrollEnd) {
+        // Ya pasó el rango, frame = 129
         progress = 1;
       }
 
