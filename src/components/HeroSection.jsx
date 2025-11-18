@@ -273,6 +273,12 @@ const HeroSection = () => {
     const handleTouchMove = (e) => {
       if (!sectionRef.current || !isTouchActive) return;
 
+      const touchCurrentY = e.touches[0].clientY;
+      const touchDelta = lastTouchY - touchCurrentY; // Positive = scroll down, Negative = scroll up
+
+      // Always update lastTouchY for continuous tracking
+      lastTouchY = touchCurrentY;
+
       // Only process if the initial touch was over the image
       if (!isOverImage && !isPinned) {
         return; // Allow normal scroll if not touching image
@@ -282,12 +288,12 @@ const HeroSection = () => {
       const rect = section.getBoundingClientRect();
       const isAtTop = rect.top <= 10 && rect.bottom > 0; // Slightly more lenient for mobile
 
-      const touchCurrentY = e.touches[0].clientY;
-      const touchDelta = lastTouchY - touchCurrentY; // Positive = scroll down, Negative = scroll up
-      lastTouchY = touchCurrentY;
-
       // Forward scroll - animating from start to end
       if (isAtTop && !animationCompleteRef.current && isOverImage) {
+        // We're in pinned animation mode - prevent default immediately
+        e.preventDefault();
+        e.stopPropagation();
+
         // Enter pinned mode if not already
         if (!isPinned) {
           setIsPinned(true);
@@ -296,11 +302,8 @@ const HeroSection = () => {
           setOverlayOpacity(1);
         }
 
-        // We're in pinned animation mode
-        e.preventDefault();
-        e.stopPropagation();
-
         // Accumulate the touch delta (multiply for better sensitivity on mobile)
+        // Use requestAnimationFrame for smoother updates
         const sensitivity = 5.0;
         scrollAccumulatorRef.current += touchDelta * sensitivity;
         scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
@@ -331,6 +334,10 @@ const HeroSection = () => {
       }
       // Reverse scroll - scrolling back up through animation
       else if (animationCompleteRef.current && touchDelta < 0 && window.scrollY <= (window.innerHeight + bufferScrollNeeded)) {
+        // We're in pinned animation mode - prevent default immediately
+        e.preventDefault();
+        e.stopPropagation();
+
         if (!isPinned) {
           setIsPinned(true);
           setShowOverlay(true);
@@ -340,10 +347,7 @@ const HeroSection = () => {
           setOverlayOpacity(0);
         }
 
-        e.preventDefault();
-        e.stopPropagation();
-
-        const sensitivity = 6.0;
+        const sensitivity = 5.0;
         scrollAccumulatorRef.current += touchDelta * sensitivity;
         scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
 
