@@ -14,7 +14,7 @@ const HeroSection = () => {
       <div className="absolute bottom-1/4 -right-32 w-64 h-64 bg-verde-neon/5 rounded-full blur-3xl"></div>
 
       {/* Content container */}
-      <div className="relative w-full h-full flex items-center justify-center pt-12 pb-4">
+      <div className="relative w-full h-full flex items-center justify-center pt-24 pb-4">
         <div className="relative z-10 max-w-7xl mx-auto px-8 sm:px-6 lg:px-8 w-full">
           <div className="flex flex-col items-center justify-center text-center space-y-3">
 
@@ -38,7 +38,7 @@ const HeroSection = () => {
               </p>
 
               {/* DESCUENTOS% */}
-              <h2 className="text-4xl sm:text-6xl md:text-8xl lg:text-[10rem] font-black text-blanco tracking-[0.3em] uppercase font-outfit">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-blanco tracking-[0.3em] uppercase font-outfit">
                 DESCUENTOS<span className="text-verde-neon">%</span>
               </h2>
             </div>
