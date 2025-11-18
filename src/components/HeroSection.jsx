@@ -21,7 +21,7 @@ const HeroSection = () => {
   // Precargar todas las imágenes de la secuencia
   useEffect(() => {
     const startFrame = 100;
-    const endFrame = 119;
+    const endFrame = 129;
     const totalFrames = endFrame - startFrame + 1;
     let loadedCount = 0;
 
@@ -77,9 +77,9 @@ const HeroSection = () => {
       // Calculate scroll progress (0 to 1)
       const scrollProgress = Math.max(0, Math.min(1, scrolled / animationRange));
 
-      // Map progress to frame range (100-119, total 20 frames)
+      // Map progress to frame range (100-129, total 30 frames)
       const startFrame = 100;
-      const endFrame = 119;
+      const endFrame = 129;
       const frame = Math.round(startFrame + scrollProgress * (endFrame - startFrame));
 
       setCurrentFrame(frame);
