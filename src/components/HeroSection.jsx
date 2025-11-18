@@ -229,6 +229,14 @@ const HeroSection = () => {
       {/* Spacer to prevent layout shift when section is pinned */}
       {isPinned && <div style={{ height: '100vh' }} />}
 
+      {/* Dark overlay to hide sections below when pinned */}
+      {isPinned && (
+        <div
+          className="fixed inset-0 bg-azul-principal z-40"
+          style={{ top: 0, left: 0, right: 0, bottom: 0 }}
+        />
+      )}
+
       <section
         id="hero-section"
         ref={sectionRef}
