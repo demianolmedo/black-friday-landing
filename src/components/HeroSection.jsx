@@ -1,11 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 const HeroSection = () => {
   const [currentFrame, setCurrentFrame] = useState(100);
   const [isMobile, setIsMobile] = useState(false);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const [isPinned, setIsPinned] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
   const sectionRef = useRef(null);
+  const scrollAccumulatorRef = useRef(0);
+  const lastScrollYRef = useRef(0);
+  const animationCompleteRef = useRef(false);
+  const pinnedPositionRef = useRef(0);
 
   // Detectar si es móvil
   useEffect(() => {
@@ -57,52 +64,204 @@ const HeroSection = () => {
     preloadImages();
   }, [isMobile]);
 
+  // Advanced scroll-pinning effect with bidirectional animation
   useEffect(() => {
-    const handleScroll = () => {
+    if (!imagesLoaded) return;
+
+    const startFrame = 100;
+    const endFrame = 129;
+    const totalFrames = endFrame - startFrame + 1; // 30 frames
+    const scrollPerFrame = 30; // Pixels to scroll per frame (adjustable)
+    const totalScrollNeeded = totalFrames * scrollPerFrame; // 30 * 30 = 900px
+
+    let ticking = false;
+
+    const handleWheel = (e) => {
       if (!sectionRef.current) return;
 
       const section = sectionRef.current;
       const rect = section.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
 
-      // Animation starts from page load (frame 100 visible)
-      // and progresses quickly as user scrolls
+      // Check if section is at the top of viewport
+      const isAtTop = rect.top <= 0 && rect.bottom > 0;
 
-      // Get total scroll position from top of page
-      const scrolled = window.pageYOffset || document.documentElement.scrollTop;
+      if (isAtTop && !animationCompleteRef.current) {
+        // Entering pin phase from top
+        if (!isPinned) {
+          setIsPinned(true);
+          scrollAccumulatorRef.current = 0;
+        }
 
-      // Animation completes in first 800px of scroll (very fast)
-      const animationRange = 800;
+        if (isPinned) {
+          e.preventDefault();
 
-      // Calculate scroll progress (0 to 1)
-      const scrollProgress = Math.max(0, Math.min(1, scrolled / animationRange));
+          const delta = e.deltaY;
+          scrollAccumulatorRef.current += delta;
+          scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
 
-      // Map progress to frame range (100-129, total 30 frames)
-      const startFrame = 100;
-      const endFrame = 129;
-      const frame = Math.round(startFrame + scrollProgress * (endFrame - startFrame));
+          const progress = scrollAccumulatorRef.current / totalScrollNeeded;
+          setScrollProgress(progress);
 
-      setCurrentFrame(frame);
+          const frame = Math.round(startFrame + progress * (endFrame - startFrame));
+          setCurrentFrame(frame);
+
+          // Check if animation complete
+          if (progress >= 1) {
+            animationCompleteRef.current = true;
+            setIsPinned(false);
+          }
+        }
+      } else if (animationCompleteRef.current && e.deltaY < 0 && window.scrollY <= window.innerHeight + 100) {
+        // Re-entering from below (scrolling up)
+        if (!isPinned) {
+          setIsPinned(true);
+          scrollAccumulatorRef.current = totalScrollNeeded;
+          setScrollProgress(1);
+          setCurrentFrame(endFrame);
+        }
+
+        if (isPinned) {
+          e.preventDefault();
+
+          const delta = e.deltaY;
+          scrollAccumulatorRef.current += delta;
+          scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
+
+          const progress = scrollAccumulatorRef.current / totalScrollNeeded;
+          setScrollProgress(progress);
+
+          const frame = Math.round(startFrame + progress * (endFrame - startFrame));
+          setCurrentFrame(frame);
+
+          // Check if back to start
+          if (progress <= 0) {
+            animationCompleteRef.current = false;
+            setIsPinned(false);
+          }
+        }
+      }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initialize on mount
+    // Handle touch events for mobile
+    let touchStartY = 0;
+    let lastTouchY = 0;
 
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    const handleTouchStart = (e) => {
+      touchStartY = e.touches[0].clientY;
+      lastTouchY = touchStartY;
+    };
+
+    const handleTouchMove = (e) => {
+      if (!sectionRef.current) return;
+
+      const section = sectionRef.current;
+      const rect = section.getBoundingClientRect();
+      const isAtTop = rect.top <= 0 && rect.bottom > 0;
+
+      const touchCurrentY = e.touches[0].clientY;
+      const touchDelta = lastTouchY - touchCurrentY;
+      lastTouchY = touchCurrentY;
+
+      if (isAtTop && !animationCompleteRef.current) {
+        if (!isPinned) {
+          setIsPinned(true);
+          scrollAccumulatorRef.current = 0;
+        }
+
+        if (isPinned) {
+          e.preventDefault();
+
+          scrollAccumulatorRef.current += touchDelta * 1.5;
+          scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
+
+          const progress = scrollAccumulatorRef.current / totalScrollNeeded;
+          setScrollProgress(progress);
+
+          const frame = Math.round(startFrame + progress * (endFrame - startFrame));
+          setCurrentFrame(frame);
+
+          if (progress >= 1) {
+            animationCompleteRef.current = true;
+            setIsPinned(false);
+          }
+        }
+      } else if (animationCompleteRef.current && touchDelta < 0 && window.scrollY <= window.innerHeight + 100) {
+        if (!isPinned) {
+          setIsPinned(true);
+          scrollAccumulatorRef.current = totalScrollNeeded;
+          setScrollProgress(1);
+          setCurrentFrame(endFrame);
+        }
+
+        if (isPinned) {
+          e.preventDefault();
+
+          scrollAccumulatorRef.current += touchDelta * 1.5;
+          scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
+
+          const progress = scrollAccumulatorRef.current / totalScrollNeeded;
+          setScrollProgress(progress);
+
+          const frame = Math.round(startFrame + progress * (endFrame - startFrame));
+          setCurrentFrame(frame);
+
+          if (progress <= 0) {
+            animationCompleteRef.current = false;
+            setIsPinned(false);
+          }
+        }
+      }
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, [imagesLoaded, isPinned, scrollProgress]);
 
   return (
-    <section
-      id="hero-section"
-      ref={sectionRef}
-      className="relative w-full min-h-screen overflow-hidden"
-    >
+    <>
+      {/* Spacer to prevent layout shift when section is pinned */}
+      {isPinned && <div style={{ height: '100vh' }} />}
+
+      <section
+        id="hero-section"
+        ref={sectionRef}
+        className={`w-full min-h-screen overflow-hidden transition-all duration-300 ${
+          isPinned
+            ? 'fixed top-0 left-0 right-0 z-50'
+            : 'relative'
+        }`}
+        style={{
+          height: isPinned ? '100vh' : 'auto'
+        }}
+      >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-azul-principal via-azul-principal/90 to-azul-principal"></div>
 
       {/* Decorative gradient orbs */}
       <div className="absolute top-1/4 -left-32 w-64 h-64 bg-verde-neon/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-1/4 -right-32 w-64 h-64 bg-verde-neon/5 rounded-full blur-3xl"></div>
+
+      {/* Scroll Progress Indicator - Only visible when pinned */}
+      {isPinned && (
+        <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center space-y-2">
+          <div className="w-1 h-32 bg-white/20 rounded-full overflow-hidden">
+            <div
+              className="w-full bg-gradient-to-b from-verde-neon to-verde-neon/70 transition-all duration-100 ease-out"
+              style={{ height: `${scrollProgress * 100}%` }}
+            ></div>
+          </div>
+          <p className="text-white/50 text-xs font-inter rotate-90 whitespace-nowrap mt-8">
+            Scroll {Math.round(scrollProgress * 100)}%
+          </p>
+        </div>
+      )}
 
       {/* Loading Overlay - Mostrar mientras se cargan las imágenes */}
       {!imagesLoaded && (
@@ -191,7 +350,8 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-    </section>
+      </section>
+    </>
   );
 };
 
