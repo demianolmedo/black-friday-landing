@@ -188,10 +188,12 @@ const HeroSection = () => {
           }
         }
       }
-      // If mouse is NOT over image but we're pinned, allow normal scroll
+      // If mouse is NOT over image but we're pinned, deactivate pin to allow normal scroll
       else if (isPinned && !isMouseOverImage && !animationCompleteRef.current) {
-        // Mouse left the image area - allow normal scroll by not preventing default
-        // The page will scroll naturally
+        // Mouse left the image area - deactivate pin so page can scroll normally
+        setIsPinned(false);
+        setShowOverlay(false);
+        // Don't reset animationCompleteRef or scrollAccumulatorRef - preserve progress
       } else if (animationCompleteRef.current && e.deltaY < 0 && window.scrollY <= window.innerHeight + bufferScrollNeeded && isMouseOverImage) {
         // Re-entering from below (scrolling up) - only if mouse is over image
         if (!isPinned) {
@@ -234,9 +236,12 @@ const HeroSection = () => {
           }
         }
       }
-      // If mouse is NOT over image during reverse scroll, allow normal scroll
+      // If mouse is NOT over image during reverse scroll, deactivate pin
       else if (isPinned && !isMouseOverImage && animationCompleteRef.current) {
-        // Mouse left the image area during reverse scroll - allow normal scroll
+        // Mouse left the image area during reverse scroll - deactivate pin
+        setIsPinned(false);
+        setShowOverlay(false);
+        // Don't reset animationCompleteRef or scrollAccumulatorRef - preserve progress
       }
     };
 
