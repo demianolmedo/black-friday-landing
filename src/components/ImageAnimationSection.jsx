@@ -405,7 +405,7 @@ const ImageAnimationSection = () => {
           </div>
         )}
 
-        <div className={`relative z-10 w-full max-w-2xl mx-auto px-8 transition-opacity duration-700 ${imagesLoaded ? 'opacity-100' : 'opacity-0'}`}>
+        <div className={`relative z-10 w-[90vw] mx-auto transition-opacity duration-700 ${imagesLoaded ? 'opacity-100' : 'opacity-0'}`}>
           <div ref={imageContainerRef} className="relative w-full aspect-square">
             <div className="absolute inset-0 bg-verde-neon/20 blur-3xl rounded-full"></div>
 
