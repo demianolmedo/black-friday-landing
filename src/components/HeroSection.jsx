@@ -301,7 +301,7 @@ const HeroSection = () => {
         e.stopPropagation();
 
         // Accumulate the touch delta (multiply for better sensitivity on mobile)
-        const sensitivity = 6.0;
+        const sensitivity = 5.0;
         scrollAccumulatorRef.current += touchDelta * sensitivity;
         scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
 
