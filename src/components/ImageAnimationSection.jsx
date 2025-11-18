@@ -65,10 +65,10 @@ const ImageAnimationSection = () => {
       const sectionHeight = rect.height;
       const windowHeight = window.innerHeight;
 
-      // Cuando la sección está en la parte superior del viewport, progreso = 0
-      // Cuando la sección sale por arriba completamente, progreso = 1
+      // Extender el rango de scroll para que la animación sea más lenta
+      // La animación ahora necesita 3x más scroll para completarse
       const scrollStart = windowHeight / 2; // Empieza cuando llega a la mitad
-      const scrollEnd = -sectionHeight / 2; // Termina cuando sale por arriba
+      const scrollEnd = -sectionHeight * 2.5; // Termina mucho después de salir (animación más lenta)
 
       let progress = 0;
 
