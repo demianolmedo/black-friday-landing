@@ -80,6 +80,25 @@ const HeroSection = () => {
     preloadImages();
   }, [isMobile]);
 
+  // Lock/unlock body scroll on mobile
+  useEffect(() => {
+    if (isPinned && isMobile) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    };
+  }, [isPinned, isMobile]);
+
   // Advanced scroll-pinning effect with buffer zone and smooth fade
   useEffect(() => {
     if (!imagesLoaded) return;
@@ -200,8 +219,20 @@ const HeroSection = () => {
     let lastTouchY = 0;
 
     const handleTouchStart = (e) => {
+      if (!sectionRef.current) return;
+
+      const section = sectionRef.current;
+      const rect = section.getBoundingClientRect();
+      const isAtTop = rect.top <= 0 && rect.bottom > 0;
+
       touchStartY = e.touches[0].clientY;
       lastTouchY = touchStartY;
+
+      // Prevent default on touch start if we're in the pinned area
+      if ((isAtTop && !animationCompleteRef.current) ||
+          (animationCompleteRef.current && window.scrollY <= window.innerHeight + bufferScrollNeeded)) {
+        e.preventDefault();
+      }
     };
 
     const handleTouchMove = (e) => {
@@ -226,7 +257,7 @@ const HeroSection = () => {
         if (isPinned) {
           e.preventDefault();
 
-          scrollAccumulatorRef.current += touchDelta * 1.5;
+          scrollAccumulatorRef.current += touchDelta * 2.0;
           scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
 
           // Update animation progress
@@ -263,7 +294,7 @@ const HeroSection = () => {
         if (isPinned) {
           e.preventDefault();
 
-          scrollAccumulatorRef.current += touchDelta * 1.5;
+          scrollAccumulatorRef.current += touchDelta * 2.0;
           scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
 
           // Update animation progress
@@ -291,7 +322,7 @@ const HeroSection = () => {
     };
 
     window.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchstart', handleTouchStart, { passive: false });
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
 
     return () => {
@@ -333,6 +364,7 @@ const HeroSection = () => {
         }`}
         style={{
           height: isPinned ? '100vh' : 'auto',
+          touchAction: isPinned ? 'none' : 'auto',
           transition: prefersReducedMotion
             ? 'none'
             : 'all 600ms cubic-bezier(0.4, 0.0, 0.2, 1)',
