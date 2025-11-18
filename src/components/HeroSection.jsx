@@ -12,6 +12,7 @@ const HeroSection = () => {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   const sectionRef = useRef(null);
+  const imageContainerRef = useRef(null);
   const scrollAccumulatorRef = useRef(0);
   const lastScrollYRef = useRef(0);
   const animationCompleteRef = useRef(false);
@@ -106,12 +107,13 @@ const HeroSection = () => {
     const startFrame = 100;
     const endFrame = 129;
     const totalFrames = endFrame - startFrame + 1; // 30 frames
-    const scrollPerFrame = 25; // Pixels to scroll per frame (reduced for smoother mobile)
-    const animationScrollNeeded = totalFrames * scrollPerFrame; // 750px for animation
-    const bufferScrollNeeded = 300; // Extra 300px buffer zone for smooth fade
-    const totalScrollNeeded = animationScrollNeeded + bufferScrollNeeded; // 1050px total
+    const scrollPerFrame = 15; // Pixels to scroll per frame (highly optimized for mobile)
+    const animationScrollNeeded = totalFrames * scrollPerFrame; // 450px for animation
+    const bufferScrollNeeded = 150; // Extra 150px buffer zone for smooth fade
+    const totalScrollNeeded = animationScrollNeeded + bufferScrollNeeded; // 600px total
 
     let ticking = false;
+    let isOverImage = false;
 
     const updateOverlayOpacity = (scrollAccumulator) => {
       // Calculate overlay opacity based on scroll position
@@ -127,7 +129,17 @@ const HeroSection = () => {
     };
 
     const handleWheel = (e) => {
-      if (!sectionRef.current) return;
+      if (!sectionRef.current || !imageContainerRef.current) return;
+
+      // Check if mouse is over the image container
+      const imageRect = imageContainerRef.current.getBoundingClientRect();
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+      const isMouseOverImage =
+        mouseX >= imageRect.left &&
+        mouseX <= imageRect.right &&
+        mouseY >= imageRect.top &&
+        mouseY <= imageRect.bottom;
 
       const section = sectionRef.current;
       const rect = section.getBoundingClientRect();
@@ -135,7 +147,8 @@ const HeroSection = () => {
       // Check if section is at the top of viewport
       const isAtTop = rect.top <= 0 && rect.bottom > 0;
 
-      if (isAtTop && !animationCompleteRef.current) {
+      // Only activate pin if mouse is over image AND section is at top
+      if (isAtTop && !animationCompleteRef.current && isMouseOverImage) {
         // Entering pin phase from top
         if (!isPinned) {
           setIsPinned(true);
@@ -148,7 +161,8 @@ const HeroSection = () => {
           e.preventDefault();
 
           const delta = e.deltaY;
-          scrollAccumulatorRef.current += delta;
+          const desktopSensitivity = 1.2;
+          scrollAccumulatorRef.current += delta * desktopSensitivity;
           scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
 
           // Update animation progress (capped at frame animation zone)
@@ -187,7 +201,8 @@ const HeroSection = () => {
           e.preventDefault();
 
           const delta = e.deltaY;
-          scrollAccumulatorRef.current += delta;
+          const desktopSensitivity = 1.2;
+          scrollAccumulatorRef.current += delta * desktopSensitivity;
           scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
 
           // Update animation progress
@@ -219,17 +234,32 @@ const HeroSection = () => {
     let isTouchActive = false;
 
     const handleTouchStart = (e) => {
-      if (!sectionRef.current) return;
+      if (!sectionRef.current || !imageContainerRef.current) return;
+
+      const touch = e.touches[0];
+      const touchX = touch.clientX;
+      const touchY = touch.clientY;
+
+      // Check if touch is over the image container
+      const imageRect = imageContainerRef.current.getBoundingClientRect();
+      const isTouchOverImage =
+        touchX >= imageRect.left &&
+        touchX <= imageRect.right &&
+        touchY >= imageRect.top &&
+        touchY <= imageRect.bottom;
+
+      // Store this for use in touchmove
+      isOverImage = isTouchOverImage;
 
       const section = sectionRef.current;
       const rect = section.getBoundingClientRect();
       const isAtTop = rect.top <= 10 && rect.bottom > 0; // Slightly more lenient for mobile
 
-      lastTouchY = e.touches[0].clientY;
+      lastTouchY = touch.clientY;
       isTouchActive = true;
 
-      // Check if we should enter pinned mode
-      if (isAtTop && !animationCompleteRef.current && !isPinned) {
+      // Check if we should enter pinned mode (only if touching image)
+      if (isAtTop && !animationCompleteRef.current && !isPinned && isTouchOverImage) {
         setIsPinned(true);
         setShowOverlay(true);
         scrollAccumulatorRef.current = 0;
@@ -243,6 +273,11 @@ const HeroSection = () => {
     const handleTouchMove = (e) => {
       if (!sectionRef.current || !isTouchActive) return;
 
+      // Only process if the initial touch was over the image
+      if (!isOverImage && !isPinned) {
+        return; // Allow normal scroll if not touching image
+      }
+
       const section = sectionRef.current;
       const rect = section.getBoundingClientRect();
       const isAtTop = rect.top <= 10 && rect.bottom > 0; // Slightly more lenient for mobile
@@ -252,7 +287,7 @@ const HeroSection = () => {
       lastTouchY = touchCurrentY;
 
       // Forward scroll - animating from start to end
-      if (isAtTop && !animationCompleteRef.current) {
+      if (isAtTop && !animationCompleteRef.current && isOverImage) {
         // Enter pinned mode if not already
         if (!isPinned) {
           setIsPinned(true);
@@ -266,7 +301,7 @@ const HeroSection = () => {
         e.stopPropagation();
 
         // Accumulate the touch delta (multiply for better sensitivity on mobile)
-        const sensitivity = 3.0;
+        const sensitivity = 6.0;
         scrollAccumulatorRef.current += touchDelta * sensitivity;
         scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
 
@@ -291,7 +326,7 @@ const HeroSection = () => {
             if (setShowOverlay) {
               setShowOverlay(false);
             }
-          }, 800);
+          }, 600);
         }
       }
       // Reverse scroll - scrolling back up through animation
@@ -308,7 +343,7 @@ const HeroSection = () => {
         e.preventDefault();
         e.stopPropagation();
 
-        const sensitivity = 3.0;
+        const sensitivity = 6.0;
         scrollAccumulatorRef.current += touchDelta * sensitivity;
         scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
 
@@ -333,7 +368,7 @@ const HeroSection = () => {
             if (setShowOverlay) {
               setShowOverlay(false);
             }
-          }, 800);
+          }, 600);
         }
       }
       // If we're in pinned mode but shouldn't be, allow natural scroll to happen
@@ -351,20 +386,37 @@ const HeroSection = () => {
 
     const handleTouchEnd = (e) => {
       isTouchActive = false;
+      // isOverImage = false; // Keep it to maintain state between touches
       // Don't reset lastTouchY or scrollAccumulatorRef here - this was the bug!
       // The accumulator should persist between touch sessions
+    };
+
+    // Handle navigation clicks - disable pin when clicking menu items
+    const handleNavClick = (e) => {
+      const target = e.target;
+      // Check if click is on a navigation link
+      if (target.tagName === 'A' && target.hash) {
+        if (isPinned) {
+          setIsPinned(false);
+          setShowOverlay(false);
+          animationCompleteRef.current = true;
+          scrollAccumulatorRef.current = totalScrollNeeded;
+        }
+      }
     };
 
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchstart', handleTouchStart, { passive: false });
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
     window.addEventListener('touchend', handleTouchEnd, { passive: false });
+    document.addEventListener('click', handleNavClick, true); // Capture phase to catch early
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
+      document.removeEventListener('click', handleNavClick, true);
     };
   }, [imagesLoaded, isPinned, scrollProgress]);
 
@@ -385,7 +437,7 @@ const HeroSection = () => {
             opacity: overlayOpacity,
             transition: prefersReducedMotion
               ? 'none'
-              : 'opacity 800ms cubic-bezier(0.4, 0.0, 0.2, 1)',
+              : 'opacity 500ms cubic-bezier(0.4, 0.0, 0.2, 1)',
           }}
         />
       )}
@@ -403,7 +455,7 @@ const HeroSection = () => {
           touchAction: isPinned ? 'none' : 'auto',
           transition: prefersReducedMotion
             ? 'none'
-            : 'all 600ms cubic-bezier(0.4, 0.0, 0.2, 1)',
+            : 'all 400ms cubic-bezier(0.4, 0.0, 0.2, 1)',
         }}
       >
       {/* Background gradient */}
@@ -494,7 +546,7 @@ const HeroSection = () => {
             </div>
 
             {/* Animated image sequence */}
-            <div className="relative w-full max-w-2xl mx-auto mt-12 animate-fade-in">
+            <div ref={imageContainerRef} className="relative w-full max-w-2xl mx-auto mt-12 animate-fade-in">
               <div className="relative w-full aspect-square">
                 {/* Glow effect */}
                 <div className="absolute inset-0 bg-verde-neon/20 blur-3xl rounded-full"></div>
@@ -503,7 +555,11 @@ const HeroSection = () => {
                 <img
                   src={isMobile ? `/cachetada-movil/${currentFrame}.png` : `/assets/Fondos e imagenes/${currentFrame}.png`}
                   alt="RentSmart Black Friday - 50% OFF en alquiler de autos Miami Orlando"
-                  className="relative z-10 w-full h-full object-contain drop-shadow-2xl transition-all duration-50 ease-linear"
+                  className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
+                  style={{
+                    transition: 'opacity 30ms ease-out',
+                    willChange: 'opacity'
+                  }}
                   loading="eager"
                   fetchpriority="high"
                   width="800"
