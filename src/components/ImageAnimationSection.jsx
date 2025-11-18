@@ -346,10 +346,11 @@ const ImageAnimationSection = () => {
         id="image-animation-section"
         ref={sectionRef}
         className={`w-full h-[50vh] flex items-center justify-center ${
-          isPinned ? 'fixed top-0 left-0 right-0 z-50' : 'relative'
+          isPinned ? 'fixed left-0 right-0 z-50' : 'relative'
         }`}
         style={{
-          height: isPinned ? '100vh' : '50vh',
+          height: '50vh',
+          top: isPinned ? '50vh' : 'auto',
           touchAction: isPinned ? 'none' : 'auto',
           transition: prefersReducedMotion
             ? 'none'
