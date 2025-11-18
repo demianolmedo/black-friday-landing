@@ -157,7 +157,8 @@ const HeroSection = () => {
           setOverlayOpacity(1);
         }
 
-        if (isPinned) {
+        // Only prevent default scroll if mouse is still over image
+        if (isPinned && isMouseOverImage) {
           e.preventDefault();
 
           const delta = e.deltaY;
@@ -186,8 +187,13 @@ const HeroSection = () => {
             }, 700); // Slightly longer than transition duration
           }
         }
-      } else if (animationCompleteRef.current && e.deltaY < 0 && window.scrollY <= window.innerHeight + bufferScrollNeeded) {
-        // Re-entering from below (scrolling up) - enter buffer zone first
+      }
+      // If mouse is NOT over image but we're pinned, allow normal scroll
+      else if (isPinned && !isMouseOverImage && !animationCompleteRef.current) {
+        // Mouse left the image area - allow normal scroll by not preventing default
+        // The page will scroll naturally
+      } else if (animationCompleteRef.current && e.deltaY < 0 && window.scrollY <= window.innerHeight + bufferScrollNeeded && isMouseOverImage) {
+        // Re-entering from below (scrolling up) - only if mouse is over image
         if (!isPinned) {
           setIsPinned(true);
           setShowOverlay(true);
@@ -197,7 +203,8 @@ const HeroSection = () => {
           setOverlayOpacity(0);
         }
 
-        if (isPinned) {
+        // Only prevent default scroll if mouse is still over image
+        if (isPinned && isMouseOverImage) {
           e.preventDefault();
 
           const delta = e.deltaY;
@@ -226,6 +233,10 @@ const HeroSection = () => {
             }, 700); // Slightly longer than transition duration
           }
         }
+      }
+      // If mouse is NOT over image during reverse scroll, allow normal scroll
+      else if (isPinned && !isMouseOverImage && animationCompleteRef.current) {
+        // Mouse left the image area during reverse scroll - allow normal scroll
       }
     };
 
