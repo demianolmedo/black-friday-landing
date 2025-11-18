@@ -2,25 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 
 const ImageAnimationSection = () => {
   const [currentFrame, setCurrentFrame] = useState(100);
-  const [isMobile, setIsMobile] = useState(false);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
 
   const sectionRef = useRef(null);
-
-  // Detectar si es móvil
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-
-    return () => {
-      window.removeEventListener('resize', checkMobile);
-    };
-  }, []);
 
   // Precargar todas las imágenes de la secuencia
   useEffect(() => {
@@ -29,7 +14,7 @@ const ImageAnimationSection = () => {
     const totalFrames = endFrame - startFrame + 1;
     let loadedCount = 0;
 
-    const basePath = isMobile ? '/cachetada-movil' : '/assets/Fondos e imagenes';
+    const basePath = '/cachetadas-daniel';
 
     const preloadImages = () => {
       for (let i = startFrame; i <= endFrame; i++) {
@@ -59,7 +44,7 @@ const ImageAnimationSection = () => {
     };
 
     preloadImages();
-  }, [isMobile]);
+  }, []);
 
   // Scroll simple - cambiar frames según posición
   useEffect(() => {
@@ -150,7 +135,7 @@ const ImageAnimationSection = () => {
           <div className="absolute inset-0 bg-verde-neon/20 blur-3xl rounded-full"></div>
 
           <img
-            src={isMobile ? `/cachetada-movil/${currentFrame}.png` : `/assets/Fondos e imagenes/${currentFrame}.png`}
+            src={`/cachetadas-daniel/${currentFrame}.png`}
             alt="RentSmart Black Friday - Animación de descuento 50% OFF"
             className="relative z-30 max-w-full max-h-full object-contain drop-shadow-2xl"
             style={{
