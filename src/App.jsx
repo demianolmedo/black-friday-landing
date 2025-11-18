@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
+import ImageAnimationSection from './components/ImageAnimationSection';
 import DescuentosSection from './components/DescuentosSection';
 import ProblemaSection from './components/ProblemaSection';
 import SolucionSection from './components/SolucionSection';
@@ -27,8 +28,11 @@ function HomePage() {
       <Navbar />
 
       <main className="pt-0">
-        {/* Hero Section with scroll animation */}
+        {/* Hero Section - Text only */}
         <HeroSection />
+
+        {/* Image Animation Section - Scroll-pinning effect */}
+        <ImageAnimationSection />
 
         {/* Descuentos Section - Countdown */}
         <DescuentosSection onCTAClick={scrollToForm} />
