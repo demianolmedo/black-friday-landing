@@ -65,9 +65,9 @@ const ImageAnimationSection = () => {
       const sectionHeight = rect.height;
       const windowHeight = window.innerHeight;
 
-      // Rango de scroll más corto para que la animación sea más rápida
-      const scrollStart = windowHeight / 2; // Empieza cuando llega a la mitad
-      const scrollEnd = -sectionHeight * 0.15; // Termina más rápido (animación más rápida)
+      // Animación rápida: empieza apenas aparece y termina rápidamente
+      const scrollStart = windowHeight; // Empieza cuando aparece en pantalla
+      const scrollEnd = windowHeight * 0.3; // Termina muy rápido, en solo 30% de la pantalla de scroll
 
       let progress = 0;
 
