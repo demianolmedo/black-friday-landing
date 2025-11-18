@@ -214,39 +214,46 @@ const HeroSection = () => {
       }
     };
 
-    // Handle touch events for mobile with buffer zone
-    let touchStartY = 0;
+    // Handle touch events for mobile - Fixed to properly accumulate across touch sessions
     let lastTouchY = 0;
+    let isTouchActive = false;
 
     const handleTouchStart = (e) => {
       if (!sectionRef.current) return;
 
       const section = sectionRef.current;
       const rect = section.getBoundingClientRect();
-      const isAtTop = rect.top <= 0 && rect.bottom > 0;
+      const isAtTop = rect.top <= 10 && rect.bottom > 0; // Slightly more lenient for mobile
 
-      touchStartY = e.touches[0].clientY;
-      lastTouchY = touchStartY;
+      lastTouchY = e.touches[0].clientY;
+      isTouchActive = true;
 
-      // Prevent default on touch start if we're in the pinned area
-      if ((isAtTop && !animationCompleteRef.current) ||
-          (animationCompleteRef.current && window.scrollY <= window.innerHeight + bufferScrollNeeded)) {
-        e.preventDefault();
+      // Check if we should enter pinned mode
+      if (isAtTop && !animationCompleteRef.current && !isPinned) {
+        setIsPinned(true);
+        setShowOverlay(true);
+        scrollAccumulatorRef.current = 0;
+        setOverlayOpacity(1);
       }
+
+      // Don't preventDefault on touchstart - let it handle naturally
+      // Only prevent during touchmove if we're actually in the animation zone
     };
 
     const handleTouchMove = (e) => {
-      if (!sectionRef.current) return;
+      if (!sectionRef.current || !isTouchActive) return;
 
       const section = sectionRef.current;
       const rect = section.getBoundingClientRect();
-      const isAtTop = rect.top <= 0 && rect.bottom > 0;
+      const isAtTop = rect.top <= 10 && rect.bottom > 0; // Slightly more lenient for mobile
 
       const touchCurrentY = e.touches[0].clientY;
-      const touchDelta = lastTouchY - touchCurrentY;
+      const touchDelta = lastTouchY - touchCurrentY; // Positive = scroll down, Negative = scroll up
       lastTouchY = touchCurrentY;
 
+      // Forward scroll - animating from start to end
       if (isAtTop && !animationCompleteRef.current) {
+        // Enter pinned mode if not already
         if (!isPinned) {
           setIsPinned(true);
           setShowOverlay(true);
@@ -254,34 +261,38 @@ const HeroSection = () => {
           setOverlayOpacity(1);
         }
 
-        if (isPinned) {
-          e.preventDefault();
+        // We're in pinned animation mode
+        e.preventDefault();
+        e.stopPropagation();
 
-          scrollAccumulatorRef.current += touchDelta * 2.0;
-          scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
+        // Accumulate the touch delta (multiply for better sensitivity on mobile)
+        const sensitivity = 2.5;
+        scrollAccumulatorRef.current += touchDelta * sensitivity;
+        scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
 
-          // Update animation progress
-          const animationProgress = Math.min(scrollAccumulatorRef.current / animationScrollNeeded, 1);
-          setScrollProgress(animationProgress);
+        // Update animation progress
+        const animationProgress = Math.min(scrollAccumulatorRef.current / animationScrollNeeded, 1);
+        setScrollProgress(animationProgress);
 
-          const frame = Math.round(startFrame + animationProgress * (endFrame - startFrame));
-          setCurrentFrame(frame);
+        const frame = Math.round(startFrame + animationProgress * (endFrame - startFrame));
+        setCurrentFrame(frame);
 
-          // Update overlay opacity
-          updateOverlayOpacity(scrollAccumulatorRef.current);
+        // Update overlay opacity
+        updateOverlayOpacity(scrollAccumulatorRef.current);
 
-          // Check if fully complete (animation + buffer)
-          if (scrollAccumulatorRef.current >= totalScrollNeeded) {
-            animationCompleteRef.current = true;
-            setIsPinned(false);
-            setOverlayOpacity(0);
-            // Remove overlay from DOM after fade completes
-            setTimeout(() => {
-              setShowOverlay(false);
-            }, 700);
-          }
+        // Check if animation fully complete (including buffer zone)
+        if (scrollAccumulatorRef.current >= totalScrollNeeded) {
+          animationCompleteRef.current = true;
+          setIsPinned(false);
+          setOverlayOpacity(0);
+          isTouchActive = false;
+          setTimeout(() => {
+            setShowOverlay(false);
+          }, 700);
         }
-      } else if (animationCompleteRef.current && touchDelta < 0 && window.scrollY <= window.innerHeight + bufferScrollNeeded) {
+      }
+      // Reverse scroll - scrolling back up through animation
+      else if (animationCompleteRef.current && touchDelta < 0 && window.scrollY <= window.innerHeight + bufferScrollNeeded) {
         if (!isPinned) {
           setIsPinned(true);
           setShowOverlay(true);
@@ -291,44 +302,59 @@ const HeroSection = () => {
           setOverlayOpacity(0);
         }
 
-        if (isPinned) {
-          e.preventDefault();
+        e.preventDefault();
+        e.stopPropagation();
 
-          scrollAccumulatorRef.current += touchDelta * 2.0;
-          scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
+        const sensitivity = 2.5;
+        scrollAccumulatorRef.current += touchDelta * sensitivity;
+        scrollAccumulatorRef.current = Math.max(0, Math.min(totalScrollNeeded, scrollAccumulatorRef.current));
 
-          // Update animation progress
-          const animationProgress = Math.min(scrollAccumulatorRef.current / animationScrollNeeded, 1);
-          setScrollProgress(animationProgress);
+        // Update animation progress
+        const animationProgress = Math.min(scrollAccumulatorRef.current / animationScrollNeeded, 1);
+        setScrollProgress(animationProgress);
 
-          const frame = Math.round(startFrame + animationProgress * (endFrame - startFrame));
-          setCurrentFrame(frame);
+        const frame = Math.round(startFrame + animationProgress * (endFrame - startFrame));
+        setCurrentFrame(frame);
 
-          // Update overlay opacity (reverse fade)
-          updateOverlayOpacity(scrollAccumulatorRef.current);
+        // Update overlay opacity (reverse fade)
+        updateOverlayOpacity(scrollAccumulatorRef.current);
 
-          // Check if back to start
-          if (scrollAccumulatorRef.current <= 0) {
-            animationCompleteRef.current = false;
-            setIsPinned(false);
-            setOverlayOpacity(1);
-            // Remove overlay from DOM after fade completes
-            setTimeout(() => {
-              setShowOverlay(false);
-            }, 700);
-          }
+        // Check if back to start
+        if (scrollAccumulatorRef.current <= 0) {
+          animationCompleteRef.current = false;
+          setIsPinned(false);
+          setOverlayOpacity(1);
+          isTouchActive = false;
+          setTimeout(() => {
+            setShowOverlay(false);
+          }, 700);
         }
       }
+      // If we're in pinned mode but shouldn't be, allow natural scroll to happen
+      else if (isPinned && touchDelta < 0 && scrollAccumulatorRef.current <= 0) {
+        setIsPinned(false);
+        setShowOverlay(false);
+        animationCompleteRef.current = false;
+        isTouchActive = false;
+      }
+    };
+
+    const handleTouchEnd = (e) => {
+      isTouchActive = false;
+      // Don't reset lastTouchY or scrollAccumulatorRef here - this was the bug!
+      // The accumulator should persist between touch sessions
     };
 
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchstart', handleTouchStart, { passive: false });
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('touchend', handleTouchEnd, { passive: false });
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
     };
   }, [imagesLoaded, isPinned, scrollProgress]);
 
