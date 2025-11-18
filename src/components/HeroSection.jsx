@@ -144,12 +144,6 @@ const HeroSection = () => {
         <div className="relative z-10 max-w-7xl mx-auto px-8 sm:px-6 lg:px-8 w-full">
           <div className="flex flex-col items-center justify-center text-center space-y-8">
 
-            {/* Green dot indicator */}
-            <div className="flex items-center space-x-2 animate-fade-in">
-              <div className="w-3 h-3 bg-verde-neon rounded-full animate-pulse-slow"></div>
-              <div className="h-px w-12 bg-gradient-to-r from-verde-neon to-transparent"></div>
-            </div>
-
             {/* Main Heading - 50% OFF */}
             <div className="space-y-4 animate-slide-up">
               <h1 className="flex items-end justify-center font-black tracking-tight leading-none font-outfit">
