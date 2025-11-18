@@ -8,6 +8,7 @@ const HeroSection = () => {
   const [isPinned, setIsPinned] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [overlayOpacity, setOverlayOpacity] = useState(1);
+  const [showOverlay, setShowOverlay] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   const sectionRef = useRef(null);
@@ -88,8 +89,8 @@ const HeroSection = () => {
     const totalFrames = endFrame - startFrame + 1; // 30 frames
     const scrollPerFrame = 30; // Pixels to scroll per frame
     const animationScrollNeeded = totalFrames * scrollPerFrame; // 900px for animation
-    const bufferScrollNeeded = 200; // Extra 200px buffer zone for smooth fade
-    const totalScrollNeeded = animationScrollNeeded + bufferScrollNeeded; // 1100px total
+    const bufferScrollNeeded = 400; // Extra 400px buffer zone for smooth fade
+    const totalScrollNeeded = animationScrollNeeded + bufferScrollNeeded; // 1300px total
 
     let ticking = false;
 
@@ -119,6 +120,7 @@ const HeroSection = () => {
         // Entering pin phase from top
         if (!isPinned) {
           setIsPinned(true);
+          setShowOverlay(true);
           scrollAccumulatorRef.current = 0;
           setOverlayOpacity(1);
         }
@@ -145,12 +147,17 @@ const HeroSection = () => {
             animationCompleteRef.current = true;
             setIsPinned(false);
             setOverlayOpacity(0);
+            // Remove overlay from DOM after fade completes
+            setTimeout(() => {
+              setShowOverlay(false);
+            }, 700); // Slightly longer than transition duration
           }
         }
       } else if (animationCompleteRef.current && e.deltaY < 0 && window.scrollY <= window.innerHeight + bufferScrollNeeded) {
         // Re-entering from below (scrolling up) - enter buffer zone first
         if (!isPinned) {
           setIsPinned(true);
+          setShowOverlay(true);
           scrollAccumulatorRef.current = totalScrollNeeded;
           setScrollProgress(1);
           setCurrentFrame(endFrame);
@@ -179,6 +186,10 @@ const HeroSection = () => {
             animationCompleteRef.current = false;
             setIsPinned(false);
             setOverlayOpacity(1);
+            // Remove overlay from DOM after fade completes
+            setTimeout(() => {
+              setShowOverlay(false);
+            }, 700); // Slightly longer than transition duration
           }
         }
       }
@@ -207,6 +218,7 @@ const HeroSection = () => {
       if (isAtTop && !animationCompleteRef.current) {
         if (!isPinned) {
           setIsPinned(true);
+          setShowOverlay(true);
           scrollAccumulatorRef.current = 0;
           setOverlayOpacity(1);
         }
@@ -232,11 +244,16 @@ const HeroSection = () => {
             animationCompleteRef.current = true;
             setIsPinned(false);
             setOverlayOpacity(0);
+            // Remove overlay from DOM after fade completes
+            setTimeout(() => {
+              setShowOverlay(false);
+            }, 700);
           }
         }
       } else if (animationCompleteRef.current && touchDelta < 0 && window.scrollY <= window.innerHeight + bufferScrollNeeded) {
         if (!isPinned) {
           setIsPinned(true);
+          setShowOverlay(true);
           scrollAccumulatorRef.current = totalScrollNeeded;
           setScrollProgress(1);
           setCurrentFrame(endFrame);
@@ -264,6 +281,10 @@ const HeroSection = () => {
             animationCompleteRef.current = false;
             setIsPinned(false);
             setOverlayOpacity(1);
+            // Remove overlay from DOM after fade completes
+            setTimeout(() => {
+              setShowOverlay(false);
+            }, 700);
           }
         }
       }
@@ -286,7 +307,7 @@ const HeroSection = () => {
       {isPinned && <div style={{ height: '100vh' }} />}
 
       {/* Dark overlay to hide sections below when pinned - with smooth fade transition */}
-      {isPinned && (
+      {showOverlay && (
         <div
           className="fixed inset-0 bg-azul-principal z-40"
           style={{
@@ -297,7 +318,7 @@ const HeroSection = () => {
             opacity: overlayOpacity,
             transition: prefersReducedMotion
               ? 'none'
-              : 'opacity 600ms cubic-bezier(0.4, 0.0, 0.2, 1)',
+              : 'opacity 800ms cubic-bezier(0.4, 0.0, 0.2, 1)',
           }}
         />
       )}
