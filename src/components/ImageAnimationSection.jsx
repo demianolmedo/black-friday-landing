@@ -328,19 +328,7 @@ const ImageAnimationSection = () => {
 
   return (
     <>
-      {isPinned && <div style={{ height: '100vh' }} />}
-
-      {showOverlay && (
-        <div
-          className="fixed inset-0 bg-azul-principal z-40"
-          style={{
-            opacity: overlayOpacity,
-            transition: prefersReducedMotion
-              ? 'none'
-              : 'opacity 500ms cubic-bezier(0.4, 0.0, 0.2, 1)',
-          }}
-        />
-      )}
+      {isPinned && <div style={{ height: '50vh' }} />}
 
       <section
         id="image-animation-section"
@@ -359,8 +347,21 @@ const ImageAnimationSection = () => {
       >
         <div className="absolute inset-0 bg-gradient-to-b from-azul-principal via-azul-principal/90 to-azul-principal"></div>
 
+        {/* Overlay solo para esta sección */}
+        {showOverlay && (
+          <div
+            className="absolute inset-0 bg-azul-principal z-10"
+            style={{
+              opacity: overlayOpacity,
+              transition: prefersReducedMotion
+                ? 'none'
+                : 'opacity 500ms cubic-bezier(0.4, 0.0, 0.2, 1)',
+            }}
+          />
+        )}
+
         {isPinned && (
-          <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center space-y-2">
+          <div className="fixed right-8 top-1/2 -translate-y-1/2 z-[60] flex flex-col items-center space-y-2">
             <div className="w-1 h-32 bg-white/20 rounded-full overflow-hidden">
               <div
                 className="w-full bg-gradient-to-b from-verde-neon to-verde-neon/70 transition-all duration-100 ease-out"
@@ -374,7 +375,7 @@ const ImageAnimationSection = () => {
         )}
 
         {!imagesLoaded && (
-          <div className="absolute inset-0 z-50 flex items-center justify-center bg-azul-principal">
+          <div className="absolute inset-0 z-[70] flex items-center justify-center bg-azul-principal">
             <div className="flex flex-col items-center space-y-6">
               <div className="text-center">
                 <h2 className="text-verde-neon font-black text-4xl md:text-6xl font-outfit neon-text">
@@ -403,14 +404,14 @@ const ImageAnimationSection = () => {
           </div>
         )}
 
-        <div className={`relative z-10 w-[90vw] h-[45vh] mx-auto transition-opacity duration-700 ${imagesLoaded ? 'opacity-100' : 'opacity-0'}`}>
+        <div className={`relative z-20 w-[90vw] h-[45vh] mx-auto transition-opacity duration-700 ${imagesLoaded ? 'opacity-100' : 'opacity-0'}`}>
           <div ref={imageContainerRef} className="relative w-full h-full flex items-center justify-center">
             <div className="absolute inset-0 bg-verde-neon/20 blur-3xl rounded-full"></div>
 
             <img
               src={isMobile ? `/cachetada-movil/${currentFrame}.png` : `/assets/Fondos e imagenes/${currentFrame}.png`}
               alt="RentSmart Black Friday - Animación de descuento 50% OFF"
-              className="relative z-10 max-w-full max-h-full object-contain drop-shadow-2xl"
+              className="relative z-30 max-w-full max-h-full object-contain drop-shadow-2xl"
               style={{
                 transition: 'opacity 30ms ease-out',
                 willChange: 'opacity'
