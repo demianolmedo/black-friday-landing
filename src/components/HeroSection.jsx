@@ -15,7 +15,7 @@ const HeroSection = () => {
 
       {/* Content container */}
       <div className="relative w-full h-full flex items-center justify-center pt-24 pb-4">
-        <div className="relative z-10 max-w-7xl mx-auto px-8 sm:px-6 lg:px-8 w-full">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="flex flex-col items-center justify-center text-center space-y-3">
 
             {/* Main Heading - 50% OFF */}
