@@ -30,7 +30,7 @@ const ProblemaSection = ({ onCTAClick }) => {
               background: 'linear-gradient(90deg, #021938 0%, #0f2847 15%, #2a5580 35%, #6B95BF 50%, #2a5580 65%, #0f2847 85%, #021938 100%)'
             }}>
               <div className="text-center space-y-2">
-                <p className="text-sm sm:text-base text-white font-inter">
+                <p className="text-xl text-white font-inter">
                   Sí, todos hemos pasado por eso
                 </p>
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white font-outfit">

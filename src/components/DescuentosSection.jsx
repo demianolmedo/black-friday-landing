@@ -134,7 +134,7 @@ const DescuentosSection = ({ onCTAClick }) => {
 
             {/* TARJETA 1: Hasta 50% OFF */}
             <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto min-w-[320px] px-6 sm:px-8 md:px-12 py-6">
-              <p className="text-white text-sm font-inter mb-4 tracking-wide">
+              <p className="text-white text-xl font-inter mb-4 tracking-wide">
                 Hasta
               </p>
               <h3 className="text-white font-outfit font-bold text-5xl leading-none" style={{ transform: 'skewX(-15deg)', transformOrigin: 'center', display: 'inline-block' }}>
@@ -191,7 +191,7 @@ const DescuentosSection = ({ onCTAClick }) => {
 
             {/* TARJETA 2: 100 reservas */}
             <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto min-w-[320px] px-6 sm:px-8 md:px-12 py-6">
-              <p className="text-white text-sm font-inter mb-4 tracking-wide">
+              <p className="text-white text-xl font-inter mb-4 tracking-wide">
                 solo para las primeras
               </p>
               <h3 className="text-white font-outfit font-bold text-5xl leading-none mb-5" style={{ transform: 'skewX(-15deg)', transformOrigin: 'center', display: 'inline-block' }}>
@@ -268,7 +268,7 @@ const DescuentosSection = ({ onCTAClick }) => {
           {/* Subtitle text */}
           <div className="text-center mt-6 px-4">
             <p className="text-white text-lg sm:text-xl font-inter leading-relaxed">
-              Porque el verdadero drama... no está en la novela
+              Porque el verdadero drama... no está en una novela
             </p>
             <p className="text-white text-lg sm:text-xl font-inter font-bold leading-relaxed mt-1">
               Está en alquilar tu auto sin drama
