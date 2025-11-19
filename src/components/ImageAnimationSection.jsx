@@ -95,7 +95,7 @@ const ImageAnimationSection = () => {
     <section
       id="image-animation-section"
       ref={sectionRef}
-      className="relative w-full h-[50vh] flex items-center justify-center"
+      className="relative w-full h-[50vh] flex items-center justify-center -mb-4 sm:mb-0"
     >
       <div className="absolute inset-0 bg-gradient-to-b from-azul-principal via-azul-principal/90 to-azul-principal"></div>
 

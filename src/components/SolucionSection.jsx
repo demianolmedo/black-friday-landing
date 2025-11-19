@@ -74,7 +74,7 @@ const SolucionSection = () => {
 
                 <div className="text-center space-y-3 text-lg sm:text-xl md:text-2xl text-white font-inter mt-12 sm:mt-16 md:mt-20">
                   <p>A los <span className="font-bold">abusos</span>, a las <span className="font-bold">letras pequeñas</span></p>
-                  <p>A los que creen que aun pueden <span className="font-bold">tratarte como si no supieras</span></p>
+                  <p>A los que creen que aún pueden <span className="font-bold">tratarte como si no supieras</span></p>
                   <p className="!mt-12 sm:!mt-16 md:!mt-20 font-bold">Empieza tu viaje sin drama</p>
                 </div>
               </div>
