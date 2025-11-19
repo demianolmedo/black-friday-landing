@@ -34,7 +34,7 @@ const ProblemaSection = ({ onCTAClick }) => {
                   Sí, todos hemos pasado por eso
                 </p>
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white font-outfit">
-                  ¿Por que tanta fila?
+                  Y duele más que una cachetada
                 </h2>
               </div>
             </div>
@@ -53,10 +53,10 @@ const ProblemaSection = ({ onCTAClick }) => {
             {/* First row - 2 cards */}
             <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
               <div className="relative glass-card glass-card-hover px-6 py-4 text-white/80 text-lg sm:text-xl md:text-2xl font-inter flex items-center speech-bubble">
-                ¿Y esta espera?
+                ¿Por que tanta fila?
               </div>
               <div className="relative glass-card glass-card-hover px-6 py-4 text-white/80 text-lg sm:text-xl md:text-2xl font-inter speech-bubble">
-                ¡No se supone que era rápido!
+                ¿No se supone que era rápido?
               </div>
             </div>
 
