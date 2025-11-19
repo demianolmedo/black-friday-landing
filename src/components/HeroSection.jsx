@@ -4,7 +4,7 @@ const HeroSection = () => {
   return (
     <section
       id="hero-section"
-      className="relative w-full h-[50vh] overflow-hidden mb-8"
+      className="relative w-full h-[50vh] overflow-visible mb-8"
     >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-azul-principal via-azul-principal/90 to-azul-principal"></div>
@@ -14,9 +14,9 @@ const HeroSection = () => {
       <div className="absolute bottom-1/4 -right-32 w-64 h-64 bg-verde-neon/5 rounded-full blur-3xl"></div>
 
       {/* Content container */}
-      <div className="relative w-full h-full flex items-center justify-center pt-12 sm:pt-20 2xl:pt-12 pb-2">
+      <div className="relative w-full h-full flex items-center justify-center pt-12 sm:pt-20 md:pt-8 lg:pt-10 xl:pt-16 2xl:pt-12 pb-2">
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="flex flex-col items-center justify-center text-center space-y-3">
+          <div className="flex flex-col items-center justify-center text-center space-y-3 md:space-y-1 lg:space-y-2 xl:space-y-3">
 
             {/* Main Heading - 50% OFF */}
             <div className="space-y-1 animate-slide-up">
