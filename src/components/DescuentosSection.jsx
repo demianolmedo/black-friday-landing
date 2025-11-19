@@ -127,7 +127,7 @@ const DescuentosSection = ({ onCTAClick }) => {
       <div className="absolute inset-0 bg-gradient-to-b from-azul-principal via-azul-principal/50 to-azul-principal"></div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center justify-center space-y-6 sm:space-y-8">
+        <div className="flex flex-col items-center justify-center space-y-10 sm:space-y-8">
 
           {/* Two Connected Cards */}
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-0 relative animate-scale-in">
@@ -167,7 +167,7 @@ const DescuentosSection = ({ onCTAClick }) => {
             </div>
 
             {/* LÍNEA VERTICAL (Mobile) */}
-            <div className="flex md:hidden items-center justify-center my-6">
+            <div className="flex md:hidden items-center justify-center my-3">
               <svg
                 width="8"
                 height="60"
