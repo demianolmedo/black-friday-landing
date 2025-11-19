@@ -133,7 +133,7 @@ const DescuentosSection = ({ onCTAClick }) => {
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-0 relative animate-scale-in">
 
             {/* TARJETA 1: Hasta 50% OFF */}
-            <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto min-w-[320px] px-12 py-6">
+            <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto min-w-[320px] px-6 sm:px-8 md:px-12 py-6">
               <p className="text-white text-sm font-inter mb-4 tracking-wide">
                 Hasta
               </p>
@@ -190,7 +190,7 @@ const DescuentosSection = ({ onCTAClick }) => {
             </div>
 
             {/* TARJETA 2: 100 reservas */}
-            <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto min-w-[320px] px-12 py-6">
+            <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto min-w-[320px] px-6 sm:px-8 md:px-12 py-6">
               <p className="text-white text-sm font-inter mb-4 tracking-wide">
                 solo para las primeras
               </p>
@@ -208,7 +208,7 @@ const DescuentosSection = ({ onCTAClick }) => {
           </div>
 
           {/* Countdown Card with Liquid Glass Effect */}
-          <div className="relative bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 transition-all duration-300 w-full max-w-2xl mx-auto px-12 py-6 animate-scale-in overflow-hidden">
+          <div className="relative bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 transition-all duration-300 w-full max-w-2xl mx-auto px-6 sm:px-8 md:px-12 py-6 animate-scale-in overflow-hidden">
 
             {/* Badge diagonal VIP (solo visible en fase 1 - antes del Black Friday) */}
             {phase === 'before' && (
