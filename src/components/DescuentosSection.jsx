@@ -197,10 +197,10 @@ const DescuentosSection = ({ onCTAClick }) => {
               <h3 className="text-white font-outfit font-bold text-5xl leading-none mb-5" style={{ transform: 'skewX(-15deg)', transformOrigin: 'center', display: 'inline-block' }}>
                 <span className="text-white">100</span> reservas
               </h3>
-              <p className="text-white text-base font-inter leading-relaxed mb-1">
+              <p className="text-white text-lg font-inter leading-relaxed mb-1">
                 las filas no esperan...
               </p>
-              <p className="text-white text-base font-inter leading-relaxed">
+              <p className="text-white text-lg font-inter leading-relaxed">
                 y estos precios tampoco
               </p>
             </div>
