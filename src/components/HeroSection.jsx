@@ -21,10 +21,10 @@ const HeroSection = () => {
             {/* Main Heading - 50% OFF */}
             <div className="space-y-1 animate-slide-up">
               <h1 className="flex items-end justify-center font-black tracking-tight leading-none font-outfit">
-                <span className="text-[8rem] sm:text-[8rem] md:text-[12rem] lg:text-[16rem] xl:text-[20rem] text-verde-neon drop-shadow-[0_0_40px_rgba(0,255,127,0.6)] neon-text">
+                <span className="text-[8rem] sm:text-[8rem] md:text-[9rem] lg:text-[11rem] xl:text-[20rem] text-verde-neon drop-shadow-[0_0_40px_rgba(0,255,127,0.6)] neon-text">
                   50%
                 </span>
-                <span className="text-[4rem] sm:text-[4rem] md:text-[6rem] lg:text-[8rem] xl:text-[10rem] text-blanco ml-2 mb-1">
+                <span className="text-[4rem] sm:text-[4rem] md:text-[4.5rem] lg:text-[5.5rem] xl:text-[10rem] text-blanco ml-2 mb-1">
                   off
                 </span>
               </h1>
@@ -33,12 +33,12 @@ const HeroSection = () => {
               <div className="h-px w-32 sm:w-48 mx-auto bg-gradient-to-r from-transparent via-verde-neon/50 to-transparent"></div>
 
               {/* Subtitle "cachetadas de" */}
-              <p className="text-3xl sm:text-3xl md:text-[33px] lg:text-[42px] xl:text-[54px] text-white font-medium font-inter tracking-wide leading-none m-0 mb-1">
+              <p className="text-3xl sm:text-3xl md:text-[28px] lg:text-[32px] xl:text-[54px] text-white font-medium font-inter tracking-wide leading-none m-0 mb-1">
                 cachetadas de
               </p>
 
               {/* DESCUENTOS% */}
-              <h2 className="text-[33px] sm:text-[33px] md:text-[36px] lg:text-[45px] xl:text-[57px] font-black text-blanco tracking-[0.3em] uppercase font-outfit leading-none m-0">
+              <h2 className="text-[33px] sm:text-[33px] md:text-[30px] lg:text-[35px] xl:text-[57px] font-black text-blanco tracking-[0.3em] uppercase font-outfit leading-none m-0">
                 DESCUENTOS<span className="text-verde-neon">%</span>
               </h2>
             </div>
