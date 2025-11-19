@@ -221,6 +221,7 @@ body {
 /* Smooth Scroll */
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 /* Scroll Padding for Fixed Header */

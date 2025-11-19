@@ -4,7 +4,7 @@ const HeroSection = () => {
   return (
     <section
       id="hero-section"
-      className="relative w-full h-[50vh] overflow-visible mb-8"
+      className="relative w-full h-[50vh] overflow-x-hidden mb-8"
     >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-azul-principal via-azul-principal/90 to-azul-principal"></div>
