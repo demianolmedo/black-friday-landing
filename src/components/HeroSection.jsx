@@ -38,7 +38,7 @@ const HeroSection = () => {
               </p>
 
               {/* DESCUENTOS% */}
-              <h2 className="text-[33px] sm:text-[36px] md:text-[45px] lg:text-[57px] font-black text-blanco tracking-[0.3em] uppercase font-outfit">
+              <h2 className="text-[33px] sm:text-[36px] md:text-[45px] lg:text-[57px] font-black text-blanco tracking-[0.3em] uppercase font-outfit -mt-1">
                 DESCUENTOS<span className="text-verde-neon">%</span>
               </h2>
             </div>
