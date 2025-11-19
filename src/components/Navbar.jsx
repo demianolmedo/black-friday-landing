@@ -122,8 +122,8 @@ const Navbar = () => {
                 exit={{ opacity: 0, y: -20 }}
                 className="
                   absolute top-full left-0 right-0 mt-2
-                  bg-azul-principal/50
-                  backdrop-blur-lg
+                  bg-azul-principal/95
+                  backdrop-blur-2xl
                   border border-white/30
                   rounded-2xl
                   py-4 px-2
