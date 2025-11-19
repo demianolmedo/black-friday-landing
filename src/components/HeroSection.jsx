@@ -33,12 +33,12 @@ const HeroSection = () => {
               <div className="h-px w-48 mx-auto bg-gradient-to-r from-transparent via-verde-neon/50 to-transparent"></div>
 
               {/* Subtitle "cachetadas de" */}
-              <p className="text-xl sm:text-2xl md:text-3xl text-white/70 font-medium font-inter tracking-wide">
+              <p className="text-3xl sm:text-2xl md:text-3xl text-white font-medium font-inter tracking-wide">
                 cachetadas de
               </p>
 
               {/* DESCUENTOS% */}
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-blanco tracking-[0.3em] uppercase font-outfit">
+              <h2 className="text-4xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-blanco tracking-[0.3em] uppercase font-outfit">
                 DESCUENTOS<span className="text-verde-neon">%</span>
               </h2>
             </div>
