@@ -20,11 +20,11 @@ const HeroSection = () => {
 
             {/* Main Heading - 50% OFF */}
             <div className="space-y-1 md:space-y-0 lg:space-y-0 xl:space-y-1 animate-slide-up">
-              <h1 className="flex items-end justify-center font-black tracking-tight leading-[0.7] font-outfit">
-                <span className="text-[8rem] sm:text-[8rem] md:text-[1.28rem] lg:text-[1.76rem] xl:text-[20rem] text-verde-neon drop-shadow-[0_0_40px_rgba(0,255,127,0.6)] neon-text">
+              <h1 className="flex items-end justify-center font-black tracking-tight leading-none font-outfit">
+                <span className="text-[8rem] sm:text-[8rem] md:text-[1.28rem] lg:text-[1.76rem] xl:text-[20rem] text-verde-neon drop-shadow-[0_0_40px_rgba(0,255,127,0.6)] neon-text leading-none">
                   50%
                 </span>
-                <span className="text-[4rem] sm:text-[4rem] md:text-[0.64rem] lg:text-[0.88rem] xl:text-[10rem] text-blanco ml-1 md:ml-0.5 lg:ml-0.5 mb-1 md:mb-0 lg:mb-0">
+                <span className="text-[4rem] sm:text-[4rem] md:text-[0.64rem] lg:text-[0.88rem] xl:text-[10rem] text-blanco ml-1 md:ml-0.5 lg:ml-0.5 mb-1 md:mb-0 lg:mb-0 leading-none">
                   off
                 </span>
               </h1>
@@ -39,7 +39,7 @@ const HeroSection = () => {
 
               {/* DESCUENTOS% */}
               <h2 className="text-[33px] sm:text-[33px] md:text-[8px] lg:text-[10px] xl:text-[57px] font-black text-blanco tracking-[0.2em] md:tracking-[0.08em] lg:tracking-[0.1em] uppercase font-outfit leading-none m-0">
-                DESCUENTOS<span className="text-verde-neon">%</span>
+                DESCUENTOS<span className="text-verde-neon leading-none">%</span>
               </h2>
             </div>
 
