@@ -4,7 +4,7 @@ const ProblemaSection = ({ onCTAClick }) => {
   return (
     <section
       id="problema-section"
-      className="relative w-full flex items-center justify-center overflow-hidden py-8 sm:py-12"
+      className="relative w-full flex items-center justify-center overflow-hidden py-10"
     >
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-azul-principal via-azul-principal to-azul-principal"></div>
