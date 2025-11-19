@@ -34,7 +34,7 @@ const ProblemaSection = ({ onCTAClick }) => {
                   Sí, todos hemos pasado por eso
                 </p>
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white font-outfit">
-                  Y duele más que una cachetada
+                  ¿Por que tanta fila?
                 </h2>
               </div>
             </div>
