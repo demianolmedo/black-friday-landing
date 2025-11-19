@@ -167,7 +167,7 @@ const DescuentosSection = ({ onCTAClick }) => {
             </div>
 
             {/* LÍNEA VERTICAL (Mobile) */}
-            <div className="flex md:hidden items-center justify-center my-3">
+            <div className="flex md:hidden items-center justify-center my-1">
               <svg
                 width="8"
                 height="60"
