@@ -123,13 +123,16 @@ const Navbar = () => {
                 className="
                   absolute top-full left-0 right-0 mt-2
                   bg-azul-principal/50
-                  backdrop-blur-lg
                   border border-white/30
                   rounded-2xl
                   py-4 px-2
                   shadow-lg shadow-black/10
                   md:hidden
                 "
+                style={{
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)'
+                }}
               >
                 <div className="flex flex-col gap-2 relative z-10">
                   <a
