@@ -130,7 +130,7 @@ const DescuentosSection = ({ onCTAClick }) => {
         <div className="flex flex-col items-center justify-center space-y-10 sm:space-y-8">
 
           {/* Two Connected Cards */}
-          <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-0 relative animate-scale-in">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-0 relative animate-scale-in">
 
             {/* TARJETA 1: Hasta 50% OFF */}
             <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-3xl text-center shadow-lg hover:bg-white/[0.05] hover:border-[#00FF7F]/20 hover:-translate-y-0.5 transition-all duration-300 w-full md:w-auto min-w-[320px] px-6 sm:px-8 md:px-12 py-6">
@@ -167,7 +167,7 @@ const DescuentosSection = ({ onCTAClick }) => {
             </div>
 
             {/* LÍNEA VERTICAL (Mobile) */}
-            <div className="flex md:hidden items-center justify-center my-1">
+            <div className="flex md:hidden items-center justify-center">
               <svg
                 width="8"
                 height="60"
