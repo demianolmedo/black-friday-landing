@@ -14,7 +14,7 @@ const HeroSection = () => {
       <div className="absolute bottom-1/4 -right-32 w-64 h-64 bg-verde-neon/5 rounded-full blur-3xl"></div>
 
       {/* Content container */}
-      <div className="relative w-full h-full flex items-center justify-center pt-20 2xl:pt-12 pb-2">
+      <div className="relative w-full h-full flex items-center justify-center pt-12 sm:pt-20 2xl:pt-12 pb-2">
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="flex flex-col items-center justify-center text-center space-y-3">
 
