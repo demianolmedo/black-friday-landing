@@ -124,12 +124,17 @@ const Navbar = () => {
                   absolute top-full left-0 right-0 mt-2
                   bg-azul-principal/80
                   backdrop-blur-2xl
+                  backdrop-saturate-150
+                  backdrop-brightness-90
                   border border-white/30
                   rounded-2xl
                   py-4 px-2
                   shadow-lg shadow-black/10
                   md:hidden
                 "
+                style={{
+                  backdropFilter: 'blur(40px) saturate(150%) brightness(90%)'
+                }}
               >
                 <div className="flex flex-col gap-2 relative z-10">
                   <a
