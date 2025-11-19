@@ -30,13 +30,13 @@ const SolucionSection = () => {
               background: 'linear-gradient(90deg, #021938 0%, #0f2847 15%, #2a5580 35%, #6B95BF 50%, #2a5580 65%, #0f2847 85%, #021938 100%)'
             }}>
               <div className="text-center space-y-2">
-                <p className="text-sm sm:text-base text-white font-inter">
+                <p className="text-xl text-white font-inter">
                   Aquí es diferente
                 </p>
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white font-outfit">
-                  firmas, aterrizas y manejas
+                <h3 className="text-xl font-bold text-white font-outfit">
+                  Aterrizas, firmas y manejas
                 </h3>
-                <p className="text-sm sm:text-base text-white font-inter">
+                <p className="text-xl text-white font-inter">
                   Sin el drama, de las novelas mexicanas
                 </p>
               </div>
@@ -53,7 +53,7 @@ const SolucionSection = () => {
                 Reserva ya con el
               </p>
 
-              <h3 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-blanco leading-none font-outfit neon-text">
+              <h3 className="text-7xl sm:text-8xl md:text-9xl lg:text-[144px] font-black text-blanco leading-none font-outfit neon-text">
                 50% OFF
               </h3>
 
