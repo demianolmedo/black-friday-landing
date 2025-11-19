@@ -24,7 +24,7 @@ const Navbar = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full">
-      <div className="flex justify-center px-4 md:px-6 lg:px-8 py-2 md:py-3">
+      <div className="flex justify-center px-4 md:px-6 lg:px-8 py-2 md:py-3 relative">
         <nav className="
           bg-azul-principal/50
           backdrop-blur-lg
@@ -112,64 +112,65 @@ const Navbar = () => {
               <Menu className="w-6 h-6" />
             )}
           </button>
-
-          {/* Mobile Menu */}
-          <AnimatePresence>
-            {mobileMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="
-                  absolute top-full left-0 right-0 mt-2
-                  bg-azul-principal/50
-                  backdrop-blur-lg
-                  border border-white/30
-                  rounded-2xl
-                  py-4 px-2
-                  shadow-lg shadow-black/10
-                  md:hidden
-                "
-              >
-                <div className="flex flex-col gap-2 relative z-10">
-                  <a
-                    href="#problema-section"
-                    onClick={(e) => handleNavClick(e, '#problema-section')}
-                    className="text-white/90 font-medium px-4 py-3 rounded-lg hover:bg-white/10 hover:text-white transition-all duration-200 text-center"
-                  >
-                    Problema
-                  </a>
-                  <a
-                    href="#solucion-section"
-                    onClick={(e) => handleNavClick(e, '#solucion-section')}
-                    className="text-white/90 font-medium px-4 py-3 rounded-lg hover:bg-white/10 hover:text-white transition-all duration-200 text-center"
-                  >
-                    Solución
-                  </a>
-                  <div className="px-2 pt-2 relative z-10">
-                    <a
-                      href="#contact-form"
-                      onClick={(e) => handleNavClick(e, '#contact-form')}
-                      className="
-                      w-full
-                      bg-verde-neon
-                      text-azul-principal
-                      font-bold
-                      py-3
-                      rounded-full
-                      hover:bg-emerald-400
-                      transition-all duration-200
-                      shadow-lg shadow-verde-neon/30
-                      block text-center
-                    ">
-                      Obtener 50% OFF
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
         </nav>
+
+        {/* Mobile Menu - MOVIDO FUERA DEL NAV */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="
+                absolute top-full left-0 right-0 mt-2
+                mx-4 md:mx-6 lg:mx-8
+                bg-azul-principal/50
+                backdrop-blur-lg
+                border border-white/30
+                rounded-2xl
+                py-4 px-2
+                shadow-lg shadow-black/10
+                md:hidden
+              "
+            >
+              <div className="flex flex-col gap-2 relative z-10">
+                <a
+                  href="#problema-section"
+                  onClick={(e) => handleNavClick(e, '#problema-section')}
+                  className="text-white/90 font-medium px-4 py-3 rounded-lg hover:bg-white/10 hover:text-white transition-all duration-200 text-center"
+                >
+                  Problema
+                </a>
+                <a
+                  href="#solucion-section"
+                  onClick={(e) => handleNavClick(e, '#solucion-section')}
+                  className="text-white/90 font-medium px-4 py-3 rounded-lg hover:bg-white/10 hover:text-white transition-all duration-200 text-center"
+                >
+                  Solución
+                </a>
+                <div className="px-2 pt-2 relative z-10">
+                  <a
+                    href="#contact-form"
+                    onClick={(e) => handleNavClick(e, '#contact-form')}
+                    className="
+                    w-full
+                    bg-verde-neon
+                    text-azul-principal
+                    font-bold
+                    py-3
+                    rounded-full
+                    hover:bg-emerald-400
+                    transition-all duration-200
+                    shadow-lg shadow-verde-neon/30
+                    block text-center
+                  ">
+                    Obtener 50% OFF
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </header>
   );
