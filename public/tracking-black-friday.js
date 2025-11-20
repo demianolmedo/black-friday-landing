@@ -1,23 +1,24 @@
 /**
  * =====================================================
  * SCRIPT DE TRACKING - RENTSMART BLACK FRIDAY
- * Versión: 1.0 - Basado en script V3.0 de página principal
+ * Versión: 2.0 - Con captura de eventos de BOTÓN
  * Última actualización: 2025-01-20
  * =====================================================
  *
  * EVENTOS CAPTURADOS:
  * - page_view: Primera visita con UTMs + Meta Ads
- * - whatsapp_click: Click en botón "Hablar con un agente"
- * - hq_quote_click: Submit del widget HQ
+ * - whatsapp_click: Click en botón "Hablar con un agente" (WhatsApp Modal)
+ * - hq_quote_click: Click en botón submit (HQ Widget)
  *
  * IMPORTANTE: Este script captura:
  * - page_view: Solo la PRIMERA vez que se carga la página en una sesión
- * - whatsapp_click/hq_quote_click: Solo cuando el formulario es VÁLIDO y se envía
+ * - whatsapp_click/hq_quote_click: Solo cuando el BOTÓN es clickeado Y el formulario es VÁLIDO
  * - Variables de Meta Ads: cpc, spend, campaign_id, adset_id, ad_id
+ * - conversion_type: Se agrega automáticamente ("whatsapp" o "hq_widget")
  *
  * El script envía los eventos a DOS endpoints:
- * 1. /api/track-event → tracking_events
- * 2. /api/utm-tracking → utmPrincipal (solo conversiones)
+ * 1. /api/track-event → tracking_events (con event_data)
+ * 2. /api/utm-tracking → utmPrincipal (datos directos en payload)
  *
  * =====================================================
  */
@@ -25,7 +26,7 @@
 (function() {
   'use strict';
 
-  console.log('🔍 [BlackFriday-Tracking V1.0] Script de tracking cargado');
+  console.log('🔍 [BlackFriday-Tracking V2.0] Script de tracking cargado - Captura eventos de BOTÓN');
 
   // =====================
   // CONFIGURACIÓN
@@ -206,53 +207,70 @@
 
     form.dataset.whatsappTracking = 'configured';
 
-    form.addEventListener('submit', async function(e) {
-      if (whatsappClickSent) {
-        if (CONFIG.debug) console.log('⏭️ [WhatsApp] Click ya registrado, evitando duplicado');
-        return;
-      }
+    // Buscar el botón submit dentro del formulario
+    const submitButton = form.querySelector('button[type="submit"]');
 
-      whatsappClickSent = true;
+    if (submitButton) {
+      if (CONFIG.debug) console.log('✅ [WhatsApp] Botón "Hablar con un agente" encontrado');
 
-      // Capturar datos del formulario
-      const formData = {
-        pickup_location: form.querySelector('[name="lugarEntrega"]')?.value || null,
-        return_location: form.querySelector('[name="lugarDevolucion"]')?.value || null,
-        pickup_date: form.querySelector('[name="fechaHoraRecogida"]')?.value || null,
-        return_date: form.querySelector('[name="fechaHoraEntrega"]')?.value || null,
-        email: form.querySelector('[name="email"]')?.value || null
-      };
-
-      if (CONFIG.debug) {
-        console.log('✅ [WhatsApp] Formulario VALIDADO. Enviando evento whatsapp_click...');
-        console.log('📱 [WhatsApp] Datos capturados:', formData);
-      }
-
-      // Enviar a AMBOS endpoints en paralelo
-      Promise.allSettled([
-        trackEvent('whatsapp_click', formData),
-        trackUTM(formData)
-      ]).then(results => {
-        if (CONFIG.debug) {
-          results.forEach((result, index) => {
-            const endpoint = index === 0 ? 'track-event' : 'utm-tracking';
-            if (result.status === 'fulfilled') {
-              console.log(`✅ [WhatsApp] Enviado exitosamente a ${endpoint}`);
-            } else {
-              console.error(`❌ [WhatsApp] Error en ${endpoint}:`, result.reason);
-            }
-          });
+      // Listener para CLICK en el botón (evento principal)
+      submitButton.addEventListener('click', async function(e) {
+        if (whatsappClickSent) {
+          if (CONFIG.debug) console.log('⏭️ [WhatsApp] Click ya registrado, evitando duplicado');
+          return;
         }
-      });
 
-      // Reset después de enviar
-      setTimeout(() => {
-        whatsappClickSent = false;
-      }, 2000);
+        // Verificar si el formulario es válido antes de enviar tracking
+        if (!form.checkValidity()) {
+          if (CONFIG.debug) console.log('⚠️ [WhatsApp] Formulario inválido, no se envía tracking');
+          return;
+        }
 
-    }, { passive: true });
+        whatsappClickSent = true;
 
-    if (CONFIG.debug) console.log('👍 [WhatsApp] Tracking configurado correctamente');
+        // Capturar datos del formulario
+        const formData = {
+          pickup_location: form.querySelector('[name="lugarEntrega"]')?.value || null,
+          return_location: form.querySelector('[name="lugarDevolucion"]')?.value || null,
+          pickup_date: form.querySelector('[name="fechaHoraRecogida"]')?.value || null,
+          return_date: form.querySelector('[name="fechaHoraEntrega"]')?.value || null,
+          email: form.querySelector('[name="email"]')?.value || null,
+          conversion_type: 'whatsapp'
+        };
+
+        if (CONFIG.debug) {
+          console.log('✅ [WhatsApp] Botón clickeado con formulario VÁLIDO');
+          console.log('📱 [WhatsApp] Datos capturados:', formData);
+        }
+
+        // Enviar a AMBOS endpoints en paralelo
+        Promise.allSettled([
+          trackEvent('whatsapp_click', formData),
+          trackUTM(formData)
+        ]).then(results => {
+          if (CONFIG.debug) {
+            results.forEach((result, index) => {
+              const endpoint = index === 0 ? 'track-event' : 'utm-tracking';
+              if (result.status === 'fulfilled') {
+                console.log(`✅ [WhatsApp] Enviado exitosamente a ${endpoint}`);
+              } else {
+                console.error(`❌ [WhatsApp] Error en ${endpoint}:`, result.reason);
+              }
+            });
+          }
+        });
+
+        // Reset después de enviar
+        setTimeout(() => {
+          whatsappClickSent = false;
+        }, 2000);
+
+      }, { passive: true });
+
+      if (CONFIG.debug) console.log('👍 [WhatsApp] Tracking del botón configurado correctamente');
+    } else {
+      if (CONFIG.debug) console.error('❌ [WhatsApp] No se encontró el botón submit');
+    }
   }
 
   // =====================
@@ -270,55 +288,72 @@
 
     form.dataset.hqTracking = 'configured';
 
-    form.addEventListener('submit', async function(e) {
-      if (hqQuoteClickSent) {
-        if (CONFIG.debug) console.log('⏭️ [HQ Widget] Click ya registrado, evitando duplicado');
-        return;
-      }
+    // Buscar el botón submit dentro del formulario HQ
+    const submitButton = form.querySelector('button[type="submit"], input[type="submit"], button:not([type="button"])');
 
-      hqQuoteClickSent = true;
+    if (submitButton) {
+      if (CONFIG.debug) console.log('✅ [HQ Widget] Botón de envío encontrado');
 
-      // Capturar datos del formulario HQ
-      const formData = {
-        pickup_location: form.querySelector('[name*="pickup"], [name*="entrega"], [id*="Entrega"]')?.value || null,
-        return_location: form.querySelector('[name*="return"], [name*="devolucion"], [id*="Devolucion"]')?.value || null,
-        pickup_date: form.querySelector('[name*="pickup"], [name*="entrega"], [id*="FechaDeEntrega"]')?.value || null,
-        return_date: form.querySelector('[name*="return"], [name*="devolucion"], [id*="FechaDeDevolucion"]')?.value || null,
-        email: form.querySelector('[name*="email"], [name*="Email"], [type="email"]')?.value || null,
-        phone: form.querySelector('[name*="phone"], [name*="telefono"], [type="tel"]')?.value || null,
-        country: form.querySelector('[name*="country"], [name*="Country"]')?.value || null
-      };
-
-      if (CONFIG.debug) {
-        console.log('✅ [HQ Widget] Formulario VALIDADO. Enviando evento hq_quote_click...');
-        console.log('🏢 [HQ Widget] Datos capturados:', formData);
-      }
-
-      // Enviar a AMBOS endpoints en paralelo
-      Promise.allSettled([
-        trackEvent('hq_quote_click', formData),
-        trackUTM(formData)
-      ]).then(results => {
-        if (CONFIG.debug) {
-          results.forEach((result, index) => {
-            const endpoint = index === 0 ? 'track-event' : 'utm-tracking';
-            if (result.status === 'fulfilled') {
-              console.log(`✅ [HQ Widget] Enviado exitosamente a ${endpoint}`);
-            } else {
-              console.error(`❌ [HQ Widget] Error en ${endpoint}:`, result.reason);
-            }
-          });
+      // Listener para CLICK en el botón (evento principal)
+      submitButton.addEventListener('click', async function(e) {
+        if (hqQuoteClickSent) {
+          if (CONFIG.debug) console.log('⏭️ [HQ Widget] Click ya registrado, evitando duplicado');
+          return;
         }
-      });
 
-      // Reset después de enviar
-      setTimeout(() => {
-        hqQuoteClickSent = false;
-      }, 2000);
+        // Verificar si el formulario es válido antes de enviar tracking
+        if (!form.checkValidity()) {
+          if (CONFIG.debug) console.log('⚠️ [HQ Widget] Formulario inválido, no se envía tracking');
+          return;
+        }
 
-    }, { passive: true });
+        hqQuoteClickSent = true;
 
-    if (CONFIG.debug) console.log('👍 [HQ Widget] Tracking configurado correctamente');
+        // Capturar datos del formulario HQ
+        const formData = {
+          pickup_location: form.querySelector('[name*="pickup"], [name*="entrega"], [id*="Entrega"]')?.value || null,
+          return_location: form.querySelector('[name*="return"], [name*="devolucion"], [id*="Devolucion"]')?.value || null,
+          pickup_date: form.querySelector('[name*="pickup"], [name*="entrega"], [id*="FechaDeEntrega"]')?.value || null,
+          return_date: form.querySelector('[name*="return"], [name*="devolucion"], [id*="FechaDeDevolucion"]')?.value || null,
+          email: form.querySelector('[name*="email"], [name*="Email"], [type="email"]')?.value || null,
+          phone: form.querySelector('[name*="phone"], [name*="telefono"], [type="tel"]')?.value || null,
+          country: form.querySelector('[name*="country"], [name*="Country"]')?.value || null,
+          conversion_type: 'hq_widget'
+        };
+
+        if (CONFIG.debug) {
+          console.log('✅ [HQ Widget] Botón clickeado con formulario VÁLIDO');
+          console.log('🏢 [HQ Widget] Datos capturados:', formData);
+        }
+
+        // Enviar a AMBOS endpoints en paralelo
+        Promise.allSettled([
+          trackEvent('hq_quote_click', formData),
+          trackUTM(formData)
+        ]).then(results => {
+          if (CONFIG.debug) {
+            results.forEach((result, index) => {
+              const endpoint = index === 0 ? 'track-event' : 'utm-tracking';
+              if (result.status === 'fulfilled') {
+                console.log(`✅ [HQ Widget] Enviado exitosamente a ${endpoint}`);
+              } else {
+                console.error(`❌ [HQ Widget] Error en ${endpoint}:`, result.reason);
+              }
+            });
+          }
+        });
+
+        // Reset después de enviar
+        setTimeout(() => {
+          hqQuoteClickSent = false;
+        }, 2000);
+
+      }, { passive: true });
+
+      if (CONFIG.debug) console.log('👍 [HQ Widget] Tracking del botón configurado correctamente');
+    } else {
+      if (CONFIG.debug) console.error('❌ [HQ Widget] No se encontró el botón submit');
+    }
   }
 
   // =====================
