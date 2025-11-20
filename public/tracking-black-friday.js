@@ -157,23 +157,30 @@
   }
 
   // Enviar a endpoint UTM (solo para conversiones importantes)
+  // IMPORTANTE: Los datos van DIRECTAMENTE en el payload, no dentro de event_data
   async function trackUTM(formData) {
     const utmParams = getStoredUTMParams();
 
+    // Estructura EXACTA como el script original
     const payload = {
       visitor_id: getVisitorId(),
       session_id: getSessionId(),
+
+      // UTMs y Meta Ads en el nivel principal
       ...utmParams,
+
+      // Datos del formulario DIRECTAMENTE (no dentro de event_data)
       ...formData,
+
+      // Campos adicionales requeridos
       referrer_url: document.referrer || null,
       landing_page: window.location.href,
-      user_agent: navigator.userAgent,
-      timestamp: new Date().toISOString()
+      user_agent: navigator.userAgent
     };
 
     try {
       if (CONFIG.debug) {
-        console.log('📡 [Tracking] Enviando a utm-tracking:', payload);
+        console.log('📡 [utm-tracking] Enviando a utmPrincipal:', payload);
       }
 
       await fetch(CONFIG.utmTrackingUrl, {
@@ -183,9 +190,9 @@
         signal: AbortSignal.timeout(CONFIG.timeout)
       });
 
-      if (CONFIG.debug) console.log('✅ [Tracking] Datos enviados a utm-tracking');
+      if (CONFIG.debug) console.log('✅ [utm-tracking] Datos enviados a utmPrincipal');
     } catch (error) {
-      console.error('❌ [Tracking] Error en utm-tracking:', error.message);
+      console.error('❌ [utm-tracking] Error:', error.message);
     }
   }
 
@@ -243,21 +250,42 @@
                 if (formSubmitTracked) return; // Evitar duplicados
                 formSubmitTracked = true;
 
-                // Capturar datos del formulario
+                // Capturar datos del formulario (nombres compatibles con tu BD)
                 const formData = {
-                  lugar_entrega: whatsappForm.querySelector('[name="lugarEntrega"]')?.value || null,
-                  lugar_devolucion: whatsappForm.querySelector('[name="lugarDevolucion"]')?.value || null,
-                  fecha_hora_recogida: whatsappForm.querySelector('[name="fechaHoraRecogida"]')?.value || null,
-                  fecha_hora_entrega: whatsappForm.querySelector('[name="fechaHoraEntrega"]')?.value || null,
-                  email: whatsappForm.querySelector('[name="email"]')?.value || null
+                  // Ubicaciones (nombres como en script original)
+                  pickup_location: whatsappForm.querySelector('[name="lugarEntrega"]')?.value || null,
+                  return_location: whatsappForm.querySelector('[name="lugarDevolucion"]')?.value || null,
+
+                  // Fechas (nombres como en script original)
+                  pickup_date: whatsappForm.querySelector('[name="fechaHoraRecogida"]')?.value || null,
+                  return_date: whatsappForm.querySelector('[name="fechaHoraEntrega"]')?.value || null,
+
+                  // Email - múltiples selectores para asegurar captura
+                  email: whatsappForm.querySelector(
+                    '[name="email"], [name="Email"], [type="email"], ' +
+                    'input[placeholder*="email" i], input[placeholder*="correo" i]'
+                  )?.value || null,
+
+                  // Teléfono - NUEVO CAMPO
+                  phone: whatsappForm.querySelector(
+                    '[name="phone"], [name="telefono"], [name="Phone"], ' +
+                    '[type="tel"], input[placeholder*="tel" i], input[placeholder*="phone" i]'
+                  )?.value || null,
+
+                  // Tipo de conversión
+                  conversion_type: 'whatsapp'
                 };
 
-                if (CONFIG.debug) console.log('📱 [WhatsApp] Formulario enviado:', formData);
+                if (CONFIG.debug) {
+                  console.log('📱 [WhatsApp] Formulario enviado:', formData);
+                }
 
                 // Enviar a AMBOS endpoints
+                // track-event: con event_data
+                // utm-tracking: datos directos (como script original)
                 Promise.allSettled([
                   trackEvent('whatsapp_form_submit', formData),
-                  trackUTM({ ...formData, conversion_type: 'whatsapp' })
+                  trackUTM(formData)
                 ]);
 
                 // Reset del flag cuando se cierra el modal
