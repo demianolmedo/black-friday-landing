@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Tracking - RentSmart Black Friday</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: #021938;
+            color: #00FF7F;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #00FF7F;
+            border-bottom: 2px solid #00FF7F;
+            padding-bottom: 10px;
+        }
+        .test-section {
+            background: rgba(0, 255, 127, 0.1);
+            border: 1px solid #00FF7F;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        button {
+            background: #00FF7F;
+            color: #021938;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #00E070;
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .log {
+            background: #000;
+            color: #00FF7F;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin-top: 10px;
+        }
+        .success { color: #00FF7F; }
+        .error { color: #ff4444; }
+        .warning { color: #ffaa00; }
+        .info { color: #4da6ff; }
+        input, select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #00FF7F;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin: 5px;
+            width: calc(100% - 30px);
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            color: #00FF7F;
+            font-weight: bold;
+        }
+        .endpoints {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Test de Tracking - RentSmart Black Friday</h1>
+
+    <div class="endpoints">
+        <strong>Endpoints configurados:</strong><br>
+        📡 track-event: <span class="info">https://pizarra-backend.alfmia.easypanel.host/api/track-event</span><br>
+        📡 utm-tracking: <span class="info">https://pizarra-backend.alfmia.easypanel.host/api/utm-tracking</span>
+    </div>
+
+    <!-- TEST 1: PAGE VIEW -->
+    <div class="test-section">
+        <h2>📄 Test 1: Page View</h2>
+        <p>Simula la primera visita con UTMs</p>
+        <button onclick="testPageView()">Enviar Page View</button>
+        <div class="log" id="log-pageview"></div>
+    </div>
+
+    <!-- TEST 2: WHATSAPP FORM -->
+    <div class="test-section">
+        <h2>📱 Test 2: WhatsApp Form Submit</h2>
+        <p>Simula el envío del formulario de WhatsApp</p>
+
+        <label>Email:</label>
+        <input type="email" id="wa-email" value="test@example.com" />
+
+        <label>Lugar de Entrega:</label>
+        <select id="wa-pickup">
+            <option value="Miami International Airport">Miami International Airport</option>
+            <option value="Orlando International Airport">Orlando International Airport</option>
+        </select>
+
+        <button onclick="testWhatsAppSubmit()">Enviar WhatsApp Form</button>
+        <div class="log" id="log-whatsapp"></div>
+    </div>
+
+    <!-- TEST 3: HQ WIDGET -->
+    <div class="test-section">
+        <h2>🏢 Test 3: HQ Widget Submit</h2>
+        <p>Simula el envío del widget HQ</p>
+
+        <label>Email:</label>
+        <input type="email" id="hq-email" value="test@example.com" />
+
+        <label>Ciudad:</label>
+        <select id="hq-city">
+            <option value="miami">Miami</option>
+            <option value="orlando">Orlando</option>
+        </select>
+
+        <button onclick="testHQSubmit()">Enviar HQ Widget Form</button>
+        <div class="log" id="log-hq"></div>
+    </div>
+
+    <!-- TEST 4: VERIFICAR BACKEND -->
+    <div class="test-section">
+        <h2>🔍 Test 4: Verificar Backend</h2>
+        <p>Prueba si los endpoints responden</p>
+        <button onclick="testBackendHealth()">Verificar Endpoints</button>
+        <div class="log" id="log-health"></div>
+    </div>
+
+    <!-- TEST 5: ENVÍO MASIVO -->
+    <div class="test-section">
+        <h2>🚀 Test 5: Envío de Prueba Completo</h2>
+        <p>Envía un set completo de eventos de prueba</p>
+        <button onclick="testFullFlow()">Enviar Flujo Completo</button>
+        <div class="log" id="log-full"></div>
+    </div>
+
+    <script>
+        const CONFIG = {
+            trackEventUrl: 'https://pizarra-backend.alfmia.easypanel.host/api/track-event',
+            utmTrackingUrl: 'https://pizarra-backend.alfmia.easypanel.host/api/utm-tracking',
+            timeout: 10000
+        };
+
+        function log(elementId, message, type = 'info') {
+            const logEl = document.getElementById(elementId);
+            const timestamp = new Date().toLocaleTimeString();
+            const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : type === 'warning' ? '⚠️' : 'ℹ️';
+            logEl.innerHTML += `<span class="${type}">[${timestamp}] ${icon} ${message}</span>\n`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function getVisitorId() {
+            let id = localStorage.getItem('test_visitor_id');
+            if (!id) {
+                id = 'test_visitor_' + Date.now();
+                localStorage.setItem('test_visitor_id', id);
+            }
+            return id;
+        }
+
+        function getSessionId() {
+            let id = sessionStorage.getItem('test_session_id');
+            if (!id) {
+                id = 'test_session_' + Date.now();
+                sessionStorage.setItem('test_session_id', id);
+            }
+            return id;
+        }
+
+        // TEST 1: PAGE VIEW
+        async function testPageView() {
+            const logId = 'log-pageview';
+            log(logId, 'Iniciando test de page_view...', 'info');
+
+            const payload = {
+                visitor_id: getVisitorId(),
+                session_id: getSessionId(),
+                event_type: 'page_view',
+                url: window.location.href,
+                referrer: document.referrer || null,
+                user_agent: navigator.userAgent,
+                timestamp: new Date().toISOString(),
+
+                // UTMs de prueba
+                utm_source: 'test',
+                utm_medium: 'manual_test',
+                utm_campaign: 'blackfriday2025_test',
+                utm_term: null,
+                utm_content: 'test_pageview',
+
+                event_data: {
+                    viewport_width: window.innerWidth,
+                    viewport_height: window.innerHeight,
+                    device_type: 'desktop'
+                }
+            };
+
+            log(logId, 'Payload a enviar:', 'info');
+            log(logId, JSON.stringify(payload, null, 2), 'info');
+
+            try {
+                log(logId, 'Enviando a ' + CONFIG.trackEventUrl, 'info');
+
+                const response = await fetch(CONFIG.trackEventUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                    signal: AbortSignal.timeout(CONFIG.timeout)
+                });
+
+                log(logId, `Response status: ${response.status} ${response.statusText}`,
+                    response.ok ? 'success' : 'error');
+
+                const responseText = await response.text();
+                log(logId, 'Response body: ' + responseText, response.ok ? 'success' : 'error');
+
+                if (response.ok) {
+                    log(logId, '✅ Page view enviado exitosamente!', 'success');
+                } else {
+                    log(logId, '❌ Error: El servidor respondió con ' + response.status, 'error');
+                }
+            } catch (error) {
+                log(logId, '❌ Error de red: ' + error.message, 'error');
+                if (error.name === 'AbortError') {
+                    log(logId, '⏱️ Timeout: El servidor no respondió en 10 segundos', 'warning');
+                }
+            }
+        }
+
+        // TEST 2: WHATSAPP FORM
+        async function testWhatsAppSubmit() {
+            const logId = 'log-whatsapp';
+            log(logId, 'Iniciando test de WhatsApp form submit...', 'info');
+
+            const email = document.getElementById('wa-email').value;
+            const pickup = document.getElementById('wa-pickup').value;
+
+            const formData = {
+                lugar_entrega: pickup,
+                lugar_devolucion: pickup,
+                fecha_hora_recogida: '2025-01-25T10:00',
+                fecha_hora_entrega: '2025-01-28T10:00',
+                email: email
+            };
+
+            // Enviar a track-event
+            const payload1 = {
+                visitor_id: getVisitorId(),
+                session_id: getSessionId(),
+                event_type: 'whatsapp_form_submit',
+                url: window.location.href,
+                referrer: document.referrer || null,
+                user_agent: navigator.userAgent,
+                timestamp: new Date().toISOString(),
+                utm_source: 'test',
+                utm_campaign: 'blackfriday2025_test',
+                event_data: formData
+            };
+
+            log(logId, 'Enviando a /api/track-event...', 'info');
+            log(logId, JSON.stringify(payload1, null, 2), 'info');
+
+            try {
+                const response1 = await fetch(CONFIG.trackEventUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload1)
+                });
+
+                log(logId, `track-event: ${response1.status}`, response1.ok ? 'success' : 'error');
+                const text1 = await response1.text();
+                log(logId, text1, response1.ok ? 'success' : 'error');
+            } catch (error) {
+                log(logId, 'Error en track-event: ' + error.message, 'error');
+            }
+
+            // Enviar a utm-tracking
+            const payload2 = {
+                visitor_id: getVisitorId(),
+                session_id: getSessionId(),
+                utm_source: 'test',
+                utm_campaign: 'blackfriday2025_test',
+                ...formData,
+                conversion_type: 'whatsapp',
+                referrer_url: document.referrer || null,
+                landing_page: window.location.href,
+                user_agent: navigator.userAgent,
+                timestamp: new Date().toISOString()
+            };
+
+            log(logId, 'Enviando a /api/utm-tracking...', 'info');
+            log(logId, JSON.stringify(payload2, null, 2), 'info');
+
+            try {
+                const response2 = await fetch(CONFIG.utmTrackingUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload2)
+                });
+
+                log(logId, `utm-tracking: ${response2.status}`, response2.ok ? 'success' : 'error');
+                const text2 = await response2.text();
+                log(logId, text2, response2.ok ? 'success' : 'error');
+
+                if (response2.ok) {
+                    log(logId, '✅ WhatsApp form enviado a ambos endpoints!', 'success');
+                }
+            } catch (error) {
+                log(logId, 'Error en utm-tracking: ' + error.message, 'error');
+            }
+        }
+
+        // TEST 3: HQ WIDGET
+        async function testHQSubmit() {
+            const logId = 'log-hq';
+            log(logId, 'Iniciando test de HQ widget submit...', 'info');
+
+            const email = document.getElementById('hq-email').value;
+            const city = document.getElementById('hq-city').value;
+
+            const formData = {
+                city: city,
+                conversion_type: 'hq_widget',
+                pickup_location: city === 'miami' ? 'Miami International Airport' : 'Orlando International Airport',
+                return_location: city === 'miami' ? 'Miami International Airport' : 'Orlando International Airport',
+                pickup_date: '2025-01-25',
+                return_date: '2025-01-28',
+                email: email,
+                name: 'Test User',
+                phone: '+1234567890',
+                country: 'United States'
+            };
+
+            // Enviar a ambos endpoints
+            const payload1 = {
+                visitor_id: getVisitorId(),
+                session_id: getSessionId(),
+                event_type: 'hq_form_submit',
+                url: window.location.href,
+                referrer: null,
+                user_agent: navigator.userAgent,
+                timestamp: new Date().toISOString(),
+                utm_source: 'test',
+                utm_campaign: 'blackfriday2025_test',
+                event_data: formData
+            };
+
+            log(logId, 'Enviando a /api/track-event...', 'info');
+
+            try {
+                const response1 = await fetch(CONFIG.trackEventUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload1)
+                });
+
+                log(logId, `track-event: ${response1.status}`, response1.ok ? 'success' : 'error');
+                const text1 = await response1.text();
+                log(logId, text1, response1.ok ? 'success' : 'error');
+            } catch (error) {
+                log(logId, 'Error: ' + error.message, 'error');
+            }
+
+            // utm-tracking
+            const payload2 = {
+                visitor_id: getVisitorId(),
+                session_id: getSessionId(),
+                utm_source: 'test',
+                utm_campaign: 'blackfriday2025_test',
+                ...formData,
+                referrer_url: null,
+                landing_page: window.location.href,
+                user_agent: navigator.userAgent,
+                timestamp: new Date().toISOString()
+            };
+
+            log(logId, 'Enviando a /api/utm-tracking...', 'info');
+
+            try {
+                const response2 = await fetch(CONFIG.utmTrackingUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload2)
+                });
+
+                log(logId, `utm-tracking: ${response2.status}`, response2.ok ? 'success' : 'error');
+                const text2 = await response2.text();
+                log(logId, text2, response2.ok ? 'success' : 'error');
+
+                if (response2.ok) {
+                    log(logId, '✅ HQ widget enviado a ambos endpoints!', 'success');
+                }
+            } catch (error) {
+                log(logId, 'Error: ' + error.message, 'error');
+            }
+        }
+
+        // TEST 4: HEALTH CHECK
+        async function testBackendHealth() {
+            const logId = 'log-health';
+            log(logId, 'Verificando endpoints del backend...', 'info');
+
+            // Test endpoint 1
+            log(logId, '\nProbando: ' + CONFIG.trackEventUrl, 'info');
+            try {
+                const response = await fetch(CONFIG.trackEventUrl, {
+                    method: 'OPTIONS',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                log(logId, `OPTIONS /track-event: ${response.status}`, response.ok ? 'success' : 'warning');
+            } catch (error) {
+                log(logId, 'Error OPTIONS /track-event: ' + error.message, 'error');
+            }
+
+            // Test endpoint 2
+            log(logId, '\nProbando: ' + CONFIG.utmTrackingUrl, 'info');
+            try {
+                const response = await fetch(CONFIG.utmTrackingUrl, {
+                    method: 'OPTIONS',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                log(logId, `OPTIONS /utm-tracking: ${response.status}`, response.ok ? 'success' : 'warning');
+            } catch (error) {
+                log(logId, 'Error OPTIONS /utm-tracking: ' + error.message, 'error');
+            }
+
+            log(logId, '\n⚠️ IMPORTANTE:', 'warning');
+            log(logId, 'Si ves errores de CORS, necesitas configurar el backend para aceptar:', 'warning');
+            log(logId, '- Origin: http://localhost:5173', 'warning');
+            log(logId, '- Origin: https://blackfriday.rentsmartrac.com', 'warning');
+        }
+
+        // TEST 5: FULL FLOW
+        async function testFullFlow() {
+            const logId = 'log-full';
+            log(logId, '🚀 Iniciando flujo completo de prueba...', 'info');
+
+            log(logId, '\n[1/3] Enviando page_view...', 'info');
+            await testPageView();
+
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            log(logId, '\n[2/3] Enviando WhatsApp form...', 'info');
+            await testWhatsAppSubmit();
+
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            log(logId, '\n[3/3] Enviando HQ widget...', 'info');
+            await testHQSubmit();
+
+            log(logId, '\n✅ Flujo completo finalizado!', 'success');
+            log(logId, 'Revisa tu base de datos del backend para ver los registros.', 'info');
+        }
+    </script>
+</body>
+</html>
