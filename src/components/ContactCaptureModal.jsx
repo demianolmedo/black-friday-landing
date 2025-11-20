@@ -106,11 +106,19 @@ const ContactCaptureModal = ({ isOpen, onComplete }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isFormValid) {
-      // Guardar datos en localStorage
-      localStorage.setItem('contactData', JSON.stringify({
+      const contactData = {
         phone: `${formData.countryCode}${formData.phoneNumber.replace(/\s/g, '')}`,
         email: formData.email
-      }));
+      };
+
+      // Guardar datos en localStorage
+      localStorage.setItem('contactData', JSON.stringify(contactData));
+
+      // 🔥 TRACKING: Enviar datos al backend
+      if (window.trackHQContactCapture) {
+        window.trackHQContactCapture(contactData);
+      }
+
       onComplete();
     }
   };

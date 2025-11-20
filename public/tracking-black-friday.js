@@ -1,20 +1,21 @@
 /**
  * =====================================================
  * SCRIPT DE TRACKING - RENTSMART BLACK FRIDAY
- * Versión: 2.0 - Con captura de eventos de BOTÓN
+ * Versión: 2.1 - Con tracking del modal de contacto HQ
  * Última actualización: 2025-01-20
  * =====================================================
  *
  * EVENTOS CAPTURADOS:
  * - page_view: Primera visita con UTMs + Meta Ads
  * - whatsapp_click: Click en botón "Hablar con un agente" (WhatsApp Modal)
- * - hq_quote_click: Click en botón submit (HQ Widget)
+ * - hq_contact_capture: Submit del modal de contacto HQ (email + teléfono)
  *
  * IMPORTANTE: Este script captura:
  * - page_view: Solo la PRIMERA vez que se carga la página en una sesión
- * - whatsapp_click/hq_quote_click: Solo cuando el BOTÓN es clickeado Y el formulario es VÁLIDO
+ * - whatsapp_click: Solo cuando el BOTÓN es clickeado Y el formulario es VÁLIDO
+ * - hq_contact_capture: Cuando se completa el modal de contacto después de usar HQ widget
  * - Variables de Meta Ads: cpc, spend, campaign_id, adset_id, ad_id
- * - conversion_type: Se agrega automáticamente ("whatsapp" o "hq_widget")
+ * - conversion_type: Se agrega automáticamente ("whatsapp" o "hq_contact_capture")
  *
  * El script envía los eventos a DOS endpoints:
  * 1. /api/track-event → tracking_events (con event_data)
@@ -26,7 +27,7 @@
 (function() {
   'use strict';
 
-  console.log('🔍 [BlackFriday-Tracking V2.0] Script de tracking cargado - Captura eventos de BOTÓN');
+  console.log('🔍 [BlackFriday-Tracking V2.1] Script de tracking cargado - Modal HQ Contacto');
   console.log('📍 [Tracking] URL actual:', window.location.href);
   console.log('📍 [Tracking] readyState:', document.readyState);
 
@@ -299,6 +300,57 @@
   }
 
   // =====================
+  // TRACKING MODAL CONTACTO HQ
+  // =====================
+
+  let hqContactCaptureSent = false;
+
+  // Función global para tracking del modal de contacto HQ
+  window.trackHQContactCapture = async function(contactData) {
+    if (hqContactCaptureSent) {
+      if (CONFIG.debug) console.log('⏭️ [HQ Contact] Ya registrado, evitando duplicado');
+      return;
+    }
+
+    hqContactCaptureSent = true;
+
+    const formData = {
+      email: contactData.email,
+      phone: contactData.phone,
+      conversion_type: 'hq_contact_capture'
+    };
+
+    if (CONFIG.debug) {
+      console.log('✅ [HQ Contact] Modal de contacto enviado');
+      console.log('📞 [HQ Contact] Datos capturados:', formData);
+    }
+
+    // Enviar a AMBOS endpoints en paralelo
+    Promise.allSettled([
+      trackEvent('hq_contact_capture', formData),
+      trackUTM(formData)
+    ]).then(results => {
+      if (CONFIG.debug) {
+        results.forEach((result, index) => {
+          const endpoint = index === 0 ? 'track-event' : 'utm-tracking';
+          if (result.status === 'fulfilled') {
+            console.log(`✅ [HQ Contact] Enviado exitosamente a ${endpoint}`);
+          } else {
+            console.error(`❌ [HQ Contact] Error en ${endpoint}:`, result.reason);
+          }
+        });
+      }
+    });
+
+    // Reset después de 5 segundos
+    setTimeout(() => {
+      hqContactCaptureSent = false;
+    }, 5000);
+  };
+
+  if (CONFIG.debug) console.log('✅ [Tracking] Función window.trackHQContactCapture registrada');
+
+  // =====================
   // TRACKING WIDGET HQ
   // =====================
 
@@ -306,18 +358,27 @@
 
   function initializeHQTracking(form) {
     if (form.dataset.hqTracking === 'configured') {
+      if (CONFIG.debug) console.log('⏭️ [HQ Widget] Formulario ya configurado, saltando...');
       return;
     }
 
-    if (CONFIG.debug) console.log('✅ [HQ Widget] Formulario encontrado. Configurando tracking...');
+    if (CONFIG.debug) {
+      console.log('✅ [HQ Widget] Formulario encontrado. Configurando tracking...');
+      console.log('🏢 [HQ Widget] Formulario HTML:', form);
+      console.log('🏢 [HQ Widget] Campos del formulario:', form.querySelectorAll('input, select, textarea'));
+    }
 
     form.dataset.hqTracking = 'configured';
 
-    // Buscar el botón submit dentro del formulario HQ
-    const submitButton = form.querySelector('button[type="submit"], input[type="submit"], button:not([type="button"])');
+    // Buscar el botón submit dentro del formulario HQ (múltiples selectores)
+    const submitButton = form.querySelector('button[type="submit"], input[type="submit"], button:not([type="button"]), button');
 
     if (submitButton) {
-      if (CONFIG.debug) console.log('✅ [HQ Widget] Botón de envío encontrado');
+      if (CONFIG.debug) {
+        console.log('✅ [HQ Widget] Botón de envío encontrado');
+        console.log('🏢 [HQ Widget] Botón:', submitButton);
+        console.log('🏢 [HQ Widget] Texto del botón:', submitButton.textContent);
+      }
 
       // Listener para CLICK en el botón (evento principal)
       submitButton.addEventListener('click', async function(e) {
@@ -334,6 +395,11 @@
 
         hqQuoteClickSent = true;
 
+        if (CONFIG.debug) {
+          console.log('🏢 [HQ Widget] Intentando capturar datos del formulario...');
+          console.log('🏢 [HQ Widget] Todos los inputs:', form.querySelectorAll('input, select, textarea'));
+        }
+
         // Capturar datos del formulario HQ
         const formData = {
           pickup_location: form.querySelector('[name*="pickup"], [name*="entrega"], [id*="Entrega"]')?.value || null,
@@ -349,6 +415,8 @@
         if (CONFIG.debug) {
           console.log('✅ [HQ Widget] Botón clickeado con formulario VÁLIDO');
           console.log('🏢 [HQ Widget] Datos capturados:', formData);
+          console.log('🏢 [HQ Widget] ¿Tiene email?:', formData.email ? 'SÍ' : 'NO');
+          console.log('🏢 [HQ Widget] ¿Tiene pickup_location?:', formData.pickup_location ? 'SÍ' : 'NO');
         }
 
         // Enviar a AMBOS endpoints en paralelo
@@ -437,13 +505,28 @@
           const hqWidget = node.querySelector ? node.querySelector('.hq-rental-software-integration') :
                           (node.classList?.contains('hq-rental-software-integration') ? node : null);
           if (hqWidget) {
-            // Esperar a que el formulario se renderice dentro del widget
-            setTimeout(() => {
+            if (CONFIG.debug) console.log('🏢 [HQ Widget] Widget HQ detectado, esperando formulario...');
+
+            // Esperar a que el formulario se renderice dentro del widget (intentar múltiples veces)
+            let attempts = 0;
+            const maxAttempts = 10;
+            const checkInterval = 500;
+
+            const checkForForm = setInterval(() => {
+              attempts++;
               const hqForm = hqWidget.querySelector('form');
+
               if (hqForm) {
+                if (CONFIG.debug) console.log(`🏢 [HQ Widget] Formulario encontrado (intento ${attempts})`);
+                clearInterval(checkInterval);
                 initializeHQTracking(hqForm);
+              } else if (attempts >= maxAttempts) {
+                if (CONFIG.debug) console.error(`❌ [HQ Widget] No se encontró formulario después de ${maxAttempts} intentos`);
+                clearInterval(checkInterval);
+              } else {
+                if (CONFIG.debug) console.log(`🏢 [HQ Widget] Esperando formulario... (intento ${attempts}/${maxAttempts})`);
               }
-            }, 1500);
+            }, checkInterval);
           }
         }
       }
@@ -469,13 +552,32 @@
       initializeWhatsAppTracking(existingWhatsappForm);
     }
 
-    // Buscar widget HQ
+    // Buscar widget HQ con intentos múltiples
     const existingHQWidget = document.querySelector('.hq-rental-software-integration');
     if (existingHQWidget) {
-      const existingHQForm = existingHQWidget.querySelector('form');
-      if (existingHQForm) {
-        initializeHQTracking(existingHQForm);
-      }
+      if (CONFIG.debug) console.log('🏢 [HQ Widget] Widget HQ existente detectado, buscando formulario...');
+
+      let attempts = 0;
+      const maxAttempts = 10;
+      const checkInterval = 500;
+
+      const checkForForm = setInterval(() => {
+        attempts++;
+        const existingHQForm = existingHQWidget.querySelector('form');
+
+        if (existingHQForm) {
+          if (CONFIG.debug) console.log(`🏢 [HQ Widget] Formulario existente encontrado (intento ${attempts})`);
+          clearInterval(checkForForm);
+          initializeHQTracking(existingHQForm);
+        } else if (attempts >= maxAttempts) {
+          if (CONFIG.debug) console.error(`❌ [HQ Widget] No se encontró formulario existente después de ${maxAttempts} intentos`);
+          clearInterval(checkForForm);
+        } else {
+          if (CONFIG.debug) console.log(`🏢 [HQ Widget] Esperando formulario existente... (intento ${attempts}/${maxAttempts})`);
+        }
+      }, checkInterval);
+    } else {
+      if (CONFIG.debug) console.log('⏳ [HQ Widget] Widget HQ no encontrado aún, esperando detección dinámica...');
     }
   }, 2000);
 
