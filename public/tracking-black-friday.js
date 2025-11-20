@@ -1,33 +1,32 @@
 /**
  * =====================================================
  * SCRIPT DE TRACKING - RENTSMART BLACK FRIDAY
- * Versión: 2.1 - Con tracking del modal de contacto HQ
+ * Versión: 2.2 - Compatible con validaciones del backend
  * Última actualización: 2025-01-20
  * =====================================================
  *
  * EVENTOS CAPTURADOS:
  * - page_view: Primera visita con UTMs + Meta Ads
- * - whatsapp_click: Click en botón "Hablar con un agente" (WhatsApp Modal)
- * - hq_contact_capture: Submit del modal de contacto HQ (email + teléfono)
+ * - quote_click: Conversiones (WhatsApp Modal + HQ Contact Modal)
  *
- * IMPORTANTE: Este script captura:
+ * IMPORTANTE:
  * - page_view: Solo la PRIMERA vez que se carga la página en una sesión
- * - whatsapp_click: Solo cuando el BOTÓN es clickeado Y el formulario es VÁLIDO
- * - hq_contact_capture: Cuando se completa el modal de contacto después de usar HQ widget
+ * - quote_click: Clic en botones de conversión (WhatsApp, HQ Contact)
+ * - conversion_type en event_data diferencia el tipo: "whatsapp" o "hq_contact_capture"
  * - Variables de Meta Ads: cpc, spend, campaign_id, adset_id, ad_id
- * - conversion_type: Se agrega automáticamente ("whatsapp" o "hq_contact_capture")
  *
- * El script envía los eventos a DOS endpoints:
- * 1. /api/track-event → tracking_events (con event_data)
- * 2. /api/utm-tracking → utmPrincipal (datos directos en payload)
+ * ENDPOINTS:
+ * 1. /api/track-event → tracking_events (event_type: page_view o quote_click)
+ * 2. /api/utm-tracking → utmPrincipal (requiere email + pickup_location)
  *
+ * NOTA: HQ Contact solo envía a track-event (no tiene pickup_location)
  * =====================================================
  */
 
 (function() {
   'use strict';
 
-  console.log('🔍 [BlackFriday-Tracking V2.1] Script de tracking cargado - Modal HQ Contacto');
+  console.log('🔍 [BlackFriday-Tracking V2.2] Script de tracking cargado - Compatible con backend');
   console.log('📍 [Tracking] URL actual:', window.location.href);
   console.log('📍 [Tracking] readyState:', document.readyState);
 
@@ -270,8 +269,9 @@
         }
 
         // Enviar a AMBOS endpoints en paralelo
+        // IMPORTANTE: Usar 'quote_click' porque el backend solo acepta 'page_view' o 'quote_click'
         Promise.allSettled([
-          trackEvent('whatsapp_click', formData),
+          trackEvent('quote_click', formData),
           trackUTM(formData)
         ]).then(results => {
           if (CONFIG.debug) {
@@ -323,24 +323,17 @@
     if (CONFIG.debug) {
       console.log('✅ [HQ Contact] Modal de contacto enviado');
       console.log('📞 [HQ Contact] Datos capturados:', formData);
+      console.log('ℹ️ [HQ Contact] Solo se envía a /api/track-event (no tiene pickup_location para utm-tracking)');
     }
 
-    // Enviar a AMBOS endpoints en paralelo
-    Promise.allSettled([
-      trackEvent('hq_contact_capture', formData),
-      trackUTM(formData)
-    ]).then(results => {
-      if (CONFIG.debug) {
-        results.forEach((result, index) => {
-          const endpoint = index === 0 ? 'track-event' : 'utm-tracking';
-          if (result.status === 'fulfilled') {
-            console.log(`✅ [HQ Contact] Enviado exitosamente a ${endpoint}`);
-          } else {
-            console.error(`❌ [HQ Contact] Error en ${endpoint}:`, result.reason);
-          }
-        });
-      }
-    });
+    // Enviar SOLO a track-event (utm-tracking requiere pickup_location que no tenemos)
+    // IMPORTANTE: Usar 'quote_click' porque el backend solo acepta 'page_view' o 'quote_click'
+    try {
+      await trackEvent('quote_click', formData);
+      if (CONFIG.debug) console.log('✅ [HQ Contact] Enviado exitosamente a track-event');
+    } catch (error) {
+      console.error('❌ [HQ Contact] Error enviando:', error);
+    }
 
     // Reset después de 5 segundos
     setTimeout(() => {
