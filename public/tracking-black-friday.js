@@ -1,78 +1,73 @@
 /**
  * =====================================================
- * SCRIPT DE TRACKING RENTSMART BLACK FRIDAY
- * Versión: 1.0 - Adaptado para blackfriday.rentsmartrac.com
+ * SCRIPT DE TRACKING - RENTSMART BLACK FRIDAY
+ * Versión: 1.0 - Basado en script V3.0 de página principal
  * Última actualización: 2025-01-20
  * =====================================================
  *
  * EVENTOS CAPTURADOS:
  * - page_view: Primera visita con UTMs + Meta Ads
- * - whatsapp_modal_open: Apertura modal WhatsApp
- * - whatsapp_form_submit: Envío formulario WhatsApp
- * - hq_widget_load: Carga del widget HQ
- * - hq_widget_interaction: Interacción con widget HQ
- * - city_selection: Cambio de ciudad (Miami/Orlando)
- * - cta_click: Clicks en botones importantes
- * - scroll_milestone: Progreso de scroll
- * - time_on_page: Tiempo en página cada 30s
+ * - whatsapp_click: Click en botón "Hablar con un agente"
+ * - hq_quote_click: Submit del widget HQ
  *
- * INSTALACIÓN:
- * 1. Agregar en index.html antes de </body>:
- *    <script src="/tracking-black-friday.js" defer></script>
+ * IMPORTANTE: Este script captura:
+ * - page_view: Solo la PRIMERA vez que se carga la página en una sesión
+ * - whatsapp_click/hq_quote_click: Solo cuando el formulario es VÁLIDO y se envía
+ * - Variables de Meta Ads: cpc, spend, campaign_id, adset_id, ad_id
  *
- * 2. Configurar endpoints en CONFIG
+ * El script envía los eventos a DOS endpoints:
+ * 1. /api/track-event → tracking_events
+ * 2. /api/utm-tracking → utmPrincipal (solo conversiones)
  *
- * 3. Activar debug para desarrollo
+ * =====================================================
  */
 
 (function() {
   'use strict';
 
-  console.log('🔍 [BlackFriday-Tracking V1.0] Script cargado');
+  console.log('🔍 [BlackFriday-Tracking V1.0] Script de tracking cargado');
 
   // =====================
   // CONFIGURACIÓN
   // =====================
   const CONFIG = {
-    // Endpoints del backend
+    // Endpoints
     trackEventUrl: 'https://pizarra-backend.alfmia.easypanel.host/api/track-event',
     utmTrackingUrl: 'https://pizarra-backend.alfmia.easypanel.host/api/utm-tracking',
 
-    // Configuración general
+    // Configuración
     timeout: 5000,
-    debug: true, // Cambiar a false en producción
-
-    // Intervalos
-    timeTrackingInterval: 30000, // 30 segundos
-    scrollMilestones: [25, 50, 75, 90, 100]
+    debug: true // Cambiar a false en producción
   };
+
+  console.log('✅ [BlackFriday-Tracking] Script activado para:', window.location.href);
 
   // =====================
   // GESTIÓN DE IDENTIDAD
   // =====================
 
   function getVisitorId() {
-    let visitorId = localStorage.getItem('rentsmart_bf_visitor_id');
+    let visitorId = localStorage.getItem('rentsmartVisitorId');
     if (!visitorId) {
-      visitorId = 'bf_visitor_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-      localStorage.setItem('rentsmart_bf_visitor_id', visitorId);
-      if (CONFIG.debug) console.log('🆕 [Tracking] Nuevo visitor_id:', visitorId);
+      visitorId = 'visitor_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem('rentsmartVisitorId', visitorId);
+      if (CONFIG.debug) console.log('🆕 [Tracking] Nuevo visitor_id creado:', visitorId);
     }
     return visitorId;
   }
 
   function getSessionId() {
-    let sessionId = sessionStorage.getItem('rentsmart_bf_session_id');
+    let sessionId = sessionStorage.getItem('rentsmartSessionId');
     if (!sessionId) {
-      sessionId = 'bf_sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-      sessionStorage.setItem('rentsmart_bf_session_id', sessionId);
-      if (CONFIG.debug) console.log('🆕 [Tracking] Nuevo session_id:', sessionId);
+      sessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      sessionStorage.setItem('rentsmartSessionId', sessionId);
+      if (CONFIG.debug) console.log('🆕 [Tracking] Nuevo session_id creado:', sessionId);
     }
     return sessionId;
   }
 
   // =====================
-  // CAPTURA DE UTMS + META ADS
+  // UTILIDADES DE TRACKING
   // =====================
 
   function parseNumericValue(value, decimals = 2) {
@@ -83,64 +78,56 @@
     return Math.round(numValue * Math.pow(10, decimals)) / Math.pow(10, decimals);
   }
 
-  function getUTMandMetaParams() {
+  // Capturar parámetros UTM + Meta Ads (IGUAL que script original)
+  function getUTMParams() {
     const urlParams = new URLSearchParams(window.location.search);
 
-    const params = {
-      // UTM estándar
+    const utmParams = {
       utm_source: urlParams.get('utm_source') || null,
       utm_medium: urlParams.get('utm_medium') || null,
       utm_campaign: urlParams.get('utm_campaign') || null,
       utm_term: urlParams.get('utm_term') || null,
-      utm_content: urlParams.get('utm_content') || null,
-
-      // Meta Ads
-      fbclid: urlParams.get('fbclid') || null,
-      fb_campaign_id: urlParams.get('campaign_id') || null,
-      fb_adset_id: urlParams.get('adset_id') || null,
-      fb_ad_id: urlParams.get('ad_id') || null,
-      cpc: parseNumericValue(urlParams.get('cpc'), 4),
-      spend: parseNumericValue(urlParams.get('spend'), 2)
+      utm_content: urlParams.get('utm_content') || null
     };
 
-    // Guardar en sessionStorage para mantener durante toda la sesión SPA
-    if (Object.values(params).some(v => v !== null)) {
-      sessionStorage.setItem('rentsmart_bf_utm_params', JSON.stringify(params));
-      if (CONFIG.debug && params.fbclid) {
-        console.log('📊 [Meta Ads] Parámetros capturados:', params);
-      }
+    const metaParams = {
+      cpc: parseNumericValue(urlParams.get('cpc'), 4),
+      spend: parseNumericValue(urlParams.get('spend'), 2),
+      campaign_id: urlParams.get('campaign_id') || null,
+      adset_id: urlParams.get('adset_id') || null,
+      ad_id: urlParams.get('ad_id') || null
+    };
+
+    const allParams = { ...utmParams, ...metaParams };
+
+    if (metaParams.campaign_id && CONFIG.debug) {
+      console.log('📊 [Meta Ads] Variables capturadas:', metaParams);
     }
 
-    return params;
-  }
-
-  function getStoredUTMParams() {
-    const stored = sessionStorage.getItem('rentsmart_bf_utm_params');
-    return stored ? JSON.parse(stored) : getUTMandMetaParams();
+    return allParams;
   }
 
   // =====================
-  // ENVÍO DE EVENTOS
+  // FUNCIONES DE ENVÍO (IGUAL que script original)
   // =====================
 
-  async function trackEvent(eventType, eventData = {}) {
-    const utmParams = getStoredUTMParams();
+  async function trackEvent(eventName, eventData = {}) {
+    const utmAndMetaParams = getUTMParams();
 
     const payload = {
       visitor_id: getVisitorId(),
       session_id: getSessionId(),
-      event_type: eventType,
+      event_type: eventName,
       url: window.location.href,
       referrer: document.referrer || null,
       user_agent: navigator.userAgent,
-      timestamp: new Date().toISOString(),
-      ...utmParams,
+      ...utmAndMetaParams,
       event_data: eventData
     };
 
     try {
       if (CONFIG.debug) {
-        console.log(`📡 [Tracking] Enviando evento '${eventType}':`, payload);
+        console.log(`📡 [Tracking] Enviando evento '${eventName}' a /api/track-event:`, payload);
       }
 
       await fetch(CONFIG.trackEventUrl, {
@@ -150,29 +137,20 @@
         signal: AbortSignal.timeout(CONFIG.timeout)
       });
 
-      if (CONFIG.debug) console.log(`✅ [Tracking] Evento '${eventType}' enviado`);
+      if (CONFIG.debug) console.log(`✅ [Tracking] Evento '${eventName}' enviado a /api/track-event`);
     } catch (error) {
-      console.error(`❌ [Tracking] Error enviando '${eventType}':`, error.message);
+      console.error(`❌ [Tracking] Error enviando evento '${eventName}':`, error.message);
     }
   }
 
-  // Enviar a endpoint UTM (solo para conversiones importantes)
-  // IMPORTANTE: Los datos van DIRECTAMENTE en el payload, no dentro de event_data
   async function trackUTM(formData) {
-    const utmParams = getStoredUTMParams();
+    const utmAndMetaParams = getUTMParams();
 
-    // Estructura EXACTA como el script original
     const payload = {
       visitor_id: getVisitorId(),
       session_id: getSessionId(),
-
-      // UTMs y Meta Ads en el nivel principal
-      ...utmParams,
-
-      // Datos del formulario DIRECTAMENTE (no dentro de event_data)
+      ...utmAndMetaParams,
       ...formData,
-
-      // Campos adicionales requeridos
       referrer_url: document.referrer || null,
       landing_page: window.location.href,
       user_agent: navigator.userAgent
@@ -180,7 +158,7 @@
 
     try {
       if (CONFIG.debug) {
-        console.log('📡 [utm-tracking] Enviando a utmPrincipal:', payload);
+        console.log('📡 [Tracking] Enviando datos a /api/utm-tracking:', payload);
       }
 
       await fetch(CONFIG.utmTrackingUrl, {
@@ -190,9 +168,9 @@
         signal: AbortSignal.timeout(CONFIG.timeout)
       });
 
-      if (CONFIG.debug) console.log('✅ [utm-tracking] Datos enviados a utmPrincipal');
+      if (CONFIG.debug) console.log('✅ [Tracking] Datos enviados a /api/utm-tracking');
     } catch (error) {
-      console.error('❌ [utm-tracking] Error:', error.message);
+      console.error('❌ [Tracking] Error enviando a /api/utm-tracking:', error.message);
     }
   }
 
@@ -201,394 +179,227 @@
   // =====================
 
   function trackPageView() {
-    const pageViewKey = 'rentsmart_bf_pv_sent';
+    const pageViewKey = 'rentsmart_pv_' + window.location.pathname;
     const pageViewSent = sessionStorage.getItem(pageViewKey);
 
     if (!pageViewSent) {
-      trackEvent('page_view', {
-        viewport_width: window.innerWidth,
-        viewport_height: window.innerHeight,
-        screen_width: screen.width,
-        screen_height: screen.height,
-        device_type: /Mobile|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop'
-      });
+      trackEvent('page_view');
       sessionStorage.setItem(pageViewKey, Date.now().toString());
-      if (CONFIG.debug) console.log('📄 [Tracking] page_view enviado');
+      if (CONFIG.debug) console.log('📄 [Tracking] Evento page_view enviado (primera visita en sesión)');
     } else {
-      if (CONFIG.debug) console.log('⏭️ [Tracking] page_view ya registrado');
+      if (CONFIG.debug) console.log('⏭️ [Tracking] Page view ya registrado en esta sesión');
     }
   }
 
   // =====================
-  // TRACKING DE MODAL WHATSAPP
+  // TRACKING MODAL WHATSAPP
   // =====================
 
-  function setupWhatsAppModalTracking() {
-    let modalTracked = false;
-    let formSubmitTracked = false;
+  let whatsappClickSent = false;
 
-    // Detectar apertura del modal usando MutationObserver
-    const observer = new MutationObserver((mutations) => {
-      for (const mutation of mutations) {
-        for (const node of mutation.addedNodes) {
-          if (node.nodeType === 1) {
-            // Buscar el backdrop del modal (detecta cuando se abre)
-            const backdrop = node.querySelector ? node.querySelector('.fixed.inset-0.bg-black\\/70') : null;
-            if (backdrop && !modalTracked) {
-              modalTracked = true;
-              trackEvent('whatsapp_modal_open', {
-                timestamp: Date.now()
-              });
-              if (CONFIG.debug) console.log('📱 [WhatsApp] Modal abierto');
-            }
+  function initializeWhatsAppTracking(form) {
+    if (form.dataset.whatsappTracking === 'configured') {
+      return;
+    }
 
-            // Detectar el formulario dentro del modal
-            const whatsappForm = node.querySelector ? node.querySelector('form') : (node.tagName === 'FORM' ? node : null);
-            if (whatsappForm && !formSubmitTracked) {
-              // Agregar listener al formulario
-              whatsappForm.addEventListener('submit', function(e) {
-                if (formSubmitTracked) return; // Evitar duplicados
-                formSubmitTracked = true;
+    if (CONFIG.debug) console.log('✅ [WhatsApp] Formulario encontrado. Configurando tracking...');
 
-                // Capturar datos del formulario (nombres compatibles con tu BD)
-                const formData = {
-                  // Ubicaciones (nombres como en script original)
-                  pickup_location: whatsappForm.querySelector('[name="lugarEntrega"]')?.value || null,
-                  return_location: whatsappForm.querySelector('[name="lugarDevolucion"]')?.value || null,
+    form.dataset.whatsappTracking = 'configured';
 
-                  // Fechas (nombres como en script original)
-                  pickup_date: whatsappForm.querySelector('[name="fechaHoraRecogida"]')?.value || null,
-                  return_date: whatsappForm.querySelector('[name="fechaHoraEntrega"]')?.value || null,
-
-                  // Email - múltiples selectores para asegurar captura
-                  email: whatsappForm.querySelector(
-                    '[name="email"], [name="Email"], [type="email"], ' +
-                    'input[placeholder*="email" i], input[placeholder*="correo" i]'
-                  )?.value || null,
-
-                  // Teléfono - NUEVO CAMPO
-                  phone: whatsappForm.querySelector(
-                    '[name="phone"], [name="telefono"], [name="Phone"], ' +
-                    '[type="tel"], input[placeholder*="tel" i], input[placeholder*="phone" i]'
-                  )?.value || null,
-
-                  // Tipo de conversión
-                  conversion_type: 'whatsapp'
-                };
-
-                if (CONFIG.debug) {
-                  console.log('📱 [WhatsApp] Formulario enviado:', formData);
-                }
-
-                // Enviar a AMBOS endpoints
-                // track-event: con event_data
-                // utm-tracking: datos directos (como script original)
-                Promise.allSettled([
-                  trackEvent('whatsapp_form_submit', formData),
-                  trackUTM(formData)
-                ]);
-
-                // Reset del flag cuando se cierra el modal
-                setTimeout(() => {
-                  modalTracked = false;
-                  formSubmitTracked = false;
-                }, 2000);
-              }, { once: false });
-            }
-          }
-        }
+    form.addEventListener('submit', async function(e) {
+      if (whatsappClickSent) {
+        if (CONFIG.debug) console.log('⏭️ [WhatsApp] Click ya registrado, evitando duplicado');
+        return;
       }
-    });
 
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
-    });
+      whatsappClickSent = true;
 
-    if (CONFIG.debug) console.log('👀 [WhatsApp] Observer activado');
-  }
+      // Capturar datos del formulario
+      const formData = {
+        pickup_location: form.querySelector('[name="lugarEntrega"]')?.value || null,
+        return_location: form.querySelector('[name="lugarDevolucion"]')?.value || null,
+        pickup_date: form.querySelector('[name="fechaHoraRecogida"]')?.value || null,
+        return_date: form.querySelector('[name="fechaHoraEntrega"]')?.value || null,
+        email: form.querySelector('[name="email"]')?.value || null
+      };
 
-  // =====================
-  // TRACKING DE WIDGET HQ
-  // =====================
+      if (CONFIG.debug) {
+        console.log('✅ [WhatsApp] Formulario VALIDADO. Enviando evento whatsapp_click...');
+        console.log('📱 [WhatsApp] Datos capturados:', formData);
+      }
 
-  function setupHQWidgetTracking() {
-    let widgetLoadTracked = false;
-    let currentCity = null;
-
-    const observer = new MutationObserver((mutations) => {
-      for (const mutation of mutations) {
-        for (const node of mutation.addedNodes) {
-          if (node.nodeType === 1) {
-            // Detectar carga del widget HQ
-            const hqWidget = node.querySelector ? node.querySelector('.hq-rental-software-integration') :
-                             (node.classList?.contains('hq-rental-software-integration') ? node : null);
-
-            if (hqWidget && !widgetLoadTracked) {
-              widgetLoadTracked = true;
-
-              // Detectar ciudad del wrapper
-              const wrapperId = hqWidget.closest('[id]')?.id;
-              const city = wrapperId?.includes('miami') ? 'miami' :
-                          wrapperId?.includes('orlando') ? 'orlando' :
-                          'unknown';
-              currentCity = city;
-
-              trackEvent('hq_widget_load', {
-                city: city,
-                brand: hqWidget.dataset.brand || null,
-                timestamp: Date.now()
-              });
-
-              if (CONFIG.debug) console.log('🏢 [HQ Widget] Cargado para:', city);
-
-              // Detectar iframe dentro del widget (método antiguo)
-              setTimeout(() => {
-                const iframe = hqWidget.querySelector('iframe');
-                if (iframe) {
-                  iframe.addEventListener('load', function() {
-                    trackEvent('hq_widget_interaction', {
-                      city: currentCity,
-                      interaction_type: 'iframe_loaded'
-                    });
-                    if (CONFIG.debug) console.log('🏢 [HQ Widget] Iframe cargado');
-                  });
-                }
-
-                // Detectar formulario directo (método nuevo)
-                const form = hqWidget.querySelector('form');
-                if (form) {
-                  // Trackear interacción con campos del formulario
-                  const inputs = form.querySelectorAll('input, select');
-                  inputs.forEach(input => {
-                    input.addEventListener('focus', function() {
-                      trackEvent('hq_widget_interaction', {
-                        city: currentCity,
-                        interaction_type: 'form_field_focus',
-                        field: input.name || input.id || 'unknown'
-                      });
-                    }, { once: true }); // Solo una vez por campo
-                  });
-
-                  // Trackear submit del formulario HQ
-                  form.addEventListener('submit', function() {
-                    // Capturar todos los datos posibles del formulario HQ
-                    const formData = {
-                      city: currentCity,
-                      conversion_type: 'hq_widget',
-
-                      // Ubicaciones
-                      pickup_location: form.querySelector('[name*="pickup"], [name*="entrega"], [id*="pickup"], [id*="entrega"]')?.value || null,
-                      return_location: form.querySelector('[name*="return"], [name*="devolucion"], [id*="return"], [id*="devolucion"]')?.value || null,
-
-                      // Fechas
-                      pickup_date: form.querySelector('[name*="pickup_date"], [name*="fecha_entrega"], [type="date"][name*="pickup"]')?.value || null,
-                      return_date: form.querySelector('[name*="return_date"], [name*="fecha_devolucion"], [type="date"][name*="return"]')?.value || null,
-
-                      // Email - MÚLTIPLES SELECTORES para asegurar captura
-                      email: form.querySelector(
-                        '[name="email"], [name="Email"], [name="EMAIL"], ' +
-                        '[id="email"], [id="Email"], ' +
-                        '[type="email"], ' +
-                        'input[placeholder*="email" i], input[placeholder*="correo" i]'
-                      )?.value || null,
-
-                      // Nombre si está disponible
-                      name: form.querySelector('[name*="name"], [name*="nombre"], [id*="name"], [id*="nombre"]')?.value || null,
-
-                      // Teléfono si está disponible
-                      phone: form.querySelector('[name*="phone"], [name*="telefono"], [type="tel"]')?.value || null,
-
-                      // País si está disponible
-                      country: form.querySelector('[name*="country"], [name*="pais"], [id*="country"]')?.value || null
-                    };
-
-                    Promise.allSettled([
-                      trackEvent('hq_form_submit', formData),
-                      trackUTM(formData)
-                    ]);
-
-                    if (CONFIG.debug) {
-                      console.log('🏢 [HQ Widget] Formulario enviado con datos completos:', formData);
-                    }
-                  });
-                }
-              }, 1000); // Esperar a que el widget se renderice completamente
-
-              // Reset cuando se limpia el widget
-              widgetLoadTracked = false;
+      // Enviar a AMBOS endpoints en paralelo
+      Promise.allSettled([
+        trackEvent('whatsapp_click', formData),
+        trackUTM(formData)
+      ]).then(results => {
+        if (CONFIG.debug) {
+          results.forEach((result, index) => {
+            const endpoint = index === 0 ? 'track-event' : 'utm-tracking';
+            if (result.status === 'fulfilled') {
+              console.log(`✅ [WhatsApp] Enviado exitosamente a ${endpoint}`);
+            } else {
+              console.error(`❌ [WhatsApp] Error en ${endpoint}:`, result.reason);
             }
-          }
-        }
-      }
-    });
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
-    });
-
-    if (CONFIG.debug) console.log('👀 [HQ Widget] Observer activado');
-  }
-
-  // =====================
-  // TRACKING DE SELECCIÓN DE CIUDAD
-  // =====================
-
-  function setupCitySelectionTracking() {
-    // Detectar clicks en botones de ciudad usando delegación de eventos
-    document.body.addEventListener('click', function(e) {
-      const cityButton = e.target.closest('.city-selector-btn');
-      if (cityButton) {
-        const cityText = cityButton.textContent.trim().toLowerCase();
-        const city = cityText.includes('miami') ? 'miami' :
-                    cityText.includes('orlando') ? 'orlando' :
-                    'unknown';
-
-        trackEvent('city_selection', {
-          city: city,
-          timestamp: Date.now()
-        });
-
-        if (CONFIG.debug) console.log('🏙️ [City] Seleccionada:', city);
-      }
-    });
-
-    if (CONFIG.debug) console.log('👀 [City] Tracking activado');
-  }
-
-  // =====================
-  // TRACKING DE CTAs
-  // =====================
-
-  function setupCTATracking() {
-    document.body.addEventListener('click', function(e) {
-      const cta = e.target.closest('a[href*="contact-form"], button');
-      if (cta) {
-        const text = cta.textContent.trim();
-        const href = cta.getAttribute('href');
-
-        // Solo trackear CTAs importantes (no todos los botones)
-        if (text.toLowerCase().includes('off') ||
-            text.toLowerCase().includes('cotiz') ||
-            text.toLowerCase().includes('reserv') ||
-            text.toLowerCase().includes('agente') ||
-            href === '#contact-form') {
-
-          trackEvent('cta_click', {
-            cta_text: text,
-            cta_href: href || null,
-            timestamp: Date.now()
           });
-
-          if (CONFIG.debug) console.log('🎯 [CTA] Click:', text);
         }
-      }
-    });
+      });
 
-    if (CONFIG.debug) console.log('👀 [CTA] Tracking activado');
-  }
+      // Reset después de enviar
+      setTimeout(() => {
+        whatsappClickSent = false;
+      }, 2000);
 
-  // =====================
-  // TRACKING DE SCROLL
-  // =====================
-
-  function setupScrollTracking() {
-    const milestones = new Set();
-    let maxScroll = 0;
-
-    function trackScroll() {
-      const scrollPercent = Math.round(
-        (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100
-      );
-
-      if (scrollPercent > maxScroll) {
-        maxScroll = scrollPercent;
-
-        CONFIG.scrollMilestones.forEach(milestone => {
-          if (scrollPercent >= milestone && !milestones.has(milestone)) {
-            milestones.add(milestone);
-            trackEvent('scroll_milestone', {
-              milestone: milestone,
-              max_scroll: maxScroll
-            });
-            if (CONFIG.debug) console.log(`📜 [Scroll] Milestone: ${milestone}%`);
-          }
-        });
-      }
-    }
-
-    let scrollTimeout;
-    window.addEventListener('scroll', function() {
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(trackScroll, 200);
     }, { passive: true });
 
-    if (CONFIG.debug) console.log('👀 [Scroll] Tracking activado');
+    if (CONFIG.debug) console.log('👍 [WhatsApp] Tracking configurado correctamente');
   }
 
   // =====================
-  // TRACKING DE TIEMPO EN PÁGINA
+  // TRACKING WIDGET HQ
   // =====================
 
-  function setupTimeTracking() {
-    let timeOnPage = 0;
-    let isActive = true;
+  let hqQuoteClickSent = false;
 
-    // Detectar cuando el usuario está activo/inactivo
-    document.addEventListener('visibilitychange', function() {
-      isActive = !document.hidden;
-    });
+  function initializeHQTracking(form) {
+    if (form.dataset.hqTracking === 'configured') {
+      return;
+    }
 
-    setInterval(function() {
-      if (isActive) {
-        timeOnPage += CONFIG.timeTrackingInterval / 1000; // Convertir a segundos
-        trackEvent('time_on_page', {
-          seconds: timeOnPage,
-          minutes: Math.round(timeOnPage / 60 * 10) / 10
-        });
-        if (CONFIG.debug) console.log(`⏱️ [Time] ${timeOnPage}s en página`);
+    if (CONFIG.debug) console.log('✅ [HQ Widget] Formulario encontrado. Configurando tracking...');
+
+    form.dataset.hqTracking = 'configured';
+
+    form.addEventListener('submit', async function(e) {
+      if (hqQuoteClickSent) {
+        if (CONFIG.debug) console.log('⏭️ [HQ Widget] Click ya registrado, evitando duplicado');
+        return;
       }
-    }, CONFIG.timeTrackingInterval);
 
-    if (CONFIG.debug) console.log('👀 [Time] Tracking activado');
+      hqQuoteClickSent = true;
+
+      // Capturar datos del formulario HQ
+      const formData = {
+        pickup_location: form.querySelector('[name*="pickup"], [name*="entrega"], [id*="Entrega"]')?.value || null,
+        return_location: form.querySelector('[name*="return"], [name*="devolucion"], [id*="Devolucion"]')?.value || null,
+        pickup_date: form.querySelector('[name*="pickup"], [name*="entrega"], [id*="FechaDeEntrega"]')?.value || null,
+        return_date: form.querySelector('[name*="return"], [name*="devolucion"], [id*="FechaDeDevolucion"]')?.value || null,
+        email: form.querySelector('[name*="email"], [name*="Email"], [type="email"]')?.value || null,
+        phone: form.querySelector('[name*="phone"], [name*="telefono"], [type="tel"]')?.value || null,
+        country: form.querySelector('[name*="country"], [name*="Country"]')?.value || null
+      };
+
+      if (CONFIG.debug) {
+        console.log('✅ [HQ Widget] Formulario VALIDADO. Enviando evento hq_quote_click...');
+        console.log('🏢 [HQ Widget] Datos capturados:', formData);
+      }
+
+      // Enviar a AMBOS endpoints en paralelo
+      Promise.allSettled([
+        trackEvent('hq_quote_click', formData),
+        trackUTM(formData)
+      ]).then(results => {
+        if (CONFIG.debug) {
+          results.forEach((result, index) => {
+            const endpoint = index === 0 ? 'track-event' : 'utm-tracking';
+            if (result.status === 'fulfilled') {
+              console.log(`✅ [HQ Widget] Enviado exitosamente a ${endpoint}`);
+            } else {
+              console.error(`❌ [HQ Widget] Error en ${endpoint}:`, result.reason);
+            }
+          });
+        }
+      });
+
+      // Reset después de enviar
+      setTimeout(() => {
+        hqQuoteClickSent = false;
+      }, 2000);
+
+    }, { passive: true });
+
+    if (CONFIG.debug) console.log('👍 [HQ Widget] Tracking configurado correctamente');
   }
 
   // =====================
   // INICIALIZACIÓN
   // =====================
 
-  // Capturar UTMs inmediatamente
-  getUTMandMetaParams();
+  // Disparar page_view al cargar
+  trackPageView();
 
-  // Log inicial si hay tráfico de Meta
-  const initialParams = getStoredUTMParams();
-  if (initialParams.fbclid && CONFIG.debug) {
-    console.log('🎯 [Meta Ads] Tráfico de Facebook detectado:', initialParams);
+  // Log inicial de variables de Meta (si existen)
+  const initialParams = getUTMParams();
+  if (initialParams.campaign_id && CONFIG.debug) {
+    console.log('🎯 [Meta Ads] Página cargada con tráfico de Meta Ads:', {
+      utm_source: initialParams.utm_source,
+      utm_campaign: initialParams.utm_campaign,
+      campaign_id: initialParams.campaign_id,
+      cpc: initialParams.cpc,
+      spend: initialParams.spend
+    });
   }
 
-  // Esperar a que el DOM esté listo
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+  // Observador para detectar modales dinámicamente
+  const modalObserver = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      for (const node of mutation.addedNodes) {
+        if (node.nodeType === 1) {
+          // Buscar formulario de WhatsApp
+          const whatsappForm = node.querySelector ? node.querySelector('form') : (node.tagName === 'FORM' ? node : null);
+          if (whatsappForm) {
+            // Verificar si es el modal de WhatsApp (tiene campos específicos)
+            const hasWhatsappFields = whatsappForm.querySelector('[name="lugarEntrega"]') &&
+                                      whatsappForm.querySelector('[name="email"]');
+            if (hasWhatsappFields) {
+              initializeWhatsAppTracking(whatsappForm);
+            }
+          }
+
+          // Buscar formulario HQ
+          const hqWidget = node.querySelector ? node.querySelector('.hq-rental-software-integration') :
+                          (node.classList?.contains('hq-rental-software-integration') ? node : null);
+          if (hqWidget) {
+            // Esperar a que el formulario se renderice dentro del widget
+            setTimeout(() => {
+              const hqForm = hqWidget.querySelector('form');
+              if (hqForm) {
+                initializeHQTracking(hqForm);
+              }
+            }, 1500);
+          }
+        }
+      }
+    }
+  });
+
+  // Iniciar observador
+  if (document.body) {
+    modalObserver.observe(document.body, { childList: true, subtree: true });
+    if (CONFIG.debug) console.log('👀 [Tracking] Observador del DOM iniciado. Esperando modales...');
   } else {
-    init();
+    document.addEventListener('DOMContentLoaded', () => {
+      modalObserver.observe(document.body, { childList: true, subtree: true });
+      if (CONFIG.debug) console.log('👀 [Tracking] Observador iniciado después de DOMContentLoaded');
+    }, { once: true });
   }
 
-  function init() {
-    console.log('🚀 [Tracking] Inicializando...');
+  // Intentar configurar inmediatamente si ya existen formularios
+  setTimeout(() => {
+    // Buscar modal WhatsApp
+    const existingWhatsappForm = document.querySelector('form[name="lugarEntrega"], form input[name="lugarEntrega"]')?.closest('form');
+    if (existingWhatsappForm) {
+      initializeWhatsAppTracking(existingWhatsappForm);
+    }
 
-    // Trackear page view
-    trackPageView();
-
-    // Activar todos los observers y trackers
-    setupWhatsAppModalTracking();
-    setupHQWidgetTracking();
-    setupCitySelectionTracking();
-    setupCTATracking();
-    setupScrollTracking();
-    setupTimeTracking();
-
-    console.log('✅ [Tracking] Sistema completamente activado');
-  }
+    // Buscar widget HQ
+    const existingHQWidget = document.querySelector('.hq-rental-software-integration');
+    if (existingHQWidget) {
+      const existingHQForm = existingHQWidget.querySelector('form');
+      if (existingHQForm) {
+        initializeHQTracking(existingHQForm);
+      }
+    }
+  }, 2000);
 
 })();
