@@ -27,6 +27,8 @@
   'use strict';
 
   console.log('🔍 [BlackFriday-Tracking V2.0] Script de tracking cargado - Captura eventos de BOTÓN');
+  console.log('📍 [Tracking] URL actual:', window.location.href);
+  console.log('📍 [Tracking] readyState:', document.readyState);
 
   // =====================
   // CONFIGURACIÓN
@@ -113,65 +115,81 @@
   // =====================
 
   async function trackEvent(eventName, eventData = {}) {
-    const utmAndMetaParams = getUTMParams();
-
-    const payload = {
-      visitor_id: getVisitorId(),
-      session_id: getSessionId(),
-      event_type: eventName,
-      url: window.location.href,
-      referrer: document.referrer || null,
-      user_agent: navigator.userAgent,
-      ...utmAndMetaParams,
-      event_data: eventData
-    };
-
     try {
+      const utmAndMetaParams = getUTMParams();
+
+      const payload = {
+        visitor_id: getVisitorId(),
+        session_id: getSessionId(),
+        event_type: eventName,
+        url: window.location.href,
+        referrer: document.referrer || null,
+        user_agent: navigator.userAgent,
+        ...utmAndMetaParams,
+        event_data: eventData
+      };
+
       if (CONFIG.debug) {
         console.log(`📡 [Tracking] Enviando evento '${eventName}' a /api/track-event:`, payload);
       }
 
-      await fetch(CONFIG.trackEventUrl, {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), CONFIG.timeout);
+
+      const response = await fetch(CONFIG.trackEventUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
-        signal: AbortSignal.timeout(CONFIG.timeout)
+        signal: controller.signal
       });
 
-      if (CONFIG.debug) console.log(`✅ [Tracking] Evento '${eventName}' enviado a /api/track-event`);
+      clearTimeout(timeoutId);
+
+      if (CONFIG.debug) {
+        console.log(`✅ [Tracking] Evento '${eventName}' enviado a /api/track-event (status: ${response.status})`);
+      }
     } catch (error) {
       console.error(`❌ [Tracking] Error enviando evento '${eventName}':`, error.message);
+      console.error('Stack trace:', error);
     }
   }
 
   async function trackUTM(formData) {
-    const utmAndMetaParams = getUTMParams();
-
-    const payload = {
-      visitor_id: getVisitorId(),
-      session_id: getSessionId(),
-      ...utmAndMetaParams,
-      ...formData,
-      referrer_url: document.referrer || null,
-      landing_page: window.location.href,
-      user_agent: navigator.userAgent
-    };
-
     try {
+      const utmAndMetaParams = getUTMParams();
+
+      const payload = {
+        visitor_id: getVisitorId(),
+        session_id: getSessionId(),
+        ...utmAndMetaParams,
+        ...formData,
+        referrer_url: document.referrer || null,
+        landing_page: window.location.href,
+        user_agent: navigator.userAgent
+      };
+
       if (CONFIG.debug) {
         console.log('📡 [Tracking] Enviando datos a /api/utm-tracking:', payload);
       }
 
-      await fetch(CONFIG.utmTrackingUrl, {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), CONFIG.timeout);
+
+      const response = await fetch(CONFIG.utmTrackingUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
-        signal: AbortSignal.timeout(CONFIG.timeout)
+        signal: controller.signal
       });
 
-      if (CONFIG.debug) console.log('✅ [Tracking] Datos enviados a /api/utm-tracking');
+      clearTimeout(timeoutId);
+
+      if (CONFIG.debug) {
+        console.log(`✅ [Tracking] Datos enviados a /api/utm-tracking (status: ${response.status})`);
+      }
     } catch (error) {
       console.error('❌ [Tracking] Error enviando a /api/utm-tracking:', error.message);
+      console.error('Stack trace:', error);
     }
   }
 
@@ -183,10 +201,17 @@
     const pageViewKey = 'rentsmart_pv_' + window.location.pathname;
     const pageViewSent = sessionStorage.getItem(pageViewKey);
 
+    if (CONFIG.debug) {
+      console.log('📄 [Tracking] trackPageView() ejecutado');
+      console.log('📄 [Tracking] pageViewKey:', pageViewKey);
+      console.log('📄 [Tracking] pageViewSent:', pageViewSent);
+    }
+
     if (!pageViewSent) {
+      if (CONFIG.debug) console.log('📄 [Tracking] Primera visita detectada, enviando page_view...');
       trackEvent('page_view');
       sessionStorage.setItem(pageViewKey, Date.now().toString());
-      if (CONFIG.debug) console.log('📄 [Tracking] Evento page_view enviado (primera visita en sesión)');
+      if (CONFIG.debug) console.log('✅ [Tracking] Evento page_view enviado y guardado en sessionStorage');
     } else {
       if (CONFIG.debug) console.log('⏭️ [Tracking] Page view ya registrado en esta sesión');
     }
@@ -360,19 +385,36 @@
   // INICIALIZACIÓN
   // =====================
 
-  // Disparar page_view al cargar
-  trackPageView();
+  // Función de inicialización principal
+  function initialize() {
+    if (CONFIG.debug) console.log('🚀 [Tracking] Inicializando script...');
 
-  // Log inicial de variables de Meta (si existen)
-  const initialParams = getUTMParams();
-  if (initialParams.campaign_id && CONFIG.debug) {
-    console.log('🎯 [Meta Ads] Página cargada con tráfico de Meta Ads:', {
-      utm_source: initialParams.utm_source,
-      utm_campaign: initialParams.utm_campaign,
-      campaign_id: initialParams.campaign_id,
-      cpc: initialParams.cpc,
-      spend: initialParams.spend
-    });
+    // Disparar page_view al cargar
+    trackPageView();
+
+    // Log inicial de variables de Meta (si existen)
+    const initialParams = getUTMParams();
+    if (initialParams.campaign_id && CONFIG.debug) {
+      console.log('🎯 [Meta Ads] Página cargada con tráfico de Meta Ads:', {
+        utm_source: initialParams.utm_source,
+        utm_campaign: initialParams.utm_campaign,
+        campaign_id: initialParams.campaign_id,
+        cpc: initialParams.cpc,
+        spend: initialParams.spend
+      });
+    }
+
+    if (CONFIG.debug) console.log('✅ [Tracking] Inicialización completada');
+  }
+
+  // Ejecutar inmediatamente si el DOM ya está listo, o esperar al DOMContentLoaded
+  if (document.readyState === 'loading') {
+    // DOM aún cargando, esperar al evento
+    document.addEventListener('DOMContentLoaded', initialize, { once: true });
+    if (CONFIG.debug) console.log('⏳ [Tracking] Esperando DOMContentLoaded...');
+  } else {
+    // DOM ya está listo, ejecutar inmediatamente
+    initialize();
   }
 
   // Observador para detectar modales dinámicamente
