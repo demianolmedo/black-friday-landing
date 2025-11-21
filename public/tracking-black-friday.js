@@ -1,7 +1,7 @@
 /**
  * =====================================================
  * SCRIPT DE TRACKING - RENTSMART BLACK FRIDAY
- * Versión: 2.5 - Persistencia de UTM params en sessionStorage
+ * Versión: 2.5.1 - Debug mejorado para persistencia UTM
  * Última actualización: 2025-01-21
  * =====================================================
  *
@@ -25,6 +25,11 @@
  * - phone: Teléfono con código de país (ej: +1234567890)
  * - Backend actualizado para aceptar campo "phone" nativo
  *
+ * CHANGELOG v2.5.1:
+ * - ✅ Logs de debug exhaustivos en getUTMParams()
+ * - ✅ Rastreo completo del flujo de persistencia
+ * - ✅ Identificación de problemas en recuperación de UTM params
+ *
  * CHANGELOG v2.5:
  * - ✅ Persistencia de UTM params en sessionStorage
  * - ✅ Recuperación automática de UTM params en modales
@@ -35,7 +40,7 @@
 (function() {
   'use strict';
 
-  console.log('🔍 [BlackFriday-Tracking V2.5] Script cargado - Persistencia UTM params');
+  console.log('🔍 [BlackFriday-Tracking V2.5.1] Script cargado - Debug mejorado UTM');
   console.log('📍 [Tracking] URL actual:', window.location.href);
   console.log('📍 [Tracking] readyState:', document.readyState);
 
@@ -90,8 +95,13 @@
     return Math.round(numValue * Math.pow(10, decimals)) / Math.pow(10, decimals);
   }
 
-  // Capturar parámetros UTM + Meta Ads (IGUAL que script original)
+  // Capturar parámetros UTM + Meta Ads (CON PERSISTENCIA EN sessionStorage)
   function getUTMParams() {
+    if (CONFIG.debug) {
+      console.log('🔍 [UTM] getUTMParams() llamado');
+      console.log('🔍 [UTM] URL actual:', window.location.href);
+    }
+
     const urlParams = new URLSearchParams(window.location.search);
 
     // Intentar capturar de la URL primero
@@ -113,29 +123,58 @@
 
     const allParams = { ...utmParams, ...metaParams };
 
+    if (CONFIG.debug) {
+      console.log('🔍 [UTM] Params desde URL:', allParams);
+    }
+
     // 🔄 PERSISTENCIA: Si hay parámetros UTM en la URL, guardarlos en sessionStorage
     const hasUTMParams = Object.values(utmParams).some(v => v !== null);
     const hasMetaParams = Object.values(metaParams).some(v => v !== null);
+
+    if (CONFIG.debug) {
+      console.log('🔍 [UTM] ¿Tiene UTM params?:', hasUTMParams);
+      console.log('🔍 [UTM] ¿Tiene Meta params?:', hasMetaParams);
+    }
 
     if (hasUTMParams || hasMetaParams) {
       sessionStorage.setItem('utm_params', JSON.stringify(allParams));
       if (CONFIG.debug) {
         console.log('💾 [UTM] Parámetros guardados en sessionStorage:', allParams);
+        console.log('💾 [UTM] Verificando storage:', sessionStorage.getItem('utm_params'));
       }
+      return allParams;
     } else {
       // 📥 Si no hay params en URL, intentar recuperar de sessionStorage
       const storedParams = sessionStorage.getItem('utm_params');
+
+      if (CONFIG.debug) {
+        console.log('🔍 [UTM] No hay params en URL, buscando en sessionStorage');
+        console.log('🔍 [UTM] sessionStorage.utm_params:', storedParams);
+      }
+
       if (storedParams) {
-        const parsed = JSON.parse(storedParams);
-        if (CONFIG.debug) {
-          console.log('📥 [UTM] Parámetros recuperados de sessionStorage:', parsed);
+        try {
+          const parsed = JSON.parse(storedParams);
+          if (CONFIG.debug) {
+            console.log('📥 [UTM] Parámetros recuperados de sessionStorage:', parsed);
+          }
+          return parsed;
+        } catch (error) {
+          console.error('❌ [UTM] Error parseando utm_params de sessionStorage:', error);
         }
-        return parsed;
+      } else {
+        if (CONFIG.debug) {
+          console.log('⚠️ [UTM] No hay params en URL ni en sessionStorage');
+        }
       }
     }
 
     if (metaParams.campaign_id && CONFIG.debug) {
       console.log('📊 [Meta Ads] Variables capturadas:', metaParams);
+    }
+
+    if (CONFIG.debug) {
+      console.log('🔍 [UTM] Retornando params finales:', allParams);
     }
 
     return allParams;
