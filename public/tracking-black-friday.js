@@ -321,7 +321,7 @@
     const formData = {
       email: contactData.email,
       phone: contactData.phone,  // ✅ Campo phone (backend actualizado)
-      pickup_location: null,
+      pickup_location: 'HQ_CONTACT',  // Placeholder para validación backend
       pickup_date: null,
       return_location: null,
       return_date: null,
