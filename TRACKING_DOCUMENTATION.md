@@ -771,15 +771,33 @@ const params = stored ? JSON.parse(stored) : defaultParams;
 - ❌ Error 400 en /api/utm-tracking
 
 ### v2.5 (Actual - FUNCIONAL) ✅
-- pickup_location: 'HQ_CONTACT' para HQ Contact
-- Phone en campo 'phone'
+**Fecha**: 2025-01-21
+
+**Cambios principales**:
+- ✅ **Persistencia de UTM params en sessionStorage**
+  - UTM params se guardan en sessionStorage al cargar la página
+  - Se recuperan automáticamente cuando no están en la URL
+  - Fix: utm_source y utm_campaign ahora se envían correctamente desde modales
+- ✅ pickup_location: 'HQ_CONTACT' para HQ Contact
+- ✅ Phone en campo 'phone'
 - ✅ Ambos endpoints responden 200 OK
+- ✅ Corrección automática de números de Argentina (+54) para Buenos Aires (agrega "9" al inicio de números que comienzan con "11")
+- ✅ Validación de teléfono universal: mínimo 7 dígitos
+
+**Archivos modificados**:
+- `public/tracking-black-friday.js`: Líneas 88-136 (función `getUTMParams()`)
+- `src/components/ContactCaptureModal.jsx`: Líneas 27-43 (validación), líneas 98-124 (corrección Argentina)
 
 **Verificar versión actual**:
 ```javascript
-// Console del navegador:
-window.TRACKING_VERSION
-// Output: "2.5"
+// Console del navegador (revisar logs iniciales):
+// 🔍 [BlackFriday-Tracking V2.5] Script cargado - Persistencia UTM params
+```
+
+**Logs nuevos para depuración**:
+```
+💾 [UTM] Parámetros guardados en sessionStorage: { utm_source: '...', utm_campaign: '...' }
+📥 [UTM] Parámetros recuperados de sessionStorage: { utm_source: '...', utm_campaign: '...' }
 ```
 
 ---

@@ -1,8 +1,8 @@
 /**
  * =====================================================
  * SCRIPT DE TRACKING - RENTSMART BLACK FRIDAY
- * Versión: 2.4 - Campo phone nativo en backend
- * Última actualización: 2025-01-20
+ * Versión: 2.5 - Persistencia de UTM params en sessionStorage
+ * Última actualización: 2025-01-21
  * =====================================================
  *
  * EVENTOS CAPTURADOS:
@@ -14,6 +14,7 @@
  * - quote_click: Clic en botones de conversión (WhatsApp, HQ Contact)
  * - conversion_type en event_data diferencia el tipo: "whatsapp" o "hq_contact_capture"
  * - Variables de Meta Ads: cpc, spend, campaign_id, adset_id, ad_id
+ * - UTM params se guardan en sessionStorage y persisten durante la sesión
  *
  * ENDPOINTS:
  * 1. /api/track-event → tracking_events (event_type: page_view o quote_click)
@@ -23,13 +24,18 @@
  * - email: Correo electrónico del usuario
  * - phone: Teléfono con código de país (ej: +1234567890)
  * - Backend actualizado para aceptar campo "phone" nativo
+ *
+ * CHANGELOG v2.5:
+ * - ✅ Persistencia de UTM params en sessionStorage
+ * - ✅ Recuperación automática de UTM params en modales
+ * - ✅ Fix: utm_source y utm_campaign ahora se envían correctamente desde modales
  * =====================================================
  */
 
 (function() {
   'use strict';
 
-  console.log('🔍 [BlackFriday-Tracking V2.4] Script cargado - Campo phone nativo');
+  console.log('🔍 [BlackFriday-Tracking V2.5] Script cargado - Persistencia UTM params');
   console.log('📍 [Tracking] URL actual:', window.location.href);
   console.log('📍 [Tracking] readyState:', document.readyState);
 
@@ -88,6 +94,7 @@
   function getUTMParams() {
     const urlParams = new URLSearchParams(window.location.search);
 
+    // Intentar capturar de la URL primero
     const utmParams = {
       utm_source: urlParams.get('utm_source') || null,
       utm_medium: urlParams.get('utm_medium') || null,
@@ -105,6 +112,27 @@
     };
 
     const allParams = { ...utmParams, ...metaParams };
+
+    // 🔄 PERSISTENCIA: Si hay parámetros UTM en la URL, guardarlos en sessionStorage
+    const hasUTMParams = Object.values(utmParams).some(v => v !== null);
+    const hasMetaParams = Object.values(metaParams).some(v => v !== null);
+
+    if (hasUTMParams || hasMetaParams) {
+      sessionStorage.setItem('utm_params', JSON.stringify(allParams));
+      if (CONFIG.debug) {
+        console.log('💾 [UTM] Parámetros guardados en sessionStorage:', allParams);
+      }
+    } else {
+      // 📥 Si no hay params en URL, intentar recuperar de sessionStorage
+      const storedParams = sessionStorage.getItem('utm_params');
+      if (storedParams) {
+        const parsed = JSON.parse(storedParams);
+        if (CONFIG.debug) {
+          console.log('📥 [UTM] Parámetros recuperados de sessionStorage:', parsed);
+        }
+        return parsed;
+      }
+    }
 
     if (metaParams.campaign_id && CONFIG.debug) {
       console.log('📊 [Meta Ads] Variables capturadas:', metaParams);

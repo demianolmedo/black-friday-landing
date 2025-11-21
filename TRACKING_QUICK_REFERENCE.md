@@ -288,5 +288,5 @@ const CONFIG = {
 
 ---
 
-**Última actualización**: 2024-11-21
-**Versión**: v2.5 ✅
+**Última actualización**: 2025-01-21
+**Versión**: v2.5 ✅ (Persistencia de UTM params)
