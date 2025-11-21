@@ -1,7 +1,7 @@
 /**
  * =====================================================
  * SCRIPT DE TRACKING - RENTSMART BLACK FRIDAY
- * Versión: 2.3 - HQ Contact guarda en utmPrincipal
+ * Versión: 2.4 - Campo phone nativo en backend
  * Última actualización: 2025-01-20
  * =====================================================
  *
@@ -17,18 +17,19 @@
  *
  * ENDPOINTS:
  * 1. /api/track-event → tracking_events (event_type: page_view o quote_click)
- * 2. /api/utm-tracking → utmPrincipal (requiere email + pickup_location)
+ * 2. /api/utm-tracking → utmPrincipal (requiere email + pickup_location O phone)
  *
- * WORKAROUND TEMPORAL:
- * - HQ Contact envía teléfono en campo "pickup_location" para guardarlo en utmPrincipal
- * - Así todos los datos quedan en la misma tabla sin modificar el backend
+ * CAMPOS HQ CONTACT:
+ * - email: Correo electrónico del usuario
+ * - phone: Teléfono con código de país (ej: +1234567890)
+ * - Backend actualizado para aceptar campo "phone" nativo
  * =====================================================
  */
 
 (function() {
   'use strict';
 
-  console.log('🔍 [BlackFriday-Tracking V2.3] Script cargado - HQ Contact → utmPrincipal');
+  console.log('🔍 [BlackFriday-Tracking V2.4] Script cargado - Campo phone nativo');
   console.log('📍 [Tracking] URL actual:', window.location.href);
   console.log('📍 [Tracking] readyState:', document.readyState);
 
@@ -316,11 +317,11 @@
 
     hqContactCaptureSent = true;
 
-    // IMPORTANTE: Enviar teléfono en pickup_location temporalmente
-    // para que se guarde en utmPrincipal (mismo lugar que WhatsApp)
+    // Enviar email y phone (backend ya actualizado para aceptar phone)
     const formData = {
       email: contactData.email,
-      pickup_location: contactData.phone,  // ← Teléfono va en pickup_location (temporal)
+      phone: contactData.phone,  // ✅ Campo phone (backend actualizado)
+      pickup_location: null,
       pickup_date: null,
       return_location: null,
       return_date: null,
@@ -331,7 +332,7 @@
       console.log('✅ [HQ Contact] Modal de contacto enviado');
       console.log('📞 [HQ Contact] Datos capturados:', formData);
       console.log('📞 [HQ Contact] Email:', contactData.email);
-      console.log('📞 [HQ Contact] Teléfono (en pickup_location):', contactData.phone);
+      console.log('📞 [HQ Contact] Phone:', contactData.phone);
       console.log('ℹ️ [HQ Contact] Se envía a AMBOS endpoints (igual que WhatsApp)');
     }
 
