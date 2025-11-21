@@ -17,6 +17,10 @@ const ContactCaptureModal = ({ isOpen, onComplete }) => {
   const [emailError, setEmailError] = useState('');
   const dropdownRef = useRef(null);
 
+  // Estado para confirmación de número argentino
+  const [showArgentinaConfirm, setShowArgentinaConfirm] = useState(false);
+  const [correctedPhone, setCorrectedPhone] = useState('');
+
   // Filtrar países según búsqueda
   const filteredCountries = countries.filter(country =>
     country.name.toLowerCase().includes(countrySearch.toLowerCase()) ||
@@ -106,21 +110,52 @@ const ContactCaptureModal = ({ isOpen, onComplete }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isFormValid) {
-      const contactData = {
-        phone: `${formData.countryCode}${formData.phoneNumber.replace(/\s/g, '')}`,
-        email: formData.email
-      };
+      const cleanNumber = formData.phoneNumber.replace(/\s/g, '');
 
-      // Guardar datos en localStorage
-      localStorage.setItem('contactData', JSON.stringify(contactData));
-
-      // 🔥 TRACKING: Enviar datos al backend
-      if (window.trackHQContactCapture) {
-        window.trackHQContactCapture(contactData);
+      // 🇦🇷 VALIDACIÓN ARGENTINA: Si es +54 y empieza con "11" sin el "9"
+      if (formData.countryCode === '+54' && cleanNumber.startsWith('11') && !cleanNumber.startsWith('9')) {
+        // Número necesita corrección: agregar "9" al inicio
+        const corrected = '9' + cleanNumber;
+        setCorrectedPhone(`${formData.countryCode} ${corrected}`);
+        setShowArgentinaConfirm(true);
+        return; // Detener submit y mostrar confirmación
       }
 
-      onComplete();
+      // Si no es Argentina o ya tiene el "9", continuar normalmente
+      submitContactData(cleanNumber);
     }
+  };
+
+  // Función para enviar los datos (extraída para reutilizar)
+  const submitContactData = (phoneNumber) => {
+    const contactData = {
+      phone: `${formData.countryCode}${phoneNumber}`,
+      email: formData.email
+    };
+
+    // Guardar datos en localStorage
+    localStorage.setItem('contactData', JSON.stringify(contactData));
+
+    // 🔥 TRACKING: Enviar datos al backend
+    if (window.trackHQContactCapture) {
+      window.trackHQContactCapture(contactData);
+    }
+
+    onComplete();
+  };
+
+  // Confirmar corrección del número argentino
+  const handleArgentinaConfirm = () => {
+    const cleanNumber = formData.phoneNumber.replace(/\s/g, '');
+    const corrected = '9' + cleanNumber; // Agregar el "9"
+    submitContactData(corrected);
+    setShowArgentinaConfirm(false);
+  };
+
+  // Cancelar y volver a editar
+  const handleArgentinaCancel = () => {
+    setShowArgentinaConfirm(false);
+    // Usuario puede corregir manualmente el número
   };
 
   if (!isOpen) return null;
@@ -271,6 +306,72 @@ const ContactCaptureModal = ({ isOpen, onComplete }) => {
                 </p>
               )}
             </form>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Modal de Confirmación - Número Argentino */}
+      {showArgentinaConfirm && (
+        <div className="fixed inset-0 z-[250] flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 bg-black/90 backdrop-blur-md"
+          />
+
+          {/* Modal de Confirmación */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+            className="relative w-full max-w-md bg-azul-principal/95 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl overflow-hidden"
+          >
+            {/* Header */}
+            <div className="px-6 py-5 border-b border-white/10 bg-yellow-500/10">
+              <h3 className="text-blanco font-bold text-lg text-center font-outfit flex items-center justify-center gap-2">
+                <span className="text-2xl">🇦🇷</span>
+                Confirmar Número Argentino
+              </h3>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 space-y-4">
+              <p className="text-white/80 text-sm text-center font-inter leading-relaxed">
+                Los números de Buenos Aires (011) requieren agregar <span className="font-bold text-verde-neon">9</span> después del código de país.
+              </p>
+
+              <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                <p className="text-white/60 text-xs mb-2 font-inter">Tu número será guardado como:</p>
+                <p className="text-verde-neon font-bold text-xl text-center font-mono tracking-wider">
+                  {correctedPhone}
+                </p>
+              </div>
+
+              <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-3">
+                <p className="text-blue-200 text-xs font-inter text-center">
+                  💡 Esto es necesario para que puedas recibir llamadas y mensajes internacionales.
+                </p>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="px-6 pb-6 flex gap-3">
+              <button
+                onClick={handleArgentinaCancel}
+                className="flex-1 bg-white/10 hover:bg-white/15 text-white font-semibold text-sm px-4 py-3 rounded-xl transition-all duration-300 border border-white/20 font-outfit"
+              >
+                Corregir
+              </button>
+              <button
+                onClick={handleArgentinaConfirm}
+                className="flex-1 bg-gradient-to-r from-verde-neon to-emerald-400 hover:from-verde-neon/90 hover:to-emerald-400/90 text-azul-principal font-bold text-sm px-4 py-3 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg font-outfit"
+              >
+                Sí, es correcto
+              </button>
+            </div>
           </motion.div>
         </div>
       )}
