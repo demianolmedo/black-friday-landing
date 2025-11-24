@@ -121,7 +121,7 @@ const ReservationsPage = ({ brand, city }) => {
               data-snippet="reservations"
               data-skip_language=""
               data-skip_redirect="1"
-              data-rate_type_uuid=""
+              data-rate_type_uuid="vnpyzujz-nscx-7mul-2fsv-lbyxyxvdtbj7"
               data-referral="hq-form"
               data-forced_locale="es"
             />
