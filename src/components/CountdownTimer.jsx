@@ -146,7 +146,7 @@ const CountdownTimer = () => {
           {/* "Solo 50 descuentos disponibles" text */}
           <div className="text-center animate-fade-in">
             <p className="text-white text-base sm:text-lg md:text-xl font-medium">
-              Solo <span className="text-neon-green font-bold">50</span> descuentos disponibles
+              Solo <span className="text-neon-green font-bold">50</span> descuentos disponibles.
             </p>
           </div>
 
