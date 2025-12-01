@@ -59,9 +59,16 @@ const CountdownTimer = () => {
       const cyberMondayStart = new Date('2025-12-01T00:00:00-05:00');
       const cyberMondayEnd = new Date('2025-12-02T00:00:00-05:00');
 
+      // Debug logs
+      console.log('Fecha actual:', now.toString());
+      console.log('Cyber Monday Start:', cyberMondayStart.toString());
+      console.log('Cyber Monday End:', cyberMondayEnd.toString());
+      console.log('¿Está dentro del rango?', now >= cyberMondayStart && now < cyberMondayEnd);
+
       if (now >= cyberMondayStart && now < cyberMondayEnd) {
         // Calcular horas transcurridas desde el inicio del Cyber Monday
         const hoursElapsed = (now - cyberMondayStart) / (1000 * 60 * 60);
+        console.log('Horas transcurridas:', hoursElapsed);
 
         let reservas;
         if (hoursElapsed < 8) {
@@ -75,12 +82,15 @@ const CountdownTimer = () => {
           reservas = 0;
         }
 
+        console.log('Reservas calculadas:', reservas);
         setReservasDisponibles(reservas);
       } else if (now >= cyberMondayEnd) {
         // Después del Cyber Monday: Agotado
+        console.log('Ya pasó el Cyber Monday - Agotado');
         setReservasDisponibles(0);
       } else {
         // Antes del Cyber Monday: 50 reservas fijas
+        console.log('Antes del Cyber Monday - 50 reservas');
         setReservasDisponibles(50);
       }
     };
