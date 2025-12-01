@@ -8,7 +8,7 @@ const CountdownTimer = () => {
     minutes: 0,
     seconds: 0
   });
-  const [phase, setPhase] = useState('before'); // 'before', 'phase1', 'phase2', 'ended'
+  const [phase, setPhase] = useState('before'); // 'before', 'phase1', 'phase2', 'phase3', 'ended'
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -17,7 +17,8 @@ const CountdownTimer = () => {
       // Black Friday dates (EST/EDT - Miami time)
       const phase1Start = new Date('2025-11-27T00:00:00-05:00'); // 27 nov, Miami
       const phase1End = new Date('2025-11-28T00:00:00-05:00');   // 28 nov (24h después)
-      const phase2End = new Date('2025-11-30T00:00:00-05:00');   // 30 nov (48h después de phase1End)
+      const phase2End = new Date('2025-12-01T00:00:00-05:00');   // 1 dic (72h después de phase1End)
+      const phase3End = new Date('2025-12-01T23:59:59-05:00');   // 1 dic 23:59:59 (Cyber Monday)
 
       let targetDate;
       let currentPhase;
@@ -31,6 +32,9 @@ const CountdownTimer = () => {
       } else if (now >= phase1End && now < phase2End) {
         targetDate = phase2End;
         currentPhase = 'phase2';
+      } else if (now >= phase2End && now < phase3End) {
+        targetDate = phase3End;
+        currentPhase = 'phase3';
       } else {
         currentPhase = 'ended';
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -81,7 +85,9 @@ const CountdownTimer = () => {
       case 'phase1':
         return 'Black Friday - Primera Fase (24h)';
       case 'phase2':
-        return '¡Prórroga Especial! - Últimas 48 horas';
+        return '¡Prórroga Especial! - Últimas 72 horas';
+      case 'phase3':
+        return 'Cyber Monday';
       case 'ended':
         return 'Oferta finalizada';
       default:
