@@ -9,6 +9,7 @@ const CountdownTimer = () => {
     seconds: 0
   });
   const [phase, setPhase] = useState('before'); // 'before', 'phase1', 'phase2', 'phase3', 'ended'
+  const [reservasDisponibles, setReservasDisponibles] = useState(50);
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -52,6 +53,35 @@ const CountdownTimer = () => {
           seconds: Math.floor((difference / 1000) % 60)
         });
         setPhase(currentPhase);
+      }
+
+      // Calcular reservas disponibles durante Cyber Monday
+      const cyberMondayStart = new Date('2025-12-01T00:00:00-05:00');
+      const cyberMondayEnd = new Date('2025-12-02T00:00:00-05:00');
+
+      if (now >= cyberMondayStart && now < cyberMondayEnd) {
+        // Calcular horas transcurridas desde el inicio del Cyber Monday
+        const hoursElapsed = (now - cyberMondayStart) / (1000 * 60 * 60);
+
+        let reservas;
+        if (hoursElapsed < 8) {
+          // Horas 0-8: Bajan 2 reservas/hora (20 -> 4)
+          reservas = Math.max(0, 20 - Math.floor(hoursElapsed * 2));
+        } else if (hoursElapsed < 16) {
+          // Horas 8-16: Baja 0.5/hora (4 -> 0)
+          reservas = Math.max(0, 4 - Math.floor((hoursElapsed - 8) * 0.5));
+        } else {
+          // Horas 16+: Agotado
+          reservas = 0;
+        }
+
+        setReservasDisponibles(reservas);
+      } else if (now >= cyberMondayEnd) {
+        // Después del Cyber Monday: Agotado
+        setReservasDisponibles(0);
+      } else {
+        // Antes del Cyber Monday: 50 reservas fijas
+        setReservasDisponibles(50);
       }
     };
 
@@ -112,9 +142,15 @@ const CountdownTimer = () => {
 
           {/* Main countdown number */}
           <div className="text-center animate-slide-left">
-            <div className="text-7xl sm:text-8xl md:text-9xl font-black text-neon-green leading-none drop-shadow-[0_0_40px_rgba(0,255,148,0.6)]">
-              50
-            </div>
+            {reservasDisponibles > 0 ? (
+              <div className="text-7xl sm:text-8xl md:text-9xl font-black text-neon-green leading-none drop-shadow-[0_0_40px_rgba(0,255,148,0.6)]">
+                {reservasDisponibles}
+              </div>
+            ) : (
+              <div className="text-5xl sm:text-6xl md:text-7xl font-black text-red-500 leading-none drop-shadow-[0_0_40px_rgba(239,68,68,0.6)]">
+                ¡Agotado!
+              </div>
+            )}
           </div>
 
           {/* "Termina en" text */}
