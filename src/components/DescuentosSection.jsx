@@ -20,6 +20,7 @@ const DescuentosSection = ({ onCTAClick }) => {
       const blackFridayStart = new Date('2025-11-28T00:00:00-05:00'); // Black Friday
       const blackFridayEnd = new Date('2025-11-29T00:00:00-05:00'); // Fin Black Friday
       const extensionEnd = new Date('2025-12-01T00:00:00-05:00'); // Fin extensión 48h
+      const cyberMondayEnd = new Date('2025-12-02T00:00:00-05:00'); // Fin Cyber Monday
 
       let targetDate;
       let currentPhase;
@@ -51,7 +52,7 @@ const DescuentosSection = ({ onCTAClick }) => {
         reservas = Math.max(0, reservasAntesBF - hoursPassed);
 
       } else if (now >= blackFridayEnd && now < extensionEnd) {
-        // FASE 3: Extensión 48h (29-30 nov)
+        // FASE 3: Extensión 72h (29 nov - 1 dic)
         targetDate = extensionEnd;
         currentPhase = 'phase2';
 
@@ -59,6 +60,25 @@ const DescuentosSection = ({ onCTAClick }) => {
         const diffExt = now - blackFridayEnd;
         const hours3Passed = Math.floor(diffExt / (1000 * 60 * 60 * 3));
         reservas = Math.max(0, 20 - hours3Passed); // 1 reserva cada 3h
+
+      } else if (now >= extensionEnd && now < cyberMondayEnd) {
+        // FASE 4: Cyber Monday (1 dic - 2 dic)
+        targetDate = cyberMondayEnd;
+        currentPhase = 'phase3';
+
+        // Calcular horas transcurridas desde el inicio del Cyber Monday
+        const hoursElapsed = (now - extensionEnd) / (1000 * 60 * 60);
+
+        if (hoursElapsed < 8) {
+          // Horas 0-8: Bajan 2 reservas/hora (20 -> 4)
+          reservas = Math.max(0, 20 - Math.floor(hoursElapsed * 2));
+        } else if (hoursElapsed < 16) {
+          // Horas 8-16: Baja 0.5/hora (4 -> 0)
+          reservas = Math.max(0, 4 - Math.floor((hoursElapsed - 8) * 0.5));
+        } else {
+          // Horas 16+: Agotado
+          reservas = 0;
+        }
 
       } else {
         // Promoción finalizada
@@ -110,7 +130,9 @@ const DescuentosSection = ({ onCTAClick }) => {
       case 'phase1':
         return 'Black Friday - Primera Fase (24h)';
       case 'phase2':
-        return '¡Prórroga Especial! - Últimas 48 horas';
+        return '¡Prórroga Especial! - Últimas 72 horas';
+      case 'phase3':
+        return 'Cyber Monday';
       case 'ended':
         return 'Oferta finalizada';
       default:
@@ -228,7 +250,19 @@ const DescuentosSection = ({ onCTAClick }) => {
                 <div className="bg-gradient-to-br from-verde-neon to-emerald-400 w-[220px] py-2 transform rotate-45 translate-x-[55px] translate-y-[30px] shadow-xl">
                   <p className="text-xs sm:text-sm font-black uppercase tracking-wide whitespace-nowrap flex items-center justify-center gap-1.5 text-azul-principal">
                     <Zap size={14} className="sm:w-5 sm:h-5" strokeWidth={3} fill="#021938" />
-                    <span>¡EXTENDIDO 48H!</span>
+                    <span>¡EXTENDIDO 72H!</span>
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Badge diagonal Cyber Monday (solo visible en fase 4) */}
+            {phase === 'phase3' && (
+              <div className="absolute top-0 right-0 z-20">
+                <div className="bg-gradient-to-br from-verde-neon to-emerald-400 w-[200px] py-2 transform rotate-45 translate-x-[50px] translate-y-[30px] shadow-xl">
+                  <p className="text-xs sm:text-sm font-black uppercase tracking-wide whitespace-nowrap flex items-center justify-center gap-1.5 text-azul-principal">
+                    <Zap size={14} className="sm:w-5 sm:h-5" strokeWidth={3} fill="#021938" />
+                    <span>CYBER MONDAY</span>
                   </p>
                 </div>
               </div>
@@ -236,11 +270,17 @@ const DescuentosSection = ({ onCTAClick }) => {
 
             {/* Texto de reservas disponibles con contador integrado */}
             <div className="text-center mb-6">
-              <h2 className="font-black leading-tight font-outfit flex items-center justify-center gap-2 flex-wrap">
-                <span className="text-xl sm:text-2xl md:text-3xl text-white">Solo</span>
-                <span className="text-3xl sm:text-4xl md:text-5xl text-verde-neon drop-shadow-[0_0_40px_rgba(0,255,127,0.6)] neon-text">{reservasRestantes}</span>
-                <span className="text-xl sm:text-2xl md:text-3xl text-white">reservas disponibles</span>
-              </h2>
+              {reservasRestantes > 0 ? (
+                <h2 className="font-black leading-tight font-outfit flex items-center justify-center gap-2 flex-wrap">
+                  <span className="text-xl sm:text-2xl md:text-3xl text-white">Solo</span>
+                  <span className="text-3xl sm:text-4xl md:text-5xl text-verde-neon drop-shadow-[0_0_40px_rgba(0,255,127,0.6)] neon-text">{reservasRestantes}</span>
+                  <span className="text-xl sm:text-2xl md:text-3xl text-white">reservas disponibles.</span>
+                </h2>
+              ) : (
+                <h2 className="font-black leading-tight font-outfit">
+                  <span className="text-3xl sm:text-4xl md:text-5xl text-red-500 drop-shadow-[0_0_40px_rgba(239,68,68,0.6)]">¡Agotado!</span>
+                </h2>
+              )}
             </div>
 
             {/* "Termina en" */}
